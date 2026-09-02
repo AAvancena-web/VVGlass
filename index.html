@@ -94,6 +94,7 @@ p:last-child{margin-bottom:0}
   .container{max-width:1880px}
 }
 .section{padding:clamp(64px,7vw,120px) 0}
+#contact{scroll-margin-top:calc(var(--header-h) + 16px)}
 .section--tight{padding:clamp(48px,5vw,84px) 0}
 .section--cream{background:var(--cream)}
 .section--sand{background:var(--sand)}
@@ -688,29 +689,48 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 .band-item p{font-size:.96rem;margin:0}
 @media (max-width:980px){.band-grid{grid-template-columns:1fr}}
 
-/* ---------- Testimonials ---------- */
-.testi-wrap{
-  display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
-  gap:clamp(36px,5vw,80px);align-items:center;
+/* ---------- Testimonial ---------- */
+.review{
+  position:relative;
+  max-width:940px;
+  margin:52px auto 0;
+  text-align:center;
+  background:var(--primary);
+  border:1px solid var(--line);
+  border-top:3px solid var(--background-color);
+  border-radius:var(--radius);
+  padding:clamp(56px,6vw,84px) clamp(26px,5vw,80px) clamp(40px,4vw,60px);
+  box-shadow:var(--shadow);
 }
-.testi-stage{position:relative;min-height:230px}
-.testi-slide{
-  opacity:0;visibility:hidden;position:absolute;inset:0;
-  transition:opacity .5s ease,visibility .5s;
+.review-mark{
+  position:absolute;top:0;left:50%;
+  transform:translate(-50%,-50%);
+  width:78px;height:78px;border-radius:50%;
+  background:var(--background-color);
+  color:var(--hover-color);
+  font-family:var(--head);font-size:3.6rem;font-weight:700;line-height:1;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:.22em;
+  box-shadow:0 12px 30px rgba(27,23,9,.24);
 }
-.testi-slide.active{opacity:1;visibility:visible;position:relative}
-.quote-mark{
-  font-family:var(--head);font-size:5rem;line-height:.7;
-  color:var(--hover-color);display:block;margin-bottom:14px;
+.stars{display:flex;gap:5px;justify-content:center;margin:0 0 26px}
+.stars svg{width:24px;height:24px;fill:#e0a800}
+.review blockquote{
+  margin:0 0 30px;
+  font-family:var(--head);font-weight:500;
+  font-size:clamp(1.22rem,2.1vw,1.95rem);
+  line-height:1.5;color:var(--ink);
 }
-.testi-slide blockquote{
-  margin:0 0 22px;font-size:clamp(1.1rem,1.7vw,1.45rem);
-  line-height:1.6;color:var(--ink);font-weight:500;
+.review-name{
+  margin:0;
+  font-family:var(--head);font-weight:700;
+  font-size:1.05rem;color:var(--ink);
 }
-.stars{display:flex;gap:4px;margin-bottom:12px}
-.stars svg{width:18px;height:18px;fill:#e0a800}
-.testi-name{font-family:var(--head);font-weight:700;color:var(--ink);font-size:1rem}
-@media (max-width:900px){.testi-wrap{grid-template-columns:1fr}}
+.review-name span{
+  display:block;margin-top:6px;
+  font-family:var(--body);font-weight:400;font-size:.9rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--background-color);
+}
 
 /* ---------- Three pillars ---------- */
 .pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
@@ -925,8 +945,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   .hero-content,
   .split > div:not(.media-frame):not(.intro-media),
   .card-body,
-  .testi-wrap > div:first-child,
-  .testi-slide,
   .intro-body{text-align:center}
 
   .hero-content p{margin-left:auto;margin-right:auto}
@@ -939,9 +957,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   .card-link{justify-content:center}
 
   .info-card{flex-direction:column;align-items:center;text-align:center}
-
-  .stars{justify-content:center}
-  .quote-mark{display:block}
 
   .intro-body h3{border-left:0;padding-left:0}
   .read-more{justify-content:center;width:100%}
@@ -1034,7 +1049,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         </ul>
       </nav>
 
-      <a class="btn header-cta" href="/contact/">Book Your Consultation Here</a>
+      <a class="btn header-cta" href="#contact">Book Your Consultation Here</a>
 
       <div class="header-tools">
         <a class="phone-circle" href="tel:0412991904" aria-label="Call VV Glass on 0412 991 904">
@@ -1106,7 +1121,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
     <a href="mailto:damian@vvglass.com.au"><svg class="ico-mail" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.6 7.4 8.4 5.9 8.4-5.9"/></svg>damian@vvglass.com.au</a>
     <a href="https://maps.app.goo.gl/PJBdqJGm9LsEoLTp8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Engadine, NSW 2233</a>
   </div>
-  <a class="btn btn--block" href="/contact/" style="margin-top:26px">Book Your Consultation Here</a>
+  <a class="btn btn--block" href="#contact" style="margin-top:26px">Book Your Consultation Here</a>
 </nav>
 
 <main id="content">
@@ -1126,7 +1141,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         <h1>VV Glass <em>When Quality Matters</em></h1>
         <p>The Trusted Australian Window Solutions for Glass Glazing, Installation &amp; Repair Servicing Sydney, Wollongong &amp; Surrounds</p>
         <div class="hero-actions">
-          <a class="btn" href="/contact/">Book Your Consultation Here</a>
+          <a class="btn" href="#contact">Book Your Consultation Here</a>
           <a class="btn btn--light" href="tel:0412991904">Call 0412 991 904</a>
         </div>
         <ul class="hero-trust">
@@ -1210,7 +1225,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
             </div>
           </div>
         </div>
-        <a class="btn" href="/contact/">Book Your Consultation Here</a>
+        <a class="btn" href="#contact">Book Your Consultation Here</a>
       </div>
     </div>
   </div>
@@ -1257,7 +1272,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         </div>
       </article>
     </div>
-    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
+    <div class="section-cta reveal"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1274,7 +1289,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
       <button type="button" class="project" aria-label="Open project image 3"><img src="images/Project-number-3.jpg" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/09/Project-number-3.jpg" alt="VV Glass recent project" loading="lazy"></button>
       <button type="button" class="project" aria-label="Open project image 4"><img src="images/project-4.jpg" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/08/project-4.jpg" alt="VV Glass recent project" loading="lazy"></button>
     </div>
-    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
+    <div class="section-cta reveal"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1302,47 +1317,35 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         <p>We deliver secure and elegant solutions, including balustrades, shower screens, and partitions, that elevate the aesthetics of the area.</p>
       </div>
     </div>
-    <div class="section-cta reveal"><a class="btn btn--light" href="/contact/">Book Your Consultation Here</a></div>
+    <div class="section-cta reveal"><a class="btn btn--light" href="#contact">Book Your Consultation Here</a></div>
   </div>
 </section>
 
 <!-- ============ TESTIMONIALS ============ -->
 <section class="section section--cream">
   <div class="container">
-    <div class="testi-wrap reveal">
-      <div>
-        <span class="eyebrow">Satisfied Customers</span>
-        <h2>What our Customers Say</h2>
-        <p>Our Award Winning Renovation Reviews<br>5 star rating from over 200 reviews!</p>
-      </div>
-      <div class="testi-stage" id="testiStage">
-        <div class="testi-slide active">
-          <span class="quote-mark">&ldquo;</span>
-          <blockquote>"VV Glass replaced my broken shopfront within hours of my call.<br>Highly professional and excellent quality work!"</blockquote>
-          <div class="stars" aria-label="5 out of 5 stars">
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-          </div>
-          <p class="testi-name">Mark T., Sydney</p>
-        </div>
-        <div class="testi-slide">
-          <span class="quote-mark">&ldquo;</span>
-          <blockquote>"VV Glass replaced my broken shopfront within hours of my call.<br>Highly professional and excellent quality work!"</blockquote>
-          <div class="stars" aria-label="5 out of 5 stars">
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
-          </div>
-          <p class="testi-name">Mark T., Sydney</p>
-        </div>
-      </div>
+    <div class="section-head center reveal">
+      <span class="eyebrow">Satisfied Customers</span>
+      <h2>What our Customers Say</h2>
+      <p>Our Award Winning Renovation Reviews<br>5 star rating from over 200 reviews!</p>
     </div>
-    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
+
+    <figure class="review reveal">
+      <span class="review-mark" aria-hidden="true">&ldquo;</span>
+      <div class="stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+      </div>
+      <blockquote>"VV Glass replaced my broken shopfront within hours of my call.<br>Highly professional and excellent quality work!"</blockquote>
+      <figcaption class="review-name">
+        Mark T.
+        <span>Sydney</span>
+      </figcaption>
+    </figure>
+    <div class="section-cta reveal"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1355,7 +1358,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         <h2>Clear Australian Window Solutions for Every Pane</h2>
         <p>VV Glass is proud to be an Australian-owned window glazing company focused on delivering durability, design, and safety. Our fully licensed and insured glaziers bring decades of experience and a passion for precision to every project. From a single window fix to large-scale commercial façades, we bring clarity and craftsmanship to every pane.</p>
         <p>We believe in transparent communication, clear pricing, and reliable service. Whether you're a homeowner looking to replace a broken window, a business owner in need of a shopfront upgrade, or an industrial company looking for custom-designed glass solutions to meet the unique safety and functional needs of their facility, we treat every Australian window solutions project with equal care and attention.</p>
-        <div style="margin-top:32px"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
+        <div style="margin-top:32px"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
       </div>
       <div class="media-frame">
         <img src="images/Right-image-4.jpg" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/09/Right-image-4.jpg" alt="VV Glass glaziers at work" loading="lazy" width="838" height="761">
@@ -1389,7 +1392,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         <p>We believe great service starts with being easy to talk to. That's why we provide honest updates, straightforward pricing, and clear timelines. You'll always know what's happening and when to expect results. Ultimately, this transparency helps us build a relationship based on trust.</p>
       </div>
     </div>
-    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
+    <div class="section-cta reveal"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1425,7 +1428,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16 4 8l1.4-1.4L12 13.2l6.6-6.6L20 8z"/></svg>
         </button>
 
-        <div class="intro-cta"><a class="btn" href="/contact/">Book Your Consultation Today</a></div>
+        <div class="intro-cta"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
       </div>
 
       <div class="intro-media">
@@ -1515,7 +1518,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         </details>
       </div>
     </div>
-    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
+    <div class="section-cta reveal"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1731,23 +1734,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
     dot.addEventListener('click', function(){ showSlide(n); startHero(); });
   });
   if (slides.length > 1) startHero();
-
-  /* ---- Testimonial slider ---- */
-  var testi = Array.prototype.slice.call(document.querySelectorAll('.testi-slide'));
-  var tIndex = 0, tTimer;
-  function showTesti(i){
-    tIndex = (i + testi.length) % testi.length;
-    testi.forEach(function(s, n){ s.classList.toggle('active', n === tIndex); });
-  }
-  function startTesti(){
-    clearInterval(tTimer);
-    tTimer = setInterval(function(){ showTesti(tIndex + 1); }, 7000);
-  }
-  var tPrev = document.getElementById('testiPrev');
-  var tNext = document.getElementById('testiNext');
-  if (tPrev) tPrev.addEventListener('click', function(){ showTesti(tIndex - 1); startTesti(); });
-  if (tNext) tNext.addEventListener('click', function(){ showTesti(tIndex + 1); startTesti(); });
-  if (testi.length > 1) startTesti();
 
   /* ---- FAQ: keep one open per column ---- */
   document.querySelectorAll('.faq > div').forEach(function(col){
