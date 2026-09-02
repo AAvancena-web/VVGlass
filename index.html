@@ -45,7 +45,7 @@
   --radius:6px;
   --shadow:0 18px 50px rgba(27,23,9,.10);
   --shadow-sm:0 8px 24px rgba(27,23,9,.07);
-  --header-h:96px;
+  --header-h:124px;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -109,7 +109,7 @@ p:last-child{margin-bottom:0}
   display:inline-block;
   margin:0 0 18px;
 }
-.section-head{max-width:760px;margin-bottom:clamp(36px,4vw,60px)}
+.section-head{margin-bottom:clamp(36px,4vw,60px)}
 .section-head.center{margin-left:auto;margin-right:auto;text-align:center}
 .section-head p{color:var(--secondary);font-size:1.05rem}
 .lead{font-size:1.1rem}
@@ -189,7 +189,7 @@ p:last-child{margin-bottom:0}
   min-height:var(--header-h);
 }
 .brand{display:flex;align-items:center;flex:none}
-.brand img{height:64px;width:auto;max-width:240px;object-fit:contain}
+.brand img{height:96px;width:auto;max-width:210px;object-fit:contain}
 
 /* Desktop nav */
 .nav{margin-left:auto}
@@ -233,7 +233,7 @@ p:last-child{margin-bottom:0}
 .sub-menu{
   position:absolute;
   top:100%;left:0;
-  min-width:288px;
+  min-width:310px;
   background:var(--dark);
   border-top:2px solid var(--hover-color);
   padding:10px 0;
@@ -247,7 +247,7 @@ p:last-child{margin-bottom:0}
 .sub-menu a{
   display:block;
   padding:11px 24px;
-  font-size:.9rem;
+  font-size:1rem;
   color:rgba(255,255,255,.86);
 }
 .sub-menu a:hover{color:var(--hover-color);background:rgba(230,218,160,.07)}
@@ -302,11 +302,11 @@ p:last-child{margin-bottom:0}
   .header-cta{display:none}
 }
 @media (max-width:1080px){
-  :root{--header-h:82px}
+  :root{--header-h:100px}
   .nav{display:none}
   .header-cta{display:none}
   .header-tools{display:flex}
-  .brand img{height:48px}
+  .brand img{height:72px;max-width:180px}
 }
 
 /* Mobile drawer */
@@ -315,12 +315,12 @@ p:last-child{margin-bottom:0}
   .hero-actions{display:grid;grid-template-columns:1fr;gap:12px}
   .hero-actions .btn{width:100%}
   .header-inner{gap:12px}
-  .brand img{height:44px;max-width:170px}
+  .brand img{height:66px;max-width:160px}
   .header-tools{gap:10px}
   .phone-circle,.burger{width:44px;height:44px}
 }
 @media (max-width:370px){
-  .brand img{height:40px;max-width:140px}
+  .brand img{height:58px;max-width:130px}
 }
 
 .mobile-nav{
@@ -378,7 +378,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 .hero::after{
   content:"";
   position:absolute;inset:0;
-  background:linear-gradient(100deg,rgba(23,19,16,.58) 0%,rgba(23,19,16,.34) 45%,rgba(23,19,16,.10) 100%);
+  background:linear-gradient(100deg,rgba(23,19,16,.76) 0%,rgba(23,19,16,.56) 45%,rgba(23,19,16,.30) 100%);
 }
 .hero .container{position:relative;z-index:3}
 .hero-grid{
@@ -388,7 +388,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   align-items:center;
   padding:clamp(64px,7vw,120px) 0;
 }
-.hero-content{color:rgba(255,255,255,.94);text-shadow:0 2px 14px rgba(23,19,16,.55)}
+.hero-content{color:var(--primary);text-shadow:0 2px 18px rgba(23,19,16,.8)}
 .hero-content .eyebrow{color:var(--hover-color)}
 .hero h1{color:var(--primary);margin-bottom:.42em}
 .hero h1 em{font-style:normal;color:var(--hover-color);display:block}
@@ -402,7 +402,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 .hero-trust li{
   display:flex;align-items:center;gap:10px;
   font-family:var(--head);font-size:.78rem;font-weight:600;
-  letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.8);
+  letter-spacing:.11em;text-transform:uppercase;color:var(--primary);
 }
 .hero-trust svg{width:17px;height:17px;fill:var(--hover-color);flex:none}
 
@@ -434,7 +434,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   margin-bottom:.35em;
 }
 .form-card .form-sub{
-  text-align:center;color:rgba(255,255,255,.6);
+  text-align:center;color:rgba(255,255,255,.72);
   font-size:.92rem;margin-bottom:26px;
 }
 .field{margin-bottom:13px}
@@ -497,14 +497,18 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   backdrop-filter:none;
 }
 .hero .form-light{box-shadow:0 26px 60px rgba(0,0,0,.4)}
+
+/* the contact form sits on a white section, so it takes a tinted ground */
+.form-card--sand{background:var(--sand);border-color:#e0d8c8}
+.form-card--sand .form-sub{color:var(--secondary)}
 .form-light h2,.form-light h4{color:var(--ink)}
-.form-light .form-sub{color:var(--muted)}
+.form-light .form-sub{color:var(--secondary)}
 .form-light input,.form-light textarea{
-  background:var(--cream);
-  border:1px solid var(--line);
+  background:var(--primary);
+  border:1px solid #d8d2c6;
   color:var(--ink);
 }
-.form-light input::placeholder,.form-light textarea::placeholder{color:#a5a096}
+.form-light input::placeholder,.form-light textarea::placeholder{color:#6e6960}
 .form-light input:focus,.form-light textarea:focus{
   outline:0;border-color:var(--background-color);background:var(--primary);
   box-shadow:0 0 0 3px rgba(142,110,71,.12);
@@ -536,21 +540,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   border-radius:var(--radius);
   z-index:-1;
 }
-.media-badge{
-  position:absolute;
-  right:-18px;bottom:32px;
-  background:var(--background-color);
-  color:var(--primary);
-  padding:22px 26px;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  max-width:220px;
-}
-.media-badge strong{
-  display:block;font-family:var(--head);font-size:2.1rem;
-  line-height:1;color:var(--primary);
-}
-.media-badge span{font-size:.82rem;letter-spacing:.06em;opacity:.9}
 
 .feature-list{display:grid;gap:22px;margin:32px 0 36px}
 .feature{display:flex;gap:18px}
@@ -569,9 +558,8 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 
 @media (max-width:900px){
   .split{grid-template-columns:1fr}
-  .split .media-frame{order:-1}
+  .split .media-frame{order:2}
   .media-frame::before{display:none}
-  .media-badge{right:16px;bottom:16px}
 }
 
 /* ---------- Services ---------- */
@@ -673,6 +661,8 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 .band .container{position:relative;z-index:2}
 .band h2,.band h4{color:var(--primary)}
 .band .eyebrow{color:var(--hover-color)}
+.band .top-p,
+.band .section-head p{color:rgba(255,255,255,.94)}
 .band .top-p{max-width:900px;font-size:1.07rem}
 .band-grid{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
@@ -720,16 +710,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 .stars{display:flex;gap:4px;margin-bottom:12px}
 .stars svg{width:18px;height:18px;fill:#e0a800}
 .testi-name{font-family:var(--head);font-weight:700;color:var(--ink);font-size:1rem}
-.testi-controls{display:flex;gap:10px;margin-top:28px}
-.testi-controls button{
-  width:46px;height:46px;border-radius:50%;
-  border:1px solid var(--line);background:var(--primary);
-  display:flex;align-items:center;justify-content:center;
-  transition:background .25s ease,border-color .25s ease;
-}
-.testi-controls svg{width:16px;height:16px;fill:var(--ink);transition:fill .25s ease}
-.testi-controls button:hover{background:var(--background-color);border-color:var(--background-color)}
-.testi-controls button:hover svg{fill:var(--primary)}
 @media (max-width:900px){.testi-wrap{grid-template-columns:1fr}}
 
 /* ---------- Three pillars ---------- */
@@ -782,9 +762,11 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   color:var(--background-color);
 }
 .intro-cta{margin-top:40px}
+.section-cta{margin-top:clamp(38px,4vw,58px);text-align:center}
 
 /* ---------- FAQ ---------- */
-.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 26px;align-items:start}
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 26px;align-items:start}
+.faq > div{display:grid;gap:20px;align-content:start}
 .qa{
   background:var(--primary);
   border:1px solid var(--line);
@@ -933,6 +915,42 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
+}
+
+/* ---------- Mobile: centre the content ----------
+   Left-aligned on purpose: form fields, FAQ copy, and the footer's
+   link and contact lists. */
+@media (max-width:900px){
+  .section-head,
+  .hero-content,
+  .split > div:not(.media-frame):not(.intro-media),
+  .card-body,
+  .testi-wrap > div:first-child,
+  .testi-slide,
+  .intro-body{text-align:center}
+
+  .hero-content p{margin-left:auto;margin-right:auto}
+  .hero-actions{justify-content:center}
+  .hero-trust{justify-content:center;gap:14px 26px}
+
+  .feature{flex-direction:column;align-items:center;gap:14px}
+  .feature-list{justify-items:center}
+
+  .card-link{justify-content:center}
+
+  .info-card{flex-direction:column;align-items:center;text-align:center}
+
+  .stars{justify-content:center}
+  .quote-mark{display:block}
+
+  .intro-body h3{border-left:0;padding-left:0}
+  .read-more{justify-content:center;width:100%}
+
+  /* these stay left for readability */
+  .form-card input,
+  .form-card textarea{text-align:left}
+  .qa summary,
+  .qa .answer{text-align:left}
 }
 
 .sr-only{
@@ -1151,10 +1169,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
     <div class="split reveal">
       <div class="media-frame">
         <img src="images/why-choose-us-img-min.png" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/09/why-choose-us-img-min.png" alt="VV Glass glazier installing a window" width="873" height="955">
-        <div class="media-badge">
-          <strong>200+</strong>
-          <span>5 star reviews from happy customers</span>
-        </div>
       </div>
       <div>
         <span class="eyebrow">Why Choose Us</span>
@@ -1243,6 +1257,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         </div>
       </article>
     </div>
+    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1259,13 +1274,14 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
       <button type="button" class="project" aria-label="Open project image 3"><img src="images/Project-number-3.jpg" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/09/Project-number-3.jpg" alt="VV Glass recent project" loading="lazy"></button>
       <button type="button" class="project" aria-label="Open project image 4"><img src="images/project-4.jpg" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/08/project-4.jpg" alt="VV Glass recent project" loading="lazy"></button>
     </div>
+    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
   </div>
 </section>
 
 <!-- ============ GLAZING PARTNER (dark band) ============ -->
 <section class="section band">
   <div class="container">
-    <div class="section-head center reveal" style="max-width:900px">
+    <div class="section-head center reveal">
       <h2>Your Reliable Glass Glazing Partner</h2>
       <p class="top-p">We deliver expert glazing services across residential, commercial, and industrial sectors, available anytime, day or night. Whether it's a safety-driven replacement, a bespoke glass design, or an urgent repair, our team treats every project with care and precision.</p>
     </div>
@@ -1286,6 +1302,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         <p>We deliver secure and elegant solutions, including balustrades, shower screens, and partitions, that elevate the aesthetics of the area.</p>
       </div>
     </div>
+    <div class="section-cta reveal"><a class="btn btn--light" href="/contact/">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1297,10 +1314,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         <span class="eyebrow">Satisfied Customers</span>
         <h2>What our Customers Say</h2>
         <p>Our Award Winning Renovation Reviews<br>5 star rating from over 200 reviews!</p>
-        <div class="testi-controls">
-          <button type="button" id="testiPrev" aria-label="Previous testimonial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg></button>
-          <button type="button" id="testiNext" aria-label="Next testimonial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4z"/></svg></button>
-        </div>
       </div>
       <div class="testi-stage" id="testiStage">
         <div class="testi-slide active">
@@ -1329,6 +1342,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         </div>
       </div>
     </div>
+    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1375,6 +1389,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         <p>We believe great service starts with being easy to talk to. That's why we provide honest updates, straightforward pricing, and clear timelines. You'll always know what's happening and when to expect results. Ultimately, this transparency helps us build a relationship based on trust.</p>
       </div>
     </div>
+    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1500,6 +1515,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         </details>
       </div>
     </div>
+    <div class="section-cta reveal"><a class="btn" href="/contact/">Book Your Consultation Here</a></div>
   </div>
 </section>
 
@@ -1553,7 +1569,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
         </div>
       </div>
 
-      <div class="form-card form-light">
+      <div class="form-card form-light form-card--sand">
         <h4>Get In Touch with VV Glass</h4>
         <p class="form-sub">Tell us about your project and we'll come back with clear, practical advice.</p>
         <form class="js-form" novalidate>
