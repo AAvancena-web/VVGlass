@@ -179,22 +179,19 @@ p:last-child{margin-bottom:0}
   position:sticky;
   top:0;
   z-index:120;
-  background:var(--primary);
-  border-bottom:1px solid var(--line);
+  background:var(--background-color);
+  border-bottom:1px solid rgba(255,255,255,.18);
   transition:box-shadow .3s ease;
 }
-.site-header.is-stuck{box-shadow:0 6px 26px rgba(27,23,9,.10)}
+.site-header.is-stuck{box-shadow:0 8px 28px rgba(23,19,16,.26)}
 .header-inner{
   display:flex;
   align-items:center;
   gap:28px;
   min-height:var(--header-h);
 }
-.brand{display:flex;align-items:center;gap:14px;flex:none}
-.brand img{width:66px;height:auto}
-.brand-text{font-family:var(--head);line-height:1.1}
-.brand-text strong{display:block;font-size:1.28rem;color:var(--ink);letter-spacing:.02em}
-.brand-text span{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--background-color);font-weight:600}
+.brand{display:flex;align-items:center;flex:none}
+.brand img{height:64px;width:auto;max-width:240px;object-fit:contain}
 
 /* Desktop nav */
 .nav{margin-left:auto}
@@ -207,7 +204,7 @@ p:last-child{margin-bottom:0}
   font-weight:600;
   font-size:.87rem;
   letter-spacing:.02em;
-  color:var(--ink);
+  color:var(--primary);
   padding:14px 14px;
   position:relative;
 }
@@ -222,7 +219,7 @@ p:last-child{margin-bottom:0}
   transition:transform .28s ease;
 }
 .nav > ul > li:hover > a,
-.nav > ul > li.current > a{color:var(--background-color)}
+.nav > ul > li.current > a{color:var(--hover-color)}
 .nav > ul > li:hover > a::after,
 .nav > ul > li.current > a::after{transform:scaleX(1)}
 .has-sub > a::before{
@@ -257,7 +254,13 @@ p:last-child{margin-bottom:0}
 }
 .sub-menu a:hover{color:var(--hover-color);background:rgba(230,218,160,.07)}
 
-.header-cta{flex:none}
+.header-cta{
+  flex:none;
+  background:var(--hover-color);
+  border-color:var(--hover-color);
+  color:var(--ink);
+}
+.header-cta:hover{background:var(--primary);border-color:var(--primary);color:var(--ink)}
 .header-tools{display:none;align-items:center;gap:14px;margin-left:auto}
 
 /* circular phone button beside hamburger */
@@ -266,25 +269,26 @@ p:last-child{margin-bottom:0}
   display:inline-flex;align-items:center;justify-content:center;
   border-radius:50%;
   background:var(--ink);
-  border:2px solid var(--background-color);
+  border:2px solid rgba(230,218,160,.55);
   flex:none;
   transition:background .25s ease,border-color .25s ease,transform .2s ease;
 }
 .phone-circle svg{width:19px;height:19px;fill:var(--hover-color);transition:fill .25s ease}
-.phone-circle:hover{background:var(--background-color);border-color:var(--hover-color);transform:translateY(-2px)}
-.phone-circle:hover svg{fill:var(--primary)}
+.phone-circle:hover{background:var(--hover-color);border-color:var(--hover-color);transform:translateY(-2px)}
+.phone-circle:hover svg{fill:var(--ink)}
 
 .burger{
   width:48px;height:48px;
   display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
-  background:var(--background-color);
-  border:2px solid var(--background-color);
+  background:var(--hover-color);
+  border:2px solid var(--hover-color);
   border-radius:50%;
   flex:none;
   transition:background .25s ease,border-color .25s ease;
 }
-.burger span{display:block;width:19px;height:2px;background:var(--primary);border-radius:2px;transition:transform .3s ease,opacity .2s ease}
+.burger span{display:block;width:19px;height:2px;background:var(--ink);border-radius:2px;transition:transform .3s ease,opacity .2s ease,background .25s ease}
 .burger[aria-expanded="true"]{background:var(--ink);border-color:var(--ink)}
+.burger[aria-expanded="true"] span{background:var(--hover-color)}
 .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
 .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
@@ -304,8 +308,7 @@ p:last-child{margin-bottom:0}
   .nav{display:none}
   .header-cta{display:none}
   .header-tools{display:flex}
-  .brand img{width:54px}
-  .brand-text strong{font-size:1.12rem}
+  .brand img{height:48px}
 }
 
 /* Mobile drawer */
@@ -314,14 +317,12 @@ p:last-child{margin-bottom:0}
   .hero-actions{display:grid;grid-template-columns:1fr;gap:12px}
   .hero-actions .btn{width:100%}
   .header-inner{gap:12px}
-  .brand img{width:46px}
-  .brand-text strong{font-size:1rem}
-  .brand-text span{font-size:.58rem;letter-spacing:.14em}
+  .brand img{height:44px;max-width:170px}
   .header-tools{gap:10px}
   .phone-circle,.burger{width:44px;height:44px}
 }
 @media (max-width:370px){
-  .brand-text{display:none}
+  .brand img{height:40px;max-width:140px}
 }
 
 .mobile-nav{
@@ -380,12 +381,12 @@ body.nav-open{overflow:hidden}
 .hero .container{position:relative;z-index:3}
 .hero-grid{
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(380px,470px);
+  grid-template-columns:minmax(0,1fr) minmax(400px,520px);
   gap:clamp(36px,5vw,86px);
   align-items:center;
   padding:clamp(64px,7vw,120px) 0;
 }
-.hero-content{color:rgba(255,255,255,.86);max-width:640px}
+.hero-content{color:rgba(255,255,255,.86)}
 .hero-content .eyebrow{color:var(--hover-color)}
 .hero h1{color:var(--primary);margin-bottom:.42em}
 .hero h1 em{font-style:normal;color:var(--hover-color);display:block}
@@ -435,6 +436,24 @@ body.nav-open{overflow:hidden}
   font-size:.92rem;margin-bottom:26px;
 }
 .field{margin-bottom:13px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.field-grid .field{margin-bottom:0}
+
+/* compact variant used in the banner */
+.form-card--compact{padding:clamp(24px,2.2vw,34px)}
+.form-card--compact h2{font-size:clamp(1.2rem,1.6vw,1.6rem);margin-bottom:.3em}
+.form-card--compact .form-sub{margin-bottom:20px;font-size:.88rem}
+.form-card--compact .field{margin-bottom:12px}
+.form-card--compact input,
+.form-card--compact textarea{padding:12px 14px;font-size:.92rem}
+.form-card--compact .field-grid input{font-size:.89rem}
+.form-card--compact textarea{min-height:92px}
+.form-card--compact .btn{padding:15px 28px;margin-top:4px}
+.form-card--compact .form-note{margin-top:11px}
+@media (max-width:520px){
+  .field-grid{grid-template-columns:1fr;gap:0;margin-bottom:0}
+  .field-grid .field{margin-bottom:12px}
+}
 .form-card input,.form-card textarea,
 .form-light input,.form-light textarea{
   width:100%;
@@ -493,7 +512,6 @@ body.nav-open{overflow:hidden}
 
 @media (max-width:1080px){
   .hero-grid{grid-template-columns:1fr;padding-top:56px}
-  .hero-content{max-width:none}
   .form-card{max-width:560px}
 }
 
@@ -895,11 +913,7 @@ body.nav-open{overflow:hidden}
   <div class="container">
     <div class="header-inner">
       <a class="brand" href="/" aria-label="VV Glass home">
-        <img src="images/NEW-LOGO2-1.png" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/09/NEW-LOGO2-1.png" alt="VV Glass" width="114" height="117">
-        <span class="brand-text">
-          <strong>VV Glass</strong>
-          <span>When Quality Matters</span>
-        </span>
+        <img src="images/NEW-LOGO2-1.png" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/09/NEW-LOGO2-1.png" alt="VV Glass — When Quality Matters" width="114" height="117">
       </a>
 
       <nav class="nav" aria-label="Primary">
@@ -1055,14 +1069,16 @@ body.nav-open{overflow:hidden}
       </div>
 
       <!-- Banner form (right side) -->
-      <div class="form-card">
+      <div class="form-card form-card--compact">
         <h2>Get In Touch With VV Glass</h2>
         <p class="form-sub">Fast, obligation-free quotes across Sydney &amp; Wollongong</p>
         <form class="js-form" novalidate>
-          <div class="field"><input type="text" name="Name" placeholder="Name*" required></div>
-          <div class="field"><input type="email" name="EmailAddress" placeholder="Email Address*" required></div>
-          <div class="field"><input type="tel" name="PhoneNumber" placeholder="Phone Number*" required></div>
-          <div class="field"><input type="text" name="Suburbofproposedworks" placeholder="Suburb of Proposed Works"></div>
+          <div class="field-grid">
+            <div class="field"><input type="text" name="Name" placeholder="Name*" required></div>
+            <div class="field"><input type="email" name="EmailAddress" placeholder="Email Address*" required></div>
+            <div class="field"><input type="tel" name="PhoneNumber" placeholder="Phone Number*" required></div>
+            <div class="field"><input type="text" name="Suburbofproposedworks" placeholder="Suburb of Proposed Works"></div>
+          </div>
           <div class="field"><textarea name="Message" placeholder="Message*" required></textarea></div>
           <button type="submit" class="btn btn--block">Submit</button>
           <p class="form-note">We respond to every enquiry within one business day.</p>
