@@ -790,29 +790,74 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 .section-cta{margin-top:clamp(38px,4vw,58px);text-align:center}
 .copy-block{text-align:center;margin-bottom:clamp(40px,4vw,62px)}
 .copy-block p{font-size:1.05rem}
-.copy-block--outro{margin:clamp(36px,4vw,54px) 0 0}
+
+/* intro runs as two columns so each paragraph keeps a readable measure */
+.copy-block--intro{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(26px,3vw,60px);
+  text-align:left;
+}
+.copy-block--intro p{margin:0;font-size:1.08rem;line-height:1.8}
+
+.copy-block--outro{
+  margin:clamp(40px,4vw,60px) 0 0;
+  font-size:1.08rem;
+  color:var(--ink);
+}
+@media (min-width:901px){
+  .copy-block--outro{padding-inline:12vw}
+}
+@media (max-width:900px){
+  .copy-block--intro{grid-template-columns:1fr;text-align:center}
+}
 .faq-heading{
   text-align:center;
   font-size:clamp(1.35rem,2.1vw,2.05rem);
   margin-bottom:clamp(28px,3vw,42px);
 }
 
-/* open question-and-answer copy — everything visible, no accordion */
+/* open question-and-answer copy — everything visible, no accordion.
+   CSS columns rather than a grid, so cards pack tight instead of
+   leaving ragged gaps where one answer is longer than its neighbour. */
 .qa-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:clamp(30px,3vw,46px) clamp(34px,4vw,72px);
+  columns:2;
+  column-gap:clamp(26px,2.6vw,48px);
+  counter-reset:qa;
+}
+.qa-item{
+  break-inside:avoid;
+  background:var(--primary);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:clamp(26px,2.4vw,38px);
+  margin-bottom:clamp(24px,2.4vw,44px);
 }
 .qa-item h3{
-  font-size:1.16rem;
-  line-height:1.4;
-  margin-bottom:.55em;
-  padding-bottom:.5em;
-  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  counter-increment:qa;
+  font-size:1.14rem;
+  line-height:1.45;
+  margin-bottom:.7em;
 }
-.qa-item p{margin:0;font-size:1rem}
+.qa-item h3::before{
+  content:counter(qa,decimal-leading-zero);
+  flex:none;
+  width:36px;height:36px;
+  border-radius:50%;
+  background:var(--sand);
+  color:var(--background-color);
+  font-size:.86rem;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:-2px;
+}
+.qa-item p{margin:0;font-size:1rem;line-height:1.8}
 @media (max-width:900px){
-  .qa-grid{grid-template-columns:1fr;gap:30px}
+  .qa-grid{columns:1}
+  .qa-item h3{justify-content:center;text-align:center}
+  .qa-item p{text-align:center}
 }
 
 /* ---------- FAQ ---------- */
@@ -1431,57 +1476,15 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 </section>
 
 <!-- ============================================================
-     SHARED SECTION 1 — Glass That Works Harder for Your Property
+     SHARED SECTION 1 — Generic content (Variation 1)
      ============================================================ -->
 <section class="section">
-  <div class="container">
-    <div class="split reveal">
-      <div class="intro-body">
-        <span class="eyebrow">Why VV Glass</span>
-        <h2>Glass That Works Harder for Your Property</h2>
-        <p class="intro-sub">Built for the Way Your Space Is Used Every Day</p>
-
-        <p class="lead">Glass should do more than fill a frame. It should make your property safer, brighter, more practical, and more valuable.</p>
-        <p>At VV Glass, we look beyond the immediate job and consider how each glass solution will perform in real life, from daily wear and changing weather to privacy, security, access, and presentation.</p>
-        <p>Whether we are replacing a damaged window, installing a new shopfront, upgrading a glass fence, or creating a custom feature, our goal is to give you a result that feels right from the first day and continues to work well long after installation.</p>
-
-        <div class="more-panel" id="introMore" hidden>
-          <h3>Practical Advice Before Precision Work</h3>
-          <p>We understand that most customers do not deal with glass every day. That is why we take the time to explain your options clearly, without overcomplicating the process.</p>
-          <p>We help you understand which type of glass suits your space, what will meet safety requirements, and what will give you the best balance of appearance, durability, and value.</p>
-          <p>Our team brings the right mix of technical skill and practical thinking to every project. You receive measured advice, careful planning, and workmanship that respects your time, your property, and your budget.</p>
-
-          <h3>A Clearer Finish, A Better Experience</h3>
-          <p>When you choose VV Glass, you are not just booking a glazing service. You are choosing a team focused on making the whole experience smoother, safer, and more reassuring.</p>
-          <p>From the first conversation to the final clean-up, we aim to keep communication simple, pricing transparent, and results consistently sharp.</p>
-          <p>If you want glass that looks clean, performs reliably, and adds lasting value to your property, we are ready to help.</p>
-        </div>
-
-        <button type="button" class="read-more" data-target="introMore" aria-expanded="false" aria-controls="introMore">
-          <span>Read More</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16 4 8l1.4-1.4L12 13.2l6.6-6.6L20 8z"/></svg>
-        </button>
-
-        <div class="intro-cta"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
-      </div>
-
-      <div class="intro-media">
-        <img src="images/why-vv-glass.jpg" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/09/Project-number-2.jpg" alt="Glass installed by VV Glass working hard for a property" loading="lazy">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SHARED SECTION 2 — Generic content (Variation 1)
-     ============================================================ -->
-<section class="section section--cream">
   <div class="container">
     <div class="section-head center reveal">
       <span class="eyebrow">Making An Informed Decision</span>
       <h2>Making an Informed Decision About Your Glass</h2>
     </div>
-    <div class="copy-block reveal">
+    <div class="copy-block copy-block--intro reveal">
       <p>No two glass problems are quite the same, which is why we never recommend a fix before we understand the full picture. A hairline crack in a window, a pool fence panel that has come loose, or an outdated shopfront that no longer suits the space all call for different approaches, different materials, and sometimes a different timeline altogether. Rather than offering a one-size-fits-all quote over the phone, we take the time to look properly at what is in front of us, so the solution we put forward actually fits the property, the budget, and the level of urgency involved.</p>
       <p>That approach matters more than it might seem. Glass sits at the intersection of safety, comfort, and appearance, and getting it wrong, even in a small way, can mean redoing work later or living with a result that never quite felt right. Below are the questions our clients across Sydney, Wollongong, and the surrounding areas ask us most often, along with straightforward answers to help you weigh up your own options before you make a call.</p>
     </div>
@@ -1535,6 +1538,48 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
     </div>
 
     <div class="section-cta reveal"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SHARED SECTION 2 — Glass That Works Harder for Your Property
+     ============================================================ -->
+<section class="section section--cream">
+  <div class="container">
+    <div class="split reveal">
+      <div class="intro-body">
+        <span class="eyebrow">Why VV Glass</span>
+        <h2>Glass That Works Harder for Your Property</h2>
+        <p class="intro-sub">Built for the Way Your Space Is Used Every Day</p>
+
+        <p class="lead">Glass should do more than fill a frame. It should make your property safer, brighter, more practical, and more valuable.</p>
+        <p>At VV Glass, we look beyond the immediate job and consider how each glass solution will perform in real life, from daily wear and changing weather to privacy, security, access, and presentation.</p>
+        <p>Whether we are replacing a damaged window, installing a new shopfront, upgrading a glass fence, or creating a custom feature, our goal is to give you a result that feels right from the first day and continues to work well long after installation.</p>
+
+        <div class="more-panel" id="introMore" hidden>
+          <h3>Practical Advice Before Precision Work</h3>
+          <p>We understand that most customers do not deal with glass every day. That is why we take the time to explain your options clearly, without overcomplicating the process.</p>
+          <p>We help you understand which type of glass suits your space, what will meet safety requirements, and what will give you the best balance of appearance, durability, and value.</p>
+          <p>Our team brings the right mix of technical skill and practical thinking to every project. You receive measured advice, careful planning, and workmanship that respects your time, your property, and your budget.</p>
+
+          <h3>A Clearer Finish, A Better Experience</h3>
+          <p>When you choose VV Glass, you are not just booking a glazing service. You are choosing a team focused on making the whole experience smoother, safer, and more reassuring.</p>
+          <p>From the first conversation to the final clean-up, we aim to keep communication simple, pricing transparent, and results consistently sharp.</p>
+          <p>If you want glass that looks clean, performs reliably, and adds lasting value to your property, we are ready to help.</p>
+        </div>
+
+        <button type="button" class="read-more" data-target="introMore" aria-expanded="false" aria-controls="introMore">
+          <span>Read More</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16 4 8l1.4-1.4L12 13.2l6.6-6.6L20 8z"/></svg>
+        </button>
+
+        <div class="intro-cta"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
+      </div>
+
+      <div class="intro-media">
+        <img src="images/why-vv-glass.jpg" data-fallback="https://vvglass.com.au/wp-content/uploads/2025/09/Project-number-2.jpg" alt="Glass installed by VV Glass working hard for a property" loading="lazy">
+      </div>
+    </div>
   </div>
 </section>
 
