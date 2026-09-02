@@ -75,7 +75,7 @@ h1,h2,h3,h4,h5,h6{
   letter-spacing:-.01em;
 }
 h1{font-size:clamp(2.1rem,4.2vw,3.75rem);font-weight:800;letter-spacing:-.02em}
-h2{font-size:clamp(1.8rem,3.3vw,3.4rem)}
+h2{font-size:clamp(1.7rem,3.1vw,3.2rem);text-transform:uppercase;letter-spacing:0}
 h3{font-size:clamp(1.15rem,1.6vw,1.5rem)}
 h4{font-size:clamp(1.1rem,1.5vw,1.4rem)}
 h5{font-size:1.09rem}
@@ -107,8 +107,18 @@ p:last-child{margin-bottom:0}
   letter-spacing:.22em;
   text-transform:uppercase;
   color:var(--background-color);
+  background:#f2ead0;
+  padding:11px 26px;
+  border-radius:60px;
   display:inline-block;
-  margin:0 0 18px;
+  margin:0 0 20px;
+}
+/* on the dark sections the pill is a tint of the same gold */
+.hero .eyebrow,
+.band .eyebrow{
+  background:rgba(230,218,160,.16);
+  color:var(--hover-color);
+  text-shadow:none;
 }
 .section-head{margin-bottom:clamp(36px,4vw,60px)}
 .section-head.center{margin-left:auto;margin-right:auto;text-align:center}
@@ -160,7 +170,7 @@ p:last-child{margin-bottom:0}
   min-height:46px;
   flex-wrap:wrap;
 }
-.topbar .tagline{margin-right:auto;letter-spacing:.02em;opacity:.75}
+.topbar .tagline{margin-right:auto;letter-spacing:.02em;color:var(--primary)}
 .topbar a{display:inline-flex;align-items:center;gap:9px;color:var(--primary)}
 .topbar a:hover{color:var(--hover-color)}
 .topbar svg{width:15px;height:15px;fill:var(--hover-color);flex:none}
@@ -390,7 +400,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   padding:clamp(64px,7vw,120px) 0;
 }
 .hero-content{color:var(--primary);text-shadow:0 2px 18px rgba(23,19,16,.8)}
-.hero-content .eyebrow{color:var(--hover-color)}
 .hero h1{color:var(--primary);margin-bottom:.42em}
 .hero h1 em{font-style:normal;color:var(--hover-color);display:block}
 .hero-content p{font-size:clamp(1.02rem,1.35vw,1.22rem);line-height:1.7;max-width:560px}
@@ -661,7 +670,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 }
 .band .container{position:relative;z-index:2}
 .band h2,.band h4{color:var(--primary)}
-.band .eyebrow{color:var(--hover-color)}
 .band .top-p,
 .band .section-head p{color:rgba(255,255,255,.94)}
 .band .top-p{max-width:900px;margin-left:auto;margin-right:auto;font-size:1.07rem}
