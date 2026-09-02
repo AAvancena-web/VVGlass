@@ -791,14 +791,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 .copy-block{text-align:center;margin-bottom:clamp(40px,4vw,62px)}
 .copy-block p{font-size:1.05rem}
 
-/* intro runs as two columns so each paragraph keeps a readable measure */
-.copy-block--intro{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:clamp(26px,3vw,60px);
-  text-align:left;
-}
-.copy-block--intro p{margin:0;font-size:1.08rem;line-height:1.8}
+.copy-block--intro p{font-size:1.08rem;line-height:1.8}
 
 .copy-block--outro{
   margin:clamp(40px,4vw,60px) 0 0;
@@ -806,10 +799,8 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   color:var(--ink);
 }
 @media (min-width:901px){
+  .copy-block--intro,
   .copy-block--outro{padding-inline:12vw}
-}
-@media (max-width:900px){
-  .copy-block--intro{grid-template-columns:1fr;text-align:center}
 }
 .faq-heading{
   text-align:center;
@@ -835,28 +826,27 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 }
 .qa-item h3{
   display:flex;
-  align-items:flex-start;
-  gap:14px;
+  align-items:baseline;
+  gap:18px;
   counter-increment:qa;
   font-size:1.14rem;
   line-height:1.45;
   margin-bottom:.7em;
 }
-.qa-item h3::before{
+.qa-item h3::after{
   content:counter(qa,decimal-leading-zero);
   flex:none;
-  width:36px;height:36px;
-  border-radius:50%;
-  background:var(--sand);
-  color:var(--background-color);
-  font-size:.86rem;
-  display:flex;align-items:center;justify-content:center;
-  margin-top:-2px;
+  margin-left:auto;
+  font-size:1.3rem;
+  font-weight:700;
+  line-height:1;
+  color:#ddd5c3;
 }
 .qa-item p{margin:0;font-size:1rem;line-height:1.8}
 @media (max-width:900px){
   .qa-grid{columns:1}
   .qa-item h3{justify-content:center;text-align:center}
+  .qa-item h3::after{margin-left:0}
   .qa-item p{text-align:center}
 }
 
