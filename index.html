@@ -797,6 +797,24 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   margin-bottom:clamp(28px,3vw,42px);
 }
 
+/* open question-and-answer copy — everything visible, no accordion */
+.qa-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(30px,3vw,46px) clamp(34px,4vw,72px);
+}
+.qa-item h3{
+  font-size:1.16rem;
+  line-height:1.4;
+  margin-bottom:.55em;
+  padding-bottom:.5em;
+  border-bottom:1px solid var(--line);
+}
+.qa-item p{margin:0;font-size:1rem}
+@media (max-width:900px){
+  .qa-grid{grid-template-columns:1fr;gap:30px}
+}
+
 /* ---------- FAQ ---------- */
 .faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 26px;align-items:start}
 .faq > div{display:grid;gap:20px;align-content:start}
@@ -1455,84 +1473,60 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 </section>
 
 <!-- ============================================================
-     SHARED SECTION 2 — Generic content + FAQ (Variation 1)
+     SHARED SECTION 2 — Generic content (Variation 1)
      ============================================================ -->
 <section class="section section--cream">
   <div class="container">
     <div class="section-head center reveal">
       <span class="eyebrow">Making An Informed Decision</span>
-      <h2>Making An Informed Decision About Your Glass</h2>
+      <h2>Making an Informed Decision About Your Glass</h2>
     </div>
     <div class="copy-block reveal">
-        <p>No two glass problems are quite the same, which is why we never recommend a fix before we understand the full picture. A hairline crack in a window, a pool fence panel that has come loose, or an outdated shopfront that no longer suits the space all call for different approaches, different materials, and sometimes a different timeline altogether. Rather than offering a one-size-fits-all quote over the phone, we take the time to look properly at what is in front of us, so the solution we put forward actually fits the property, the budget, and the level of urgency involved.</p>
-        <p>That approach matters more than it might seem. Glass sits at the intersection of safety, comfort, and appearance, and getting it wrong, even in a small way, can mean redoing work later or living with a result that never quite felt right. Below are the questions our clients across Sydney, Wollongong, and the surrounding areas ask us most often, along with straightforward answers to help you weigh up your own options before you make a call.</p>
+      <p>No two glass problems are quite the same, which is why we never recommend a fix before we understand the full picture. A hairline crack in a window, a pool fence panel that has come loose, or an outdated shopfront that no longer suits the space all call for different approaches, different materials, and sometimes a different timeline altogether. Rather than offering a one-size-fits-all quote over the phone, we take the time to look properly at what is in front of us, so the solution we put forward actually fits the property, the budget, and the level of urgency involved.</p>
+      <p>That approach matters more than it might seem. Glass sits at the intersection of safety, comfort, and appearance, and getting it wrong, even in a small way, can mean redoing work later or living with a result that never quite felt right. Below are the questions our clients across Sydney, Wollongong, and the surrounding areas ask us most often, along with straightforward answers to help you weigh up your own options before you make a call.</p>
     </div>
 
     <h2 class="faq-heading reveal">Questions We Get Asked Often</h2>
-    <div class="faq reveal">
-      <div>
-        <details class="qa">
-          <summary>My glass is damaged right now. How fast can someone come out?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>We understand that broken or badly cracked glass rarely happens at a convenient time, and it is not something you want to leave overnight if it affects security or safety. Our glaziers are set up to respond quickly, often on the same day, and we make it a priority to secure the area first if there is any immediate risk. Once the site is safe, we can talk through whether a full repair can happen straight away or whether it needs to be scheduled in, depending on materials and access. If your situation is not urgent, we are equally happy to arrange a time that fits around your week rather than rushing the process.</p>
-          </div>
-        </details>
-        <details class="qa">
-          <summary>What determines how much a job will cost?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>There is no single price list for glass work, because so much depends on the specifics: the type of glass involved, its size and thickness, whether it needs to be custom cut or specially toughened, and how easy the site is to access. A ground-floor window is a very different job to a second-storey installation or a large commercial pane. What we can promise is a clear, itemised quote before anything begins, so you understand exactly what you are paying for. There are never hidden add-ons once work is underway, and we will always flag anything unexpected before proceeding rather than after.</p>
-          </div>
-        </details>
-        <details class="qa">
-          <summary>Is it worth paying for a licensed glazier rather than a general handyman?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>It usually is, and the reasons go beyond just following the rules. Glass, especially toughened or laminated glass, behaves differently to other building materials and needs to be handled, measured, and fitted with that in mind. A licensed glazier also carries insurance that protects you if something goes wrong, and understands the specific safety requirements that apply to different areas of a property, such as pool surrounds or elevated balconies. A poorly fitted pane might look fine at first glance but fail a safety check later, which usually costs more to correct than getting it right from the outset.</p>
-          </div>
-        </details>
-        <details class="qa">
-          <summary>Which suburbs and areas do you cover?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>We work across Sydney, Wollongong, and the suburbs in between, with glazing teams able to travel to most locations within that footprint. This includes inner-city addresses as well as properties further out, so whether you are close to the coast or further inland, it is worth reaching out to check availability for your specific address. Being upfront about your location when you first get in touch also helps us give you a realistic idea of scheduling, since travel time can affect how quickly we can fit a job in.</p>
-          </div>
-        </details>
-        <details class="qa">
-          <summary>How do I know whether my glass needs repairing or replacing altogether?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>This is one of the most common questions we hear, and the honest answer is that it depends on the extent and type of damage. A small chip or a crack that has not spread can often be repaired, particularly if the surrounding frame and seal are still sound. Once glass is significantly cracked, shattered, or no longer performing as it should, for example a foggy double-glazed unit, replacement tends to be the better long-term option. During an assessment, we will always explain the reasoning behind our recommendation so you can make the call with full information, rather than simply being told what to do.</p>
-          </div>
-        </details>
+    <div class="qa-grid reveal">
+      <div class="qa-item">
+        <h3>My glass is damaged right now. How fast can someone come out?</h3>
+        <p>We understand that broken or badly cracked glass rarely happens at a convenient time, and it is not something you want to leave overnight if it affects security or safety. Our glaziers are set up to respond quickly, often on the same day, and we make it a priority to secure the area first if there is any immediate risk. Once the site is safe, we can talk through whether a full repair can happen straight away or whether it needs to be scheduled in, depending on materials and access. If your situation is not urgent, we are equally happy to arrange a time that fits around your week rather than rushing the process.</p>
       </div>
-      <div>
-        <details class="qa">
-          <summary>What safety standards does glass work need to meet in Australia?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>Any glass used in higher-risk locations, such as around pools, on balconies, near stairs, or in busy public areas, needs to meet specific Australian standards covering the glass type, its thickness, and the fittings used to hold it in place. These rules exist because glass failure in the wrong spot can cause serious injury, so they are not something to treat as optional or negotiable. We work to these standards on every project, and if you are unsure whether existing glass on your property is compliant, we are happy to take a look and let you know honestly where it stands.</p>
-          </div>
-        </details>
-        <details class="qa">
-          <summary>Do you only work on homes, or can businesses use your services too?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>Both, and quite often the two overlap, since many of our residential clients are also property owners or managers with commercial interests. For homes, the focus is usually on comfort, appearance, and everyday practicality. For commercial and industrial sites, there is often more to juggle, including opening hours, staff and customer safety, and sometimes strata or landlord approval. We are used to working around a business's schedule to keep disruption to a minimum, and we treat a shopfront or office fit-out with the same level of care as a family home.</p>
-          </div>
-        </details>
-        <details class="qa">
-          <summary>What happens after I get in touch to arrange a quote?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>Getting started is simple. You can call, email, or send through a message with a few details about what is going on and your general location. From there we will either talk it through over the phone or arrange a time to come and look at the site in person, depending on the complexity of the job. You will then receive a clear quote outlining cost, materials, and expected timing before anything is booked in, with no pressure to commit on the spot. Once you are ready to proceed, we schedule the work, keep you posted along the way, and finish with a proper clean-up.</p>
-          </div>
-        </details>
-        <details class="qa">
-          <summary>Does your work come with any kind of guarantee?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>Yes. Every job we complete is backed by a warranty covering both our workmanship and the materials we install. If a problem shows up that relates to the fit, seal, or installation itself, rather than damage caused afterwards by an outside knock or accident, we will come back and put it right. We keep a record of the work carried out at your property, so if you need to raise something down the track, you are not starting the conversation from scratch. Being licensed and insured on top of that warranty gives you an extra layer of protection, whatever type of job you have had done.</p>
-          </div>
-        </details>
-        <details class="qa">
-          <summary>I'm not totally sure what's wrong with my glass, can you still help?<span class="icon">+</span></summary>
-          <div class="answer">
-            <p>Absolutely, and honestly, that is a very common starting point. Most people do not deal with glass and glazing regularly, so it is completely normal not to know the technical terms for what you are looking at. All we need from you is a description in your own words, along with a photo if you can manage one, and we can usually get a reasonable sense of what is involved before we even arrive. From there, a proper on-site look confirms the details, and we will always explain what we are seeing in plain language rather than jargon, so you understand your options either way.</p>
-          </div>
-        </details>
+      <div class="qa-item">
+        <h3>What determines how much a job will cost?</h3>
+        <p>There is no single price list for glass work, because so much depends on the specifics: the type of glass involved, its size and thickness, whether it needs to be custom cut or specially toughened, and how easy the site is to access. A ground-floor window is a very different job to a second-storey installation or a large commercial pane. What we can promise is a clear, itemised quote before anything begins, so you understand exactly what you are paying for. There are never hidden add-ons once work is underway, and we will always flag anything unexpected before proceeding rather than after.</p>
+      </div>
+      <div class="qa-item">
+        <h3>Is it worth paying for a licensed glazier rather than a general handyman?</h3>
+        <p>It usually is, and the reasons go beyond just following the rules. Glass, especially toughened or laminated glass, behaves differently to other building materials and needs to be handled, measured, and fitted with that in mind. A licensed glazier also carries insurance that protects you if something goes wrong, and understands the specific safety requirements that apply to different areas of a property, such as pool surrounds or elevated balconies. A poorly fitted pane might look fine at first glance but fail a safety check later, which usually costs more to correct than getting it right from the outset.</p>
+      </div>
+      <div class="qa-item">
+        <h3>Which suburbs and areas do you cover?</h3>
+        <p>We work across Sydney, Wollongong, and the suburbs in between, with glazing teams able to travel to most locations within that footprint. This includes inner-city addresses as well as properties further out, so whether you are close to the coast or further inland, it is worth reaching out to check availability for your specific address. Being upfront about your location when you first get in touch also helps us give you a realistic idea of scheduling, since travel time can affect how quickly we can fit a job in.</p>
+      </div>
+      <div class="qa-item">
+        <h3>How do I know whether my glass needs repairing or replacing altogether?</h3>
+        <p>This is one of the most common questions we hear, and the honest answer is that it depends on the extent and type of damage. A small chip or a crack that has not spread can often be repaired, particularly if the surrounding frame and seal are still sound. Once glass is significantly cracked, shattered, or no longer performing as it should, for example a foggy double-glazed unit, replacement tends to be the better long-term option. During an assessment, we will always explain the reasoning behind our recommendation so you can make the call with full information, rather than simply being told what to do.</p>
+      </div>
+      <div class="qa-item">
+        <h3>What safety standards does glass work need to meet in Australia?</h3>
+        <p>Any glass used in higher-risk locations, such as around pools, on balconies, near stairs, or in busy public areas, needs to meet specific Australian standards covering the glass type, its thickness, and the fittings used to hold it in place. These rules exist because glass failure in the wrong spot can cause serious injury, so they are not something to treat as optional or negotiable. We work to these standards on every project, and if you are unsure whether existing glass on your property is compliant, we are happy to take a look and let you know honestly where it stands.</p>
+      </div>
+      <div class="qa-item">
+        <h3>Do you only work on homes, or can businesses use your services too?</h3>
+        <p>Both, and quite often the two overlap, since many of our residential clients are also property owners or managers with commercial interests. For homes, the focus is usually on comfort, appearance, and everyday practicality. For commercial and industrial sites, there is often more to juggle, including opening hours, staff and customer safety, and sometimes strata or landlord approval. We are used to working around a business's schedule to keep disruption to a minimum, and we treat a shopfront or office fit-out with the same level of care as a family home.</p>
+      </div>
+      <div class="qa-item">
+        <h3>What happens after I get in touch to arrange a quote?</h3>
+        <p>Getting started is simple. You can call, email, or send through a message with a few details about what is going on and your general location. From there we will either talk it through over the phone or arrange a time to come and look at the site in person, depending on the complexity of the job. You will then receive a clear quote outlining cost, materials, and expected timing before anything is booked in, with no pressure to commit on the spot. Once you are ready to proceed, we schedule the work, keep you posted along the way, and finish with a proper clean-up.</p>
+      </div>
+      <div class="qa-item">
+        <h3>Does your work come with any kind of guarantee?</h3>
+        <p>Yes. Every job we complete is backed by a warranty covering both our workmanship and the materials we install. If a problem shows up that relates to the fit, seal, or installation itself, rather than damage caused afterwards by an outside knock or accident, we will come back and put it right. We keep a record of the work carried out at your property, so if you need to raise something down the track, you are not starting the conversation from scratch. Being licensed and insured on top of that warranty gives you an extra layer of protection, whatever type of job you have had done.</p>
+      </div>
+      <div class="qa-item">
+        <h3>I'm not totally sure what's wrong with my glass, can you still help?</h3>
+        <p>Absolutely, and honestly, that is a very common starting point. Most people do not deal with glass and glazing regularly, so it is completely normal not to know the technical terms for what you are looking at. All we need from you is a description in your own words, along with a photo if you can manage one, and we can usually get a reasonable sense of what is involved before we even arrive. From there, a proper on-site look confirms the details, and we will always explain what we are seeing in plain language rather than jargon, so you understand your options either way.</p>
       </div>
     </div>
 
@@ -1545,7 +1539,91 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 </section>
 
 <!-- ============================================================
-     SHARED SECTION 3 — Contact info + Google Map + Form
+     SHARED SECTION 3 — FAQ
+     ============================================================ -->
+<section class="section section--sand">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Got Questions?</span>
+      <h2>Frequently Asked Questions</h2>
+      <p>Everything you need to know about our glazing services. Can't find your answer? Get in touch below.</p>
+    </div>
+    <div class="faq reveal">
+      <div>
+        <details class="qa">
+          <summary>What areas do you service?<span class="icon">+</span></summary>
+          <div class="answer">
+            <p>We service Sydney, Wollongong, and surrounding areas, helping homeowners, businesses, builders, property managers, and industrial clients with dependable glass and glazing solutions. Whether you need glass installation, glass repair, window replacement, or glass fencing, we tailor our approach to suit your property.</p>
+            <p>Every site is different, so availability can depend on your location, access, urgency, and the type of glass required. The easiest way to begin is to contact us, share your project details, and book a consultation or site assessment.</p>
+            <p>From there, we can confirm the next steps, discuss practical options, explain likely timeframes, and provide clear advice before any work begins.</p>
+          </div>
+        </details>
+        <details class="qa">
+          <summary>What glass services do you provide?<span class="icon">+</span></summary>
+          <div class="answer">
+            <p>We provide a wide range of glazing services for residential, commercial, and industrial properties, including glass installation, glass repair, window replacement, custom glass, and glass fencing. Our team can assist with upgrades, urgent repairs, decorative features, and safety-focused glass solutions.</p>
+            <p>Our work commonly includes windows, doors, shower screens, splashbacks, balustrades, partitions, shopfronts, pool fencing, and custom architectural glass. By offering multiple glazing services, we make it easier for you to manage your project through one experienced local team.</p>
+            <p>Whether your job is small, complex, planned, or urgent, we focus on clear communication, careful workmanship, compliant materials, and a clean finish.</p>
+          </div>
+        </details>
+        <details class="qa">
+          <summary>Can you help with both homes and businesses?<span class="icon">+</span></summary>
+          <div class="answer">
+            <p>Yes. We work with homeowners, business owners, strata managers, builders, designers, and industrial operators. We understand that a family home, retail shopfront, office partition, apartment block, or facility upgrade each needs a different balance of safety, style, durability, and timing.</p>
+            <p>For homes, we often focus on comfort, natural light, privacy, security, and everyday usability. For businesses, priorities may include reduced downtime, public safety, compliance, energy efficiency, and a professional appearance for staff, customers, and visitors.</p>
+            <p>We tailor our recommendations to your property, the purpose of the glass, and your budget, helping your project move forward with confidence, clarity, and lasting value.</p>
+          </div>
+        </details>
+        <details class="qa">
+          <summary>How does your process work?<span class="icon">+</span></summary>
+          <div class="answer">
+            <p>Our process usually starts with your enquiry, followed by a discussion about the property, the type of glass you need, the issue being solved, and any safety, design, or access requirements. Where needed, we can arrange a site visit to measure and assess the area.</p>
+            <p>After the assessment, we provide practical advice and a clear quote outlining the proposed work, materials, and expected timeframe. This helps you understand what is involved before approving the project and reduces the chance of confusion later.</p>
+            <p>Once approved, our licensed glaziers complete the work with attention to safety, fit, finish, clean-up, and a secure result.</p>
+          </div>
+        </details>
+      </div>
+      <div>
+        <details class="qa">
+          <summary>Do you provide emergency glass repairs?<span class="icon">+</span></summary>
+          <div class="answer">
+            <p>Yes. We provide emergency glass repairs when broken, cracked, or shattered glass creates an immediate safety or security concern. This may include damaged windows, doors, shopfronts, panels, or other glazing that needs prompt attention to protect people, stock, equipment, or property.</p>
+            <p>Our emergency work focuses on fast response, safe handling, and practical temporary or permanent solutions depending on the damage and material availability. Our priority is to reduce risk, secure the area, and restore confidence as quickly as possible.</p>
+            <p>If the glass cannot be fully replaced immediately, we can recommend the safest next step and arrange follow-up work to complete the job properly.</p>
+          </div>
+        </details>
+        <details class="qa">
+          <summary>Are your glass solutions compliant with Australian standards?<span class="icon">+</span></summary>
+          <div class="answer">
+            <p>Yes. We place strong importance on safety, quality, and compliance across every glazing project. We use durable, certified glass solutions and work to Australian safety and building standards, especially for doors, windows, balustrades, pool fencing, shopfronts, partitions, and other high-use areas.</p>
+            <p>Compliant glazing is not only about meeting regulations. It also helps protect people, improve performance, and ensure the finished installation is suitable for its location, load, exposure, and daily use. Choosing the right glass type is essential.</p>
+            <p>During your consultation, we can explain suitable options, including toughened, laminated, insulated, frosted, or custom glass, so you can choose confidently for your project.</p>
+          </div>
+        </details>
+        <details class="qa">
+          <summary>Will I receive a clear quote before work begins?<span class="icon">+</span></summary>
+          <div class="answer">
+            <p>Yes. We believe in transparent pricing, honest advice, and clear communication before work starts. After learning about your project or completing a site assessment, we can provide a detailed quote that outlines the proposed solution, expected work, materials, and relevant timeframes.</p>
+            <p>This clear approach helps you compare options, understand the value of different glass types, and make decisions without pressure. It also reduces the risk of hidden costs, vague estimates, or misunderstandings during the project.</p>
+            <p>If your needs change, or hidden site conditions are discovered, we discuss your options before moving ahead, so you stay informed from start to finish.</p>
+          </div>
+        </details>
+        <details class="qa">
+          <summary>Why should I choose VV Glass?<span class="icon">+</span></summary>
+          <div class="answer">
+            <p>You should choose VV Glass if you want local experience, licensed and insured glaziers, reliable service, and workmanship that is handled with care. We work across glass installation, repair, replacement, and custom glazing, giving you one dependable contact for many project types.</p>
+            <p>Our clients value our practical advice, careful measurements, compliant materials, transparent quotes, and attention to detail from the first enquiry through to final clean-up. We also understand the importance of minimising disruption in homes, businesses, and shared spaces.</p>
+            <p>Whether your priority is safety, style, energy efficiency, privacy, or a fast repair, we deliver glass solutions built to perform.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="section-cta reveal"><a class="btn" href="#contact">Book Your Consultation Here</a></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SHARED SECTION 4 — Contact info + Google Map + Form
      ============================================================ -->
 <section class="section" id="contact">
   <div class="container">
