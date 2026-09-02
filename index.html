@@ -197,16 +197,16 @@ p:last-child{margin-bottom:0}
 /* reading-progress line along the bottom edge of the header */
 .scroll-progress{
   position:absolute;
-  left:0;right:0;bottom:-1px;
-  height:3px;
-  background:rgba(255,255,255,.2);
+  left:0;right:0;bottom:-2px;
+  height:4px;
+  background:rgba(255,255,255,.28);
   overflow:hidden;
 }
 .scroll-progress span{
   display:block;
   height:100%;
   width:0;
-  background:var(--hover-color);
+  background:var(--ink);
   transform-origin:left center;
 }
 .header-inner{
@@ -826,7 +826,6 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
 .qa-grid{
   columns:2;
   column-gap:clamp(26px,2.6vw,48px);
-  counter-reset:qa;
 }
 .qa-item{
   break-inside:avoid;
@@ -840,19 +839,18 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   display:flex;
   align-items:baseline;
   gap:18px;
-  counter-increment:qa;
   font-size:1.14rem;
   line-height:1.45;
   margin-bottom:.7em;
 }
 .qa-item h3::after{
-  content:counter(qa,decimal-leading-zero);
+  content:"?";
   flex:none;
   margin-left:auto;
-  font-size:1.3rem;
+  font-size:2rem;
   font-weight:700;
   line-height:1;
-  color:#ddd5c3;
+  color:#e2dac9;
 }
 .qa-item p{margin:0;font-size:1rem;line-height:1.8}
 @media (max-width:900px){
