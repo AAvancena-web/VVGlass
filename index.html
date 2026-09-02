@@ -193,6 +193,22 @@ p:last-child{margin-bottom:0}
   transition:box-shadow .3s ease;
 }
 .site-header.is-stuck{box-shadow:0 8px 28px rgba(23,19,16,.26)}
+
+/* reading-progress line along the bottom edge of the header */
+.scroll-progress{
+  position:absolute;
+  left:0;right:0;bottom:-1px;
+  height:3px;
+  background:rgba(255,255,255,.2);
+  overflow:hidden;
+}
+.scroll-progress span{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--hover-color);
+  transform-origin:left center;
+}
 .header-inner{
   display:flex;
   align-items:center;
@@ -1130,6 +1146,7 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
       </div>
     </div>
   </div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
 </header>
 
 <div class="nav-overlay" id="navOverlay"></div>
@@ -1815,11 +1832,15 @@ body.nav-open .call-now{opacity:0;visibility:hidden;pointer-events:none}
   /* ---- Sticky header shadow ---- */
   var header = document.getElementById('header');
   var toTop = document.getElementById('toTop');
+  var progress = document.getElementById('scrollProgress');
   function onScroll(){
     var y = window.pageYOffset;
     header.classList.toggle('is-stuck', y > 20);
     toTop.classList.toggle('show', y > 600);
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + '%';
   }
+  window.addEventListener('resize', onScroll);
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
   toTop.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
