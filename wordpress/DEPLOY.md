@@ -26,16 +26,17 @@ Your `functions.php` ends with:
 require_once get_stylesheet_directory() . '/init.php';
 ```
 
-Two traps, both fatal, both avoided by following the order below:
+Two traps, both fatal, both avoided by following the order in step 3:
 
-1. **Delete the theme's `init.php` without editing `functions.php`** →
+1. **Delete the theme's `init.php` while that line is still there** →
    `require_once` on a missing file is a fatal error. White screen.
 2. **Activate the plugin while the theme's original `init.php` still loads** →
    every function gets declared twice. Fatal error.
 
-Step 3 solves both by overwriting the theme's `init.php` with a file that does
-nothing. The `require_once` still succeeds, and only the plugin declares
-anything.
+That line is the only reference to those files anywhere in the theme —
+`header.php` and `footer.php` call no `vvss_` function — and `functions.php` is
+the only file WordPress auto-loads. So removing the line fully detaches the old
+copy.
 
 ---
 
@@ -74,21 +75,46 @@ It should now appear in the Plugins list as *VV Shared Sections*, inactive.
 
 ---
 
-## Step 3 — Neutralise the theme copy
+## Step 3 — Detach the theme copy
 
-In `wp-content/themes/siteorigin-corp-child/`:
+Two ways. **A is cleaner and is what I would do.**
 
-1. Rename `init.php` → `init.php.bak`
-2. Upload `wordpress/theme-shim/init.php` in its place
+### Option A — remove the require line (recommended)
 
-Leave `includes/`, `templates/` and `assets/` in the theme alone — with the
-shim in place nothing loads them, and they are your fallback.
+Edit `functions.php` **over FTP/SFTP, not Appearance → Theme File Editor** — a
+syntax error saved through the editor can lock you out of wp-admin, and you
+would need FTP to undo it anyway.
+
+Delete the last line of the file:
+
+```php
+require_once get_stylesheet_directory() . '/init.php';
+```
+
+Save. Nothing else in `functions.php` changes.
+
+Then rename `init.php` → `init.php.bak` in the theme. With the require gone
+this is safe, and it keeps the old code as a fallback. `includes/`,
+`templates/` and `assets/` in the theme can stay where they are; nothing loads
+them now. Tidy them up once you are confident.
+
+**Order matters: remove the line first, rename the file second.** Renaming
+first, while the require is still there, is the white-screen case.
+
+### Option B — leave functions.php alone
+
+If you would rather not touch `functions.php` at all, upload
+`wordpress/theme-shim/init.php` over the theme's `init.php` (rename the
+original to `init.php.bak` first). It is an empty file, so the `require_once`
+still succeeds and only the plugin declares anything.
+
+Slightly less tidy — you are left with a vestigial file — but it avoids editing
+`functions.php`.
+
+### Either way
 
 Reload the front end. **The shared section will have disappeared.** That is
-correct and expected — the theme code is off and the plugin is not on yet.
-
-> Renaming rather than deleting is deliberate: to roll all of this back you
-> rename `init.php.bak` over the shim and deactivate the plugin.
+correct and expected — the theme code is detached and the plugin is not on yet.
 
 ---
 
@@ -181,9 +207,11 @@ the data gone it has to be removed by hand.
 ## Full rollback
 
 1. Deactivate the plugin.
-2. In the child theme, rename `init.php` (the shim) → `init-shim.php.bak`, then
-   rename `init.php.bak` → `init.php`.
-3. Purge the cache.
+2. In the child theme, rename `init.php.bak` back to `init.php`.
+3. If you took **Option A**, put the line back at the end of `functions.php`:
+   `require_once get_stylesheet_directory() . '/init.php';`
+   If you took **Option B**, delete the shim first so the original is in place.
+4. Purge the cache.
 
 You are back to exactly the current live behaviour. The five variation sections
 and page tags stay in the database, dormant, ready if you try again.
