@@ -1,0 +1,526 @@
+/* ==========================================================================
+   VV Glass redesign — homepage
+   --------------------------------------------------------------------------
+   The homepage sections are WPBakery content in the database, not template
+   files, so this restyles the markup that is already there rather than
+   replacing it. Selectors are prefixed body.vvg to sit one class above both
+   the theme stylesheet and the Customizer's Additional CSS, which loads after
+   every enqueued sheet.
+
+   px throughout: the theme's html{font-size:calc(...)} resolves to 3.25px at
+   390px wide, so rem values would render at a fraction of their size.
+   ========================================================================== */
+
+/* ---------- Decorative corner brackets ----------
+   The redesign does not use them, and they overlap the new section edges. */
+body.vvg .choose_class .left-image::before,
+body.vvg .project_row .grid-image::after,
+body.vvg .testimonial-left::after,
+body.vvg .clear_row .right-image::after,
+body.vvg .mission_row .right-image::after,
+body.vvg .trusts_row .left-image::after,
+body.vvg .contact-content::after,
+body.vvg .bac { display: none !important; }
+
+/* ---------- Section rhythm ---------- */
+body.vvg .choose_class,
+body.vvg .our-service,
+body.vvg .project_row,
+body.vvg .testimonials_slider,
+body.vvg .full-margin-bottom { margin-bottom: 0; }
+body.vvg .choose_class,
+body.vvg .our-service,
+body.vvg .project_row,
+body.vvg .clear_row { padding: 96px 0; }
+body.vvg .our-service { background: var(--vvg-cream); }
+body.vvg .clear_row { padding-bottom: 96px; }
+
+/* ---------- Section heads ---------- */
+body.vvg h6.font17 {
+	display: inline-block;
+	font-family: var(--vvg-head);
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 2.5px;
+	text-transform: uppercase;
+	color: var(--vvg-brand);
+	background: #f2ead0;
+	padding: 11px 26px;
+	border-radius: 60px;
+	margin: 0 0 20px;
+	line-height: 1;
+}
+body.vvg h6.font17::before { display: none; }
+body.vvg h2.font60 {
+	font-family: var(--vvg-head);
+	font-size: clamp(28px, 3.1vw, 52px);
+	line-height: 1.14;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0;
+	color: var(--vvg-ink-deep);
+	margin: 0 0 22px;
+}
+body.vvg .our-service > .vc_column_container,
+body.vvg .project_row > .vc_column_container { text-align: center; }
+body.vvg .our-service h6.font17, body.vvg .our-service h2.font60,
+body.vvg .project_row h6.font17, body.vvg .project_row h2.font60,
+body.vvg .glass_service h6.font17, body.vvg .glass_service h2.font60 { text-align: center; }
+body.vvg .our-service .custom-service-slider,
+body.vvg .project_row .grid-image { text-align: left; }
+
+/* ---------- Why Choose Us ---------- */
+body.vvg .choose_class .left-image { width: 50%; padding-right: 40px; box-sizing: border-box; }
+body.vvg .choose_class .right-content { width: 50%; padding-left: 40px; padding-top: 0; box-sizing: border-box; }
+body.vvg .choose_class .left-image img { border-radius: var(--vvg-radius); }
+body.vvg .left-icon .block-right { padding-left: 64px; padding-bottom: 26px; }
+body.vvg .left-icon .block-right h5 {
+	font-family: var(--vvg-head);
+	font-size: 17px;
+	font-weight: 700;
+	color: var(--vvg-ink-deep);
+	margin-bottom: 6px;
+}
+/* Replace the sprite bullet + connecting rule with a single round icon chip */
+body.vvg .left-icon .block-right h5::after { display: none; }
+body.vvg .left-icon .block-right h5::before {
+	width: 46px; height: 46px;
+	background: var(--vvg-sand);
+	background-image: url(../images/Management-Services-icon.png);
+	background-size: 14px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	left: 0; top: 0;
+}
+body.vvg .left-icon .block-right p { font-size: 15px; line-height: 1.7; }
+
+/* ---------- Services ---------- */
+body.vvg .service-slide { padding: 0 13px; }
+body.vvg .service-images { border-radius: var(--vvg-radius) var(--vvg-radius) 0 0; }
+body.vvg .service-content {
+	width: 100%;
+	float: none;
+	margin-top: 0;
+	min-height: 0;
+	padding: 26px 26px 30px;
+	border: 1px solid var(--vvg-line);
+	border-top: 0;
+	border-radius: 0 0 var(--vvg-radius) var(--vvg-radius);
+	box-shadow: none;
+	transition: box-shadow .35s ease, border-color .35s ease;
+}
+body.vvg .service-slide:hover .service-content { box-shadow: 0 18px 50px rgba(27,23,9,.10); border-color: var(--vvg-gold); }
+body.vvg .service-content h3 {
+	font-family: var(--vvg-head);
+	font-size: 21px;
+	line-height: 1.25;
+	font-weight: 700;
+	margin-bottom: 10px;
+	text-transform: none;
+}
+body.vvg .service-content p { font-size: 15px; line-height: 1.6; margin: 0; }
+body.vvg .service-slide img:hover { transform: scale(1.06); }
+
+/* ---------- Projects: bigger 3:2 images, click to open ---------- */
+body.vvg .project_row .grid-image { grid-gap: 26px; padding-top: 0; }
+body.vvg .project_row .grid-image .vc_single_image-wrapper { border-radius: var(--vvg-radius); }
+body.vvg .project_row .grid-image img {
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	object-fit: cover;
+	cursor: zoom-in;
+	display: block;
+}
+body.vvg .project_row .grid-image img:hover { transform: none; }
+
+/* ---------- Glass service band: gold becomes the dark band ---------- */
+body.vvg .glass_service {
+	background: var(--vvg-ink);
+	color: rgba(255,255,255,.94);
+	padding: 96px 0;
+	margin-bottom: 0;
+}
+body.vvg .glass_service h2, body.vvg .glass_service h4 { color: var(--vvg-primary); }
+body.vvg .glass_service h6.font17 { background: rgba(230,218,160,.16); color: var(--vvg-gold); }
+body.vvg .glass_service .top-p, body.vvg .glass_service p { color: rgba(255,255,255,.94); }
+body.vvg .glass_service .top-p { max-width: 900px; margin: 0 auto; text-align: center; font-size: 17px; }
+body.vvg .full-block { grid-gap: 26px; padding-top: 52px; }
+body.vvg .glass-block {
+	background: rgba(255,255,255,.045);
+	border: 1px solid rgba(255,255,255,.1);
+	border-radius: var(--vvg-radius);
+	padding: 38px 30px;
+	text-align: center;
+	transition: background .35s ease, border-color .35s ease, transform .35s ease;
+}
+body.vvg .glass-block:hover { background: rgba(230,218,160,.08); border-color: rgba(230,218,160,.4); transform: translateY(-6px); }
+body.vvg .first-icon, body.vvg .second-icon, body.vvg .three-icon {
+	justify-content: center;
+	margin: 0 auto 22px;
+	height: auto;
+}
+body.vvg .first-icon::before, body.vvg .second-icon::before, body.vvg .three-icon::before { display: none; }
+body.vvg .glass-block h4 { font-family: var(--vvg-head); font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+body.vvg .glass-block p { font-size: 15px; line-height: 1.7; margin: 0; }
+body.vvg .glass-block br { display: none; }
+
+/* ---------- Three pillars ---------- */
+body.vvg .fully_row {
+	background: var(--vvg-sand);
+	padding: 96px 0;
+	margin: 0;
+	grid-gap: 26px;
+}
+body.vvg .fully_row .vc_column_container > .vc_column-inner > .wpb_wrapper {
+	background: var(--vvg-primary);
+	border: 1px solid var(--vvg-line);
+	border-top: 3px solid var(--vvg-brand);
+	border-radius: var(--vvg-radius);
+	padding: 42px 32px;
+	height: 100%;
+	text-align: center;
+	box-sizing: border-box;
+	transition: box-shadow .35s ease, transform .35s ease;
+}
+body.vvg .fully_row .vc_column_container:hover > .vc_column-inner > .wpb_wrapper { box-shadow: 0 18px 50px rgba(27,23,9,.10); transform: translateY(-6px); }
+body.vvg .project-icon-1, body.vvg .project-icon-2, body.vvg .project-icon-3 {
+	justify-content: center;
+	margin: 0 auto 22px !important;
+	height: auto;
+}
+body.vvg .project-icon-1::before, body.vvg .project-icon-2::before, body.vvg .project-icon-3::before { display: none; }
+body.vvg .fully_row h4 { font-family: var(--vvg-head); font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--vvg-ink-deep); }
+body.vvg .fully_row p { font-size: 15px; line-height: 1.7; margin: 0; }
+
+/* ---------- Testimonial: one review, centred ---------- */
+body.vvg .testimonials_slider { background: var(--vvg-cream); padding: 96px 0; }
+body.vvg .testimonial-left {
+	background: none !important;
+	height: auto;
+	width: 100%;
+	text-align: center;
+}
+body.vvg .testimonial-left-content { width: 100%; padding: 0 0 40px; text-align: center; }
+body.vvg .testimonial-left-content h6.font17 { background: #f2ead0; color: var(--vvg-brand); }
+body.vvg .testimonial-left-content h2.font60,
+body.vvg .testimonial-left-content p { color: var(--vvg-ink-deep); }
+body.vvg .testimonial-left-content p { color: var(--vvg-secondary); }
+body.vvg .testimonial-right {
+	position: static;
+	width: 100%;
+	right: auto; top: auto;
+	background: var(--vvg-primary);
+	border: 1px solid var(--vvg-line);
+	border-top: 3px solid var(--vvg-brand);
+	border-radius: var(--vvg-radius);
+	box-shadow: 0 18px 50px rgba(27,23,9,.10);
+	padding: 56px 40px 40px;
+}
+body.vvg .testimonial-right::before, body.vvg .testimonial-right::after,
+body.vvg .testimonials_slider .right-slider::before { display: none; }
+body.vvg .sp-testimonial-free-section .sp-testimonial-client-testimonial p {
+	text-align: center;
+	font-family: var(--vvg-head);
+	font-size: clamp(19px, 2vw, 30px);
+	line-height: 1.5;
+	font-weight: 500;
+	color: var(--vvg-ink-deep);
+}
+body.vvg .sp-testimonial-free-section .sp-testimonial-title h5 { text-align: center; font-size: 17px; }
+body.vvg .sp-testimonial-free-section .sp-testimonial-client-testimonial p br { display: none; }
+
+/* ---------- About ---------- */
+body.vvg .clear_row .left-content { width: 50%; padding: 0 40px 0 0; background: transparent; }
+body.vvg .clear_row .right-image { width: 50%; padding: 0 0 0 40px; }
+body.vvg .clear_row .right-image img { border-radius: var(--vvg-radius); }
+
+/* ---------- Contact ---------- */
+body.vvg .get-form_row {
+	background: none;
+	padding: 96px 0;
+	margin: 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 48px;
+	align-items: start;
+	float: none;
+}
+body.vvg .get-form_row .contact-content,
+body.vvg .get-form_row .get-in-touch-form { width: 100%; float: none; margin: 0; }
+body.vvg .get-form_row .contact-content { background: transparent; box-shadow: none; padding: 0; }
+body.vvg .get-form_row .get-in-touch-form {
+	background: var(--vvg-sand);
+	border: 1px solid #e0d8c8;
+	border-radius: var(--vvg-radius);
+	padding: 38px;
+	box-sizing: border-box;
+}
+body.vvg .get-in-touch-form h4 {
+	color: var(--vvg-ink-deep);
+	font-family: var(--vvg-head);
+	font-size: 24px;
+	text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 22px;
+}
+body.vvg .glass-contact li { display: block; margin-bottom: 18px; font-size: 15px; }
+body.vvg .glass-contact li strong { position: static; display: block; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--vvg-secondary); margin-bottom: 4px; }
+body.vvg .glass-contact li a { padding-left: 0; font-family: var(--vvg-head); font-size: 19px; font-weight: 700; color: var(--vvg-ink-deep); }
+body.vvg .glass-contact li a:hover { color: var(--vvg-brand); }
+
+/* ---------- Buttons on the homepage ---------- */
+body.vvg a.btn {
+	font-family: var(--vvg-head);
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	padding: 17px 34px;
+	border-radius: var(--vvg-radius);
+	border: 2px solid var(--vvg-brand);
+	background: var(--vvg-brand);
+	color: var(--vvg-primary);
+	margin-top: 24px;
+}
+body.vvg a.btn:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); color: var(--vvg-ink-deep); }
+
+/* ---------- Lightbox ---------- */
+.vvg-lightbox {
+	position: fixed; inset: 0; z-index: 200;
+	display: none; align-items: center; justify-content: center;
+	background: rgba(15,12,10,.92);
+	padding: 40px;
+}
+.vvg-lightbox.open { display: flex; }
+.vvg-lightbox img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: var(--vvg-radius); box-shadow: 0 30px 80px rgba(0,0,0,.55); }
+.vvg-lb-btn {
+	position: absolute;
+	width: 52px; height: 52px; border-radius: 50%;
+	background: rgba(255,255,255,.1);
+	border: 1px solid rgba(255,255,255,.28);
+	display: flex; align-items: center; justify-content: center;
+	cursor: pointer;
+	transition: background .25s ease, border-color .25s ease;
+}
+.vvg-lb-btn svg { width: 20px; height: 20px; fill: #fff; }
+.vvg-lb-btn:hover { background: var(--vvg-brand); border-color: var(--vvg-brand); }
+.vvg-lb-close { top: 24px; right: 24px; }
+.vvg-lb-prev { left: 24px; top: 50%; transform: translateY(-50%); }
+.vvg-lb-next { right: 24px; top: 50%; transform: translateY(-50%); }
+.vvg-lb-count { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); font-family: var(--vvg-head); font-size: 13px; letter-spacing: 2.5px; color: rgba(255,255,255,.7); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 992px) {
+	body.vvg .choose_class, body.vvg .our-service, body.vvg .project_row,
+	body.vvg .clear_row, body.vvg .glass_service, body.vvg .fully_row,
+	body.vvg .testimonials_slider, body.vvg .get-form_row { padding: 62px 0; }
+	body.vvg .get-form_row { grid-template-columns: 1fr; gap: 30px; }
+	body.vvg .vvg-lb-btn { width: 44px; height: 44px; }
+	body.vvg .vvg-lb-prev { left: 8px; }
+	body.vvg .vvg-lb-next { right: 8px; }
+}
+@media (max-width: 900px) {
+	/* Content centred on mobile, as agreed — but not form fields or the FAQ. */
+	body.vvg .choose_class .right-content,
+	body.vvg .clear_row .left-content,
+	body.vvg .our-service > .vc_column_container,
+	body.vvg .project_row > .vc_column_container,
+	body.vvg .service-content { text-align: center; }
+	body.vvg .left-icon .block-right { padding-left: 0; text-align: center; }
+	body.vvg .left-icon .block-right h5 { padding-top: 58px; }
+	body.vvg .left-icon .block-right h5::before { left: 50%; transform: translateX(-50%); }
+	/* Copy before image, per the mock */
+	body.vvg .choose_class { display: flex; flex-wrap: wrap; }
+	body.vvg .choose_class .left-image { order: 2; width: 100%; padding: 30px 0 0; }
+	body.vvg .choose_class .right-content { order: 1; width: 100%; padding: 0; }
+	body.vvg .clear_row .left-content, body.vvg .clear_row .right-image { width: 100%; padding: 0; }
+	body.vvg .clear_row .right-image { padding-bottom: 30px; }
+}
+@media (max-width: 640px) {
+	body.vvg .project_row .grid-image { grid-template-columns: 1fr; }
+	body.vvg .get-form_row .get-in-touch-form { padding: 26px; }
+}
+
+/* ==========================================================================
+   Fixes found while rendering against the live theme CSS
+   ========================================================================== */
+
+/* 1. Uncleared floats.
+      .choose_class and .clear_row lay their columns out with float:left, so the
+      row collapsed to the height of its non-floated content (192px) and the
+      NEXT section was pulled up alongside the escaping float — .fully_row was
+      rendering 640px wide instead of full width. Flex removes the float
+      entirely and gives equal-height columns as a bonus. */
+body.vvg .choose_class,
+body.vvg .clear_row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+/* WPBakery puts clearfix ::before/::after on every .vc_row. In a flex
+   container those become flex items, take up a slot and push the second
+   column onto its own line. The theme already does exactly this for
+   .grid-image and .fully_row for the same reason. */
+body.vvg .choose_class::before, body.vvg .choose_class::after,
+body.vvg .clear_row::before, body.vvg .clear_row::after { display: none; }
+body.vvg .choose_class > .wpb_column,
+body.vvg .clear_row > .wpb_column {
+	float: none;
+	/* 50% + 40px of padding measured 720px each under content-box, so the pair
+	   totalled 1440 in a 1360 container and wrapped onto separate rows. */
+	box-sizing: border-box;
+}
+
+/* 2. Service card links were rendering as default blue underlined text —
+      the theme colours .service-content h3 a, and restyling the h3 alone did
+      not reach the anchor inside it. */
+body.vvg .service-content h3 a {
+	color: var(--vvg-ink-deep);
+	text-decoration: none;
+}
+body.vvg .service-content h3 a:hover { color: var(--vvg-brand); }
+
+/* 3. The testimonial card measured 1442px inside a 1360px container: width:100%
+      plus 40px of padding under the default content-box sizing. */
+body.vvg .testimonial-right,
+body.vvg .get-form_row .get-in-touch-form,
+body.vvg .get-form_row .contact-content { box-sizing: border-box; }
+
+/* 4. Section backgrounds.
+      These rows sit inside .corp-container, so a background colour would stop
+      at the container edge rather than spanning the viewport. Only the rows
+      WPBakery marks data-vc-full-width (glass_service, fully_row, clear_row)
+      break out on their own. The box-shadow spread paints past the container
+      without affecting layout, and clip-path stops it forcing a scrollbar. */
+body.vvg .our-service,
+body.vvg .testimonials_slider {
+	box-shadow: 0 0 0 100vmax var(--vvg-cream);
+	clip-path: inset(0 -100vmax);
+}
+body.vvg .testimonials_slider { background: var(--vvg-cream); }
+
+/* ==========================================================================
+   Homepage hero
+   --------------------------------------------------------------------------
+   Built by the services_slider shortcode: a .review-slider2 slick slider with
+   .banner-content and .banner-fixed-form overlaid.
+
+   ⚠ The Customizer's Additional CSS currently positions these absolutely with
+   percentage offsets (.home .banner-content{top:54.6%} and
+   .banner-fixed-form{top:55.9%;right:0;...}). That block loads AFTER every
+   enqueued stylesheet, so it wins. Clear it under Appearance → Customize →
+   Additional CSS or the hero will not take these styles.
+   ========================================================================== */
+body.vvg.home .single-featured-image-header { position: relative; background: var(--vvg-ink); }
+body.vvg.home .review-slider2 { margin: 0; }
+body.vvg.home .review-slider2 img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.06) saturate(1.04); }
+body.vvg.home .single-featured-image-header::after {
+	content: "";
+	position: absolute; inset: 0;
+	background: linear-gradient(100deg, rgba(23,19,16,.76) 0%, rgba(23,19,16,.56) 45%, rgba(23,19,16,.30) 100%);
+	pointer-events: none;
+	z-index: 2;
+}
+body.vvg.home .form-banner-and-content {
+	position: absolute;
+	inset: 0;
+	z-index: 3;
+	display: grid;
+	grid-template-columns: minmax(0,1fr) minmax(400px, 520px);
+	gap: 60px;
+	align-items: center;
+	width: 100%;
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 0 40px;
+	box-sizing: border-box;
+	left: 0; right: 0;
+}
+@media (min-width: 1700px) { body.vvg.home .form-banner-and-content { max-width: 1880px; padding: 0 60px; } }
+
+body.vvg.home .banner-content {
+	position: static;
+	transform: none;
+	width: auto;
+	max-width: none;
+	padding: 0;
+	text-align: left;
+	color: var(--vvg-primary);
+	text-shadow: 0 2px 18px rgba(23,19,16,.8);
+}
+body.vvg.home .banner-content h1.slider_heading {
+	font-family: var(--vvg-head);
+	font-size: clamp(32px, 3.9vw, 58px);
+	line-height: 1.1;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0;
+	color: var(--vvg-primary);
+	margin: 0 0 22px;
+}
+body.vvg.home .slider_paragraph p { font-size: 18px; line-height: 1.7; color: var(--vvg-primary); }
+body.vvg.home .slider_paragraph a.btn { margin-top: 10px; }
+
+body.vvg.home .banner-fixed-form {
+	position: static;
+	transform: none;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	background: var(--vvg-primary);
+	border: 1px solid var(--vvg-line);
+	border-radius: var(--vvg-radius);
+	box-shadow: 0 26px 60px rgba(0,0,0,.4);
+	padding: 34px;
+	box-sizing: border-box;
+}
+body.vvg.home .banner-fixed-form h4 {
+	color: var(--vvg-ink-deep);
+	font-family: var(--vvg-head);
+	font-size: clamp(19px, 1.6vw, 26px);
+	text-transform: uppercase;
+	text-align: center;
+	margin: 0 0 20px;
+}
+/* Compact pairing: Name+Email, Phone+Suburb, Message full width. */
+body.vvg.home .banner-fixed-form .wpcf7-form > p { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; align-items: flex-start; }
+body.vvg.home .banner-fixed-form .wpcf7-form br { display: none; }
+body.vvg.home .banner-fixed-form .wpcf7-form-control-wrap { display: block; flex: 1 1 calc(50% - 6px); min-width: 0; margin: 0; }
+body.vvg.home .banner-fixed-form .wpcf7-form-control-wrap[data-name="Message"] { flex: 1 1 100%; }
+body.vvg.home .banner-fixed-form input:not([type=submit]),
+body.vvg.home .banner-fixed-form textarea {
+	width: 100%; margin-top: 0;
+	background: var(--vvg-primary);
+	border: 1px solid #d8d2c6;
+	border-radius: 4px;
+	padding: 12px 14px;
+	font-size: 15px;
+	color: var(--vvg-ink-deep);
+	box-sizing: border-box;
+}
+body.vvg.home .banner-fixed-form textarea { height: 92px; min-height: 92px; }
+body.vvg.home .banner-fixed-form input::placeholder,
+body.vvg.home .banner-fixed-form textarea::placeholder { color: #6e6960; }
+body.vvg.home .banner-fixed-form .submit-button { flex: 1 1 100%; width: 100%; margin-top: 0; padding: 15px 28px; }
+
+/* Slider dots and arrows sit below the content */
+body.vvg.home .slider_controls2 { position: absolute; bottom: 26px; left: 0; right: 0; z-index: 4; display: flex; justify-content: center; }
+
+@media (max-width: 1080px) {
+	body.vvg.home .single-featured-image-header { display: flex; flex-direction: column; }
+	body.vvg.home .form-banner-and-content {
+		position: static;
+		grid-template-columns: 1fr;
+		gap: 26px;
+		padding: 40px 22px 60px;
+		background: var(--vvg-ink);
+	}
+	body.vvg.home .single-featured-image-header::after { bottom: auto; height: 0; }
+	body.vvg.home .review-slider2 img { max-height: 420px; }
+	body.vvg.home .banner-content { text-align: center; }
+	body.vvg.home .slider_controls2 { position: static; margin-top: 14px; }
+}
+@media (max-width: 600px) {
+	body.vvg.home .banner-fixed-form .wpcf7-form-control-wrap { flex: 1 1 100%; }
+	body.vvg.home .banner-fixed-form { padding: 24px; }
+}

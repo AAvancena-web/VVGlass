@@ -60,12 +60,31 @@ function vvg_enqueue_redesign() {
 		);
 	}
 
+	/*
+	 * Montserrat only. The theme already ships Muli as a local @font-face
+	 * (font/Muli.ttf, Muli-Bold, Muli-SemiBold) in style.css, so pulling
+	 * Mulish from Google as well would be a second copy of the same typeface
+	 * over the network.
+	 */
 	wp_enqueue_style(
 		'vvg-fonts',
-		'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Mulish:wght@300;400;500;600;700&display=swap',
+		'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap',
 		array(),
 		null
 	);
+
+	// Homepage-only styles, so inner pages carry none of this weight.
+	if ( is_front_page() ) {
+		$home = get_stylesheet_directory() . '/assets/vvg-home.css';
+		if ( file_exists( $home ) ) {
+			wp_enqueue_style(
+				'vvg-home',
+				get_stylesheet_directory_uri() . '/assets/vvg-home.css',
+				array( 'vvg-redesign' ),
+				filemtime( $home )
+			);
+		}
+	}
 }
 add_action( 'wp_enqueue_scripts', 'vvg_enqueue_redesign', 20 );
 
