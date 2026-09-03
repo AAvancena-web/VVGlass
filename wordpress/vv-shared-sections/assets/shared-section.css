@@ -1,0 +1,336 @@
+/* =========================================================
+   VV Shared Sections — front-end styles
+   All selectors are namespaced under .vv-shared-section so
+   they never leak into the surrounding theme.
+   ========================================================= */
+
+.vv-shared-section {
+	--vvss-gold: #e5d99f;
+	--vvss-brand: #8a7328;
+	--vvss-brand-light: #f6f1dc;
+	--vvss-ink: #2a271d;
+	--vvss-ink-soft: #615b49;
+	--vvss-line: #e7e0c9;
+	--vvss-bg: #ffffff;
+	--vvss-bg-alt: #faf7ec;
+	--vvss-radius: 14px;
+	--vvss-shadow: 0 10px 30px rgba(138, 115, 40, 0.12);
+	--vvss-maxw: 1440px;
+
+	color: var(--vvss-ink);
+	font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+	/* Fixed px base: the theme's html{font-size:calc(...)} collapses the root
+	   below ~10px under 1200px, so rem/em would shrink. Use px throughout. */
+	font-size: 16px;
+	line-height: 1.65;
+	-webkit-font-smoothing: antialiased;
+}
+
+.vv-shared-section * { box-sizing: border-box; }
+.vv-shared-section a { color: var(--vvss-brand); }
+
+/* Full-bleed is now OPT-IN, via the --bleed modifier.
+   The automatic output hooks siteorigin_corp_footer_before, which fires after
+   the theme closes #content, so it is already full width and needs nothing.
+   Only the [shared_section] shortcode — which renders inside the narrow
+   .corp-container — asks for this.
+
+   Note the 100vw caveat: it includes the scrollbar, so a page using the
+   shortcode can overflow horizontally by the scrollbar width on Windows.
+   Prefer the automatic output where you can. */
+.vv-shared-section--bleed {
+	width: 100vw;
+	max-width: 100vw;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
+	overflow-x: clip;
+}
+
+.vv-shared-section .vvss-wrap {
+	max-width: var(--vvss-maxw);
+	margin: 0 auto;
+	padding: 0 22px;
+}
+
+/* ---------- Section shells ---------- */
+.vv-shared-section .vvss-content-section { padding: 66px 0; }
+.vv-shared-section .vvss-faq-section { padding: 66px 0; }
+.vv-shared-section .vvss-contact-section { padding: 66px 0; background: var(--vvss-bg-alt); }
+
+/* Alternate the ground when the content block sits above the intro. */
+.vv-shared-section .vvss-content-section + .vvss-intro-section,
+.vv-shared-section .vvss-intro-section + .vvss-faq-section { background: var(--vvss-bg-alt); }
+
+.vv-shared-section .vvss-section-head {
+	text-align: center;
+	max-width: 680px;
+	margin: 0 auto 42px;
+}
+.vv-shared-section .vvss-eyebrow {
+	display: inline-block;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--vvss-brand);
+	background: var(--vvss-brand-light);
+	padding: 5px 12px;
+	border-radius: 999px;
+	margin-bottom: 14px;
+}
+.vv-shared-section .vvss-section-head h2 {
+	margin: 0 0 10px;
+	font-size: clamp(26px, 3vw, 36px);
+	letter-spacing: -0.4px;
+	color: var(--vvss-ink);
+}
+.vv-shared-section .vvss-section-head p {
+	margin: 0;
+	color: var(--vvss-ink-soft);
+	font-size: 17px;
+}
+
+/* ---------- Content block (open copy + question list) ---------- */
+.vv-shared-section .vvss-copy-block {
+	text-align: center;
+	color: var(--vvss-ink-soft);
+	font-size: 17px;
+	margin: 0 0 46px;
+}
+.vv-shared-section .vvss-copy-block p { margin: 0 0 16px; }
+.vv-shared-section .vvss-copy-block p:last-child { margin-bottom: 0; }
+.vv-shared-section .vvss-copy-block--outro {
+	margin: 44px 0 0;
+	color: var(--vvss-ink);
+}
+
+.vv-shared-section .vvss-qa-heading {
+	text-align: center;
+	margin: 0 0 32px;
+	font-size: clamp(21px, 2.2vw, 28px);
+	color: var(--vvss-ink);
+}
+
+/* CSS columns rather than a grid: cards pack tight instead of leaving ragged
+   gaps where one answer is longer than the one beside it. */
+.vv-shared-section .vvss-qa-grid {
+	columns: 2;
+	column-gap: 30px;
+}
+.vv-shared-section .vvss-qa-item {
+	break-inside: avoid;
+	background: var(--vvss-bg);
+	border: 1px solid var(--vvss-line);
+	border-radius: var(--vvss-radius);
+	box-shadow: var(--vvss-shadow);
+	padding: 28px 30px;
+	margin-bottom: 30px;
+}
+.vv-shared-section .vvss-qa-item h3 {
+	display: flex;
+	align-items: baseline;
+	gap: 18px;
+	margin: 0 0 12px;
+	font-size: 18px;
+	line-height: 1.45;
+	color: var(--vvss-ink);
+}
+.vv-shared-section .vvss-qa-item h3::after {
+	content: "?";
+	flex: none;
+	margin-left: auto;
+	font-size: 30px;
+	font-weight: 700;
+	line-height: 1;
+	color: var(--vvss-line);
+}
+.vv-shared-section .vvss-qa-answer { color: var(--vvss-ink-soft); }
+.vv-shared-section .vvss-qa-answer p { margin: 0 0 12px; }
+.vv-shared-section .vvss-qa-answer p:last-child { margin-bottom: 0; }
+
+/* ---------- Intro ---------- */
+.vv-shared-section .vvss-intro-section { padding: 66px 0 44px; text-align: center; }
+.vv-shared-section .vvss-intro-sub {
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--vvss-brand);
+	margin: 0;
+}
+.vv-shared-section .vvss-intro-body {
+	margin: 0 auto;
+	color: var(--vvss-ink-soft);
+	font-size: 17px;
+	text-align: center;
+}
+.vv-shared-section .vvss-intro-body p { margin: 0 0 16px; }
+.vv-shared-section .vvss-intro-body h3 {
+	margin: 30px 0 10px;
+	font-size: 21px;
+	color: var(--vvss-ink);
+	letter-spacing: -0.2px;
+}
+.vv-shared-section .vvss-cta-wrap { text-align: center; margin-top: 34px; }
+.vv-shared-section .vvss-btn {
+	display: inline-block;
+	background: var(--vvss-gold);
+	color: var(--vvss-ink);
+	font-weight: 700;
+	font-size: 16px;
+	text-decoration: none;
+	padding: 14px 30px;
+	border-radius: 999px;
+	box-shadow: var(--vvss-shadow);
+	transition: background 0.2s ease, transform 0.2s ease;
+}
+.vv-shared-section .vvss-btn:hover { background: #d8ca86; transform: translateY(-1px); color: var(--vvss-ink); }
+
+/* ---------- FAQ (two columns, split evenly) ---------- */
+.vv-shared-section .vvss-faq {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 14px 24px;
+	align-items: start;
+}
+.vv-shared-section .vvss-faq-col {
+	display: grid;
+	gap: 14px;
+	align-content: start;
+}
+.vv-shared-section .vvss-qa {
+	background: var(--vvss-bg);
+	border: 1px solid var(--vvss-line);
+	border-radius: var(--vvss-radius);
+	padding: 4px 20px;
+	box-shadow: var(--vvss-shadow);
+	transition: border-color 0.2s ease;
+}
+.vv-shared-section .vvss-qa[open] { border-color: var(--vvss-brand); }
+.vv-shared-section .vvss-qa summary {
+	list-style: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 16px 0;
+	font-weight: 700;
+	font-size: 17px;
+	color: var(--vvss-ink);
+}
+.vv-shared-section .vvss-qa summary::-webkit-details-marker { display: none; }
+.vv-shared-section .vvss-qa summary .vvss-icon {
+	flex: none;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	background: var(--vvss-brand-light);
+	color: var(--vvss-brand);
+	display: grid;
+	place-items: center;
+	font-weight: 800;
+	transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;
+}
+.vv-shared-section .vvss-qa[open] summary .vvss-icon {
+	transform: rotate(45deg);
+	background: var(--vvss-brand);
+	color: #fff;
+}
+.vv-shared-section .vvss-answer {
+	padding: 14px 0 18px;
+	color: var(--vvss-ink-soft);
+	border-top: 1px solid var(--vvss-line);
+}
+.vv-shared-section .vvss-answer p { margin: 0 0 10px; }
+.vv-shared-section .vvss-answer p:last-child { margin-bottom: 0; }
+
+/* ---------- Contact ---------- */
+.vv-shared-section .vvss-contact-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 32px;
+	align-items: stretch;
+}
+.vv-shared-section .vvss-contact-cards {
+	display: grid;
+	gap: 16px;
+	align-content: start;
+}
+.vv-shared-section .vvss-info-card {
+	display: flex;
+	gap: 16px;
+	background: var(--vvss-bg);
+	border: 1px solid var(--vvss-line);
+	border-radius: var(--vvss-radius);
+	padding: 20px 22px;
+	box-shadow: var(--vvss-shadow);
+}
+.vv-shared-section .vvss-ico {
+	flex: none;
+	width: 46px;
+	height: 46px;
+	border-radius: 12px;
+	background: linear-gradient(135deg, var(--vvss-gold), #d8ca86);
+	color: var(--vvss-ink);
+	display: grid;
+	place-items: center;
+}
+.vv-shared-section .vvss-ico svg { width: 22px; height: 22px; }
+/* Outlined envelope. A filled envelope path renders as a solid block at this
+   size, because the flap is a second subpath and fills under the nonzero rule. */
+.vv-shared-section .vvss-ico-mail {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.9;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.vv-shared-section .vvss-info-card h3 { margin: 0 0 3px; font-size: 16px; color: var(--vvss-ink); }
+.vv-shared-section .vvss-info-card p,
+.vv-shared-section .vvss-info-card a { margin: 0; color: var(--vvss-ink-soft); text-decoration: none; }
+.vv-shared-section .vvss-info-card a:hover { color: var(--vvss-brand); }
+.vv-shared-section .vvss-info-card .vvss-big { font-size: 19px; font-weight: 800; color: var(--vvss-ink); }
+.vv-shared-section .vvss-info-card .vvss-strong { color: var(--vvss-ink); font-weight: 700; }
+/* Email (and any non-"big" link) — larger, easier to read/tap */
+.vv-shared-section .vvss-info-card a:not(.vvss-big) {
+	font-size: 18px;
+	font-weight: 600;
+	color: var(--vvss-ink);
+	overflow-wrap: anywhere;
+}
+.vv-shared-section .vvss-info-card a:not(.vvss-big):hover { color: var(--vvss-brand); }
+
+/* ---------- Map ---------- */
+.vv-shared-section .vvss-map-panel {
+	border-radius: var(--vvss-radius);
+	overflow: hidden;
+	border: 1px solid var(--vvss-line);
+	box-shadow: var(--vvss-shadow);
+	min-height: 420px;
+	background: var(--vvss-bg-alt);
+	display: flex;
+	flex-direction: column;
+}
+.vv-shared-section .vvss-map-panel iframe {
+	width: 100%;
+	height: 100%;
+	min-height: 420px;
+	border: 0;
+	flex: 1;
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 1700px) {
+	.vv-shared-section { --vvss-maxw: 1840px; }
+}
+@media (max-width: 820px) {
+	.vv-shared-section .vvss-qa-grid { columns: 1; }
+	.vv-shared-section .vvss-qa-item { margin-bottom: 18px; }
+	.vv-shared-section .vvss-qa-item h3 { justify-content: center; text-align: center; }
+	.vv-shared-section .vvss-qa-item h3::after { margin-left: 0; }
+	.vv-shared-section .vvss-qa-answer { text-align: center; }
+	.vv-shared-section .vvss-faq { grid-template-columns: 1fr; }
+	.vv-shared-section .vvss-contact-grid { grid-template-columns: 1fr; }
+	.vv-shared-section .vvss-content-section,
+	.vv-shared-section .vvss-faq-section,
+	.vv-shared-section .vvss-contact-section { padding: 50px 0; }
+}
