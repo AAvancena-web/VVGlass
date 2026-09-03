@@ -77,27 +77,29 @@ add_filter( 'vvss_output_hook', function () { return 'get_footer'; } );
 FTP — WordPress deactivates a plugin whose folder vanishes — then put
 `init.php` back and restore the require line.
 
-### A4. Content (can wait)
+### A4. Content
 
 Two kinds of section, and the difference is only whether a Page Group is
 ticked:
 
-| Section | Page Group | Where it shows |
+| Section | Page Group | Shows on |
 |---|---|---|
 | Your existing one — Intro, FAQ, Contact | **empty** | **every page** |
-| Variation 1–5 — Content tab only | **one group** | only pages in that group |
+| Variation 1–5 — Content tab only | **one group** | only that group's pages |
 
-So the intro, FAQ and contact block appear site-wide from a single section, and
-the Word-document copy follows the page groups. Nothing is duplicated: the
-phone number lives in exactly one place.
+Sections with a Page Group always render **above** the site-wide ones, so the
+varying content sits on top of the global intro, FAQ and contact block. That is
+structural — there is no Order to set and no way to get it the wrong way round.
 
-For each variation: **Shared Sections → Add New**, title it `Variation 1 — Hub`
-etc, fill **only the Content tab**, tick its **Page Group**, set **Order** to
-`0` so it renders above the site-wide block, publish. Leave Intro/FAQ/Contact
-empty on these.
+**Shared Sections → Set Up Content → Create the sections.**
 
-Then **Pages → All Pages**, tick the pages in a group, **Bulk Actions → Edit**,
-set the Page Group, Update.
+Creates the five Page Groups and the five Content sections — around 6,400
+words, straight from the content document. It never overwrites: a section whose
+title already exists is left alone, so running it twice is safe, and **your
+existing site-wide section is not touched.**
+
+Then tag the pages: **Pages → All Pages**, tick the pages in a group, **Bulk
+Actions → Edit → Apply**, set the Page Group, **Update**.
 
 | Group | Pages |
 |---|---|
@@ -131,6 +133,11 @@ Upload all three from `2-child-theme/assets/` into
 - `vvg-redesign.js`
 - `vvg-home.css`
 
+And both files from `2-child-theme/includes/` into `includes/`:
+
+- `acf-home.php`
+- `seed-home.php`
+
 Still nothing visible.
 
 ### B3. Rename your originals
@@ -146,7 +153,35 @@ Do not delete them. They are what the kill switch falls back to.
 
 `2-child-theme/header.php` and `2-child-theme/footer.php` → child theme root.
 
-### B5. Clear the Customizer CSS ⚠
+### B5. Switch the homepage to the new template
+
+The homepage is now built from ACF fields in a dedicated template rather than
+page-builder content, so the markup matches the design instead of being
+restyled into shape.
+
+1. Upload `2-child-theme/template-home.php` to the child theme root, and both
+   files from `2-child-theme/includes/` into `includes/`.
+2. **Shared Sections → Set Up Content**, and under **Homepage** click
+   **Fill in the homepage**. Leave the checkbox ticked and it also switches the
+   front page onto the template.
+
+That fills 46 fields and 18 repeater rows with the approved copy. Anything
+already filled in is skipped, so it is safe to re-run.
+
+3. **Images are not seeded** — they have to come from the media library. Open
+   **Pages → Home** and add the hero slides, the Why Choose Us image, the four
+   service images, the project gallery and the About image.
+4. Every section renders **only when its fields hold something**, so the page
+   looks progressively more complete as you add images rather than showing
+   empty shells.
+
+Your existing WPBakery content stays in the database untouched. Switching the
+template back to Default brings it straight back.
+
+The contact block, FAQ and shared copy are **not** part of this template — the
+plugin renders them above the footer on every page.
+
+### B6. Clear the Customizer CSS ⚠
 
 **Appearance → Customize → Additional CSS.**
 

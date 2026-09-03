@@ -61,7 +61,7 @@ function vvss_register_acf_fields() {
 					'key'     => 'field_vvss_scope_note',
 					'label'   => 'How Page Groups work',
 					'type'    => 'message',
-					'message' => "<strong>Leave Page Group empty</strong> and this section appears on every page. Useful for the FAQ and contact details.\n\n<strong>Tick one or more Page Groups</strong> and it appears only on pages tagged with the same group. Useful for copy that changes between service types.\n\nIf several sections apply to one page they stack in <strong>Order</strong> value (Page Attributes box), lowest first.",
+					'message' => "<strong>Leave Page Group empty</strong> and this section appears on every page. That is where the intro, FAQ and contact details belong.\n\n<strong>Tick one or more Page Groups</strong> and it appears only on pages tagged with the same group. That is where copy that changes between service types belongs.\n\nSections with a Page Group always render <strong>above</strong> the site-wide ones, so the varying content sits on top of the global intro, FAQ and contact block. No need to set anything. <strong>Order</strong> (Page Attributes) only sorts sections within the same band.",
 					'new_lines' => 'wpautop',
 					'esc_html'  => 0,
 				),

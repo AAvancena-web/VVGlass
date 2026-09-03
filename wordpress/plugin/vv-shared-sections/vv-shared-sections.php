@@ -3,7 +3,7 @@
  * Plugin Name:       VV Shared Sections
  * Plugin URI:        https://vvglass.com.au/
  * Description:       Reusable content, FAQ and contact blocks that render above the footer. Sections with no Page Group show on every page; sections with one show only on pages in that group. Deactivate to switch the whole thing off without losing any content.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Digital Movement
@@ -30,7 +30,7 @@ if ( defined( 'VVSS_VERSION' ) ) {
 	return;
 }
 
-define( 'VVSS_VERSION', '1.2.0' );
+define( 'VVSS_VERSION', '1.3.0' );
 define( 'VVSS_FILE', __FILE__ );
 define( 'VVSS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VVSS_URL', plugin_dir_url( __FILE__ ) );
@@ -136,6 +136,10 @@ register_activation_hook( __FILE__, 'vvss_seed_page_groups' );
  */
 require_once VVSS_DIR . 'includes/acf-fields.php';
 
+if ( is_admin() ) {
+	require_once VVSS_DIR . 'includes/seeder.php';
+}
+
 /**
  * 3. Front-end styles.
  */
@@ -173,7 +177,11 @@ function vvss_section_enabled( $post_id ) {
  *        a. the sections named in this page's "Shared Section Override" field, or
  *        b. every enabled section sharing a page_group with this page.
  *      The override replaces the group match only; site-wide sections still show.
- *   3. Sorted by menu_order, then by date, so stacking order is editable.
+ *
+ * Order: page-group sections always render ABOVE site-wide ones, so the
+ * varying content sits above the global intro, FAQ and contact block without
+ * anyone having to set Order by hand. menu_order still sorts within each band.
+ * Use the vvss_sections_for_page filter for anything unusual.
  *
  * @param int $object_id Page/post ID to resolve for. Defaults to the queried object.
  * @return int[] Shared Section post IDs, in render order.
@@ -225,7 +233,10 @@ function vvss_get_sections_for( $object_id = 0 ) {
 		}
 	}
 
-	$resolved = array();
+	// Two bands, kept apart so the varying content always lands above the
+	// site-wide block. Each band stays in the query's menu_order, then date.
+	$targeted = array();
+	$sitewide = array();
 
 	foreach ( $sections as $section ) {
 		if ( ! vvss_section_enabled( $section->ID ) ) {
@@ -239,22 +250,24 @@ function vvss_get_sections_for( $object_id = 0 ) {
 
 		// No group on the section: site-wide, always in.
 		if ( empty( $section_groups ) ) {
-			$resolved[] = (int) $section->ID;
+			$sitewide[] = (int) $section->ID;
 			continue;
 		}
 
 		// Grouped sections: an override on the page replaces the group match.
 		if ( $override_ids ) {
 			if ( in_array( (int) $section->ID, $override_ids, true ) ) {
-				$resolved[] = (int) $section->ID;
+				$targeted[] = (int) $section->ID;
 			}
 			continue;
 		}
 
 		if ( array_intersect( $section_groups, $page_groups ) ) {
-			$resolved[] = (int) $section->ID;
+			$targeted[] = (int) $section->ID;
 		}
 	}
+
+	$resolved = array_merge( $targeted, $sitewide );
 
 	/**
 	 * Filter the resolved section IDs for a page.

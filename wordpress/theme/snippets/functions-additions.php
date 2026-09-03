@@ -312,6 +312,10 @@ add_action(
    ========================================================================== */
 require_once get_stylesheet_directory() . '/includes/acf-home.php';
 
+if ( is_admin() ) {
+	require_once get_stylesheet_directory() . '/includes/seed-home.php';
+}
+
 /**
  * Inline SVG icons used by the homepage template.
  */
