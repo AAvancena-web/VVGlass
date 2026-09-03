@@ -48,6 +48,96 @@ function vvss_section_exists( $title ) {
 }
 
 /**
+ * Writes one field, addressing it by key rather than by name.
+ *
+ * update_field() given a bare name resolves it through the post's own
+ * "_{name}" reference meta. On a section that has just been created that meta
+ * does not exist, and a field registered in code — as ours are — cannot be
+ * found by name either, so ACF falls back to treating it as a plain text field.
+ * A string survives that; the questions repeater would be written as one
+ * serialised blob instead of rows, and then render as nothing.
+ *
+ * @param string $name    Field name.
+ * @param mixed  $value   Value to store.
+ * @param int    $post_id Section ID.
+ */
+function vvss_seed_field( $name, $value, $post_id ) {
+
+	$map      = vvss_field_keys();
+	$selector = isset( $map[ $name ] ) ? $map[ $name ] : 'field_vvss_' . $name;
+
+	return update_field( $selector, $value, $post_id );
+}
+
+/**
+ * Maps each section field name to the key it was registered under.
+ *
+ * @return array name => field key.
+ */
+function vvss_field_keys() {
+
+	static $map = null;
+
+	if ( null !== $map ) {
+		return $map;
+	}
+
+	$map = array();
+
+	if ( ! function_exists( 'acf_get_local_fields' ) ) {
+		return $map;
+	}
+
+	foreach ( acf_get_local_fields( 'group_vvss_shared_section' ) as $field ) {
+		if ( ! empty( $field['name'] ) && ! empty( $field['key'] ) ) {
+			$map[ $field['name'] ] = $field['key'];
+		}
+	}
+
+	return $map;
+}
+
+/**
+ * Clears repeater meta an earlier seeder run stored in the wrong format.
+ *
+ * A correctly stored repeater keeps its row count in the meta row named after
+ * the field. The earlier run wrote the whole rows array there instead, which
+ * ACF cannot read back, so the questions render as nothing. Deleting the two
+ * meta rows puts the field back to never-written, and the seeder then fills it
+ * properly. Rows that were saved correctly are numeric and left alone.
+ *
+ * @param int $post_id Section ID.
+ * @return array Names of the fields that were cleared.
+ */
+function vvss_repair_repeaters( $post_id ) {
+
+	$repaired = array();
+
+	if ( ! function_exists( 'acf_get_field' ) ) {
+		return $repaired;
+	}
+
+	foreach ( vvss_field_keys() as $name => $key ) {
+
+		$field = acf_get_field( $key );
+		if ( ! $field || 'repeater' !== $field['type'] ) {
+			continue;
+		}
+
+		$raw = get_post_meta( $post_id, $name, true );
+		if ( '' === $raw || is_numeric( $raw ) ) {
+			continue;
+		}
+
+		delete_post_meta( $post_id, $name );
+		delete_post_meta( $post_id, '_' . $name );
+		$repaired[] = $name;
+	}
+
+	return $repaired;
+}
+
+/**
  * Create the five page groups and the five Content sections.
  *
  * @return array Lines describing what happened.
@@ -71,8 +161,22 @@ function vvss_run_seed() {
 
 	foreach ( $data as $row ) {
 
-		if ( vvss_section_exists( $row['title'] ) ) {
-			$log[] = sprintf( '"%s" already exists — left alone.', $row['title'] );
+		$existing = vvss_section_exists( $row['title'] );
+
+		if ( $existing ) {
+
+			// Repair anything an earlier run stored in the wrong format, then
+			// refill only what that repair emptied. Everything else is left as
+			// the client edited it.
+			$repaired = function_exists( 'update_field' ) ? vvss_repair_repeaters( $existing ) : array();
+
+			if ( in_array( 'content_questions', $repaired, true ) ) {
+				vvss_seed_field( 'content_questions', $row['questions'], $existing );
+				$log[] = sprintf( '"%s" already existed — re-saved its questions, which an earlier run had stored in the wrong format.', $row['title'] );
+			} else {
+				$log[] = sprintf( '"%s" already exists — left alone.', $row['title'] );
+			}
+
 			continue;
 		}
 
@@ -96,15 +200,15 @@ function vvss_run_seed() {
 		update_post_meta( $post_id, 'show_above_footer', '1' );
 
 		if ( function_exists( 'update_field' ) ) {
-			update_field( 'show_above_footer', 1, $post_id );
-			update_field( 'content_eyebrow', $row['eyebrow'], $post_id );
-			update_field( 'content_heading', $row['heading'], $post_id );
-			update_field( 'content_intro', $row['intro'], $post_id );
-			update_field( 'content_qa_heading', $row['qa_heading'], $post_id );
-			update_field( 'content_outro', $row['outro'], $post_id );
-			update_field( 'content_cta_label', 'Book Your Consultation Here', $post_id );
-			update_field( 'content_cta_url', '#contact', $post_id );
-			update_field( 'content_questions', $row['questions'], $post_id );
+			vvss_seed_field( 'show_above_footer', 1, $post_id );
+			vvss_seed_field( 'content_eyebrow', $row['eyebrow'], $post_id );
+			vvss_seed_field( 'content_heading', $row['heading'], $post_id );
+			vvss_seed_field( 'content_intro', $row['intro'], $post_id );
+			vvss_seed_field( 'content_qa_heading', $row['qa_heading'], $post_id );
+			vvss_seed_field( 'content_outro', $row['outro'], $post_id );
+			vvss_seed_field( 'content_cta_label', 'Book Your Consultation Here', $post_id );
+			vvss_seed_field( 'content_cta_url', '#contact', $post_id );
+			vvss_seed_field( 'content_questions', $row['questions'], $post_id );
 		}
 
 		$log[] = sprintf(

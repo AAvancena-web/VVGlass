@@ -98,6 +98,9 @@ words, straight from the content document. It never overwrites: a section whose
 title already exists is left alone, so running it twice is safe, and **your
 existing site-wide section is not touched.**
 
+Re-running it also repairs the questions repeater on any section an earlier
+version created empty. Nothing else on an existing section is rewritten.
+
 Then tag the pages: **Pages → All Pages**, tick the pages in a group, **Bulk
 Actions → Edit → Apply**, set the Page Group, **Update**.
 
@@ -167,6 +170,12 @@ restyled into shape.
 
 That fills 46 fields and 18 repeater rows with the approved copy. Anything
 already filled in is skipped, so it is safe to re-run.
+
+> **If you ran an earlier version of this and the repeater sections came out
+> empty** — the trust row, the Why Choose Us points, the service cards, the
+> glazing-partner cards and the How We Work cards — just run it again. The
+> seeder now clears anything the earlier run stored in a format ACF could not
+> read back, and refills it. Text fields you have since edited are untouched.
 
 3. **Images are not seeded** — they have to come from the media library. Open
    **Pages → Home** and add the hero slides, the Why Choose Us image, the four

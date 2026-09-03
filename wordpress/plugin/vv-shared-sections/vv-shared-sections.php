@@ -3,7 +3,7 @@
  * Plugin Name:       VV Shared Sections
  * Plugin URI:        https://vvglass.com.au/
  * Description:       Reusable content, FAQ and contact blocks that render above the footer. Sections with no Page Group show on every page; sections with one show only on pages in that group. Deactivate to switch the whole thing off without losing any content.
- * Version:           1.3.0
+ * Version:           1.3.1
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Digital Movement
@@ -30,7 +30,7 @@ if ( defined( 'VVSS_VERSION' ) ) {
 	return;
 }
 
-define( 'VVSS_VERSION', '1.3.0' );
+define( 'VVSS_VERSION', '1.3.1' );
 define( 'VVSS_FILE', __FILE__ );
 define( 'VVSS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VVSS_URL', plugin_dir_url( __FILE__ ) );

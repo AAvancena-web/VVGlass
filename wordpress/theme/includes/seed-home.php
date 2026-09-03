@@ -123,6 +123,82 @@ function vvg_home_target_id() {
 }
 
 /**
+ * Maps each homepage field name to the key it was registered under.
+ *
+ * update_field() given a bare name resolves it through the post's own
+ * "_{name}" reference meta. On a page that has never stored these fields that
+ * meta does not exist, and a field registered in code — as ours are — cannot be
+ * found by name either, so ACF falls back to treating it as a plain text field.
+ * A string survives that; a repeater is written as one serialised blob instead
+ * of rows, and then renders as nothing. Passing the key skips the guesswork.
+ *
+ * @return array name => field key.
+ */
+function vvg_home_field_keys() {
+
+	static $map = null;
+
+	if ( null !== $map ) {
+		return $map;
+	}
+
+	$map = array();
+
+	if ( ! function_exists( 'acf_get_local_fields' ) ) {
+		return $map;
+	}
+
+	foreach ( acf_get_local_fields( 'group_vvg_home' ) as $field ) {
+		if ( ! empty( $field['name'] ) && ! empty( $field['key'] ) ) {
+			$map[ $field['name'] ] = $field['key'];
+		}
+	}
+
+	return $map;
+}
+
+/**
+ * Clears repeater meta an earlier seeder run stored in the wrong format.
+ *
+ * A correctly stored repeater keeps its row count in the meta row named after
+ * the field. The earlier run wrote the whole rows array there instead, which
+ * ACF cannot read back, so those sections rendered as nothing. Deleting the two
+ * meta rows puts the field back to never-written, and the seeder then fills it
+ * properly. Rows that were saved correctly are numeric and left alone.
+ *
+ * @param int   $page Page ID.
+ * @param array $keys name => field key.
+ * @return array Names of the fields that were cleared.
+ */
+function vvg_home_repair_repeaters( $page, $keys ) {
+
+	$repaired = array();
+
+	if ( ! function_exists( 'acf_get_field' ) ) {
+		return $repaired;
+	}
+
+	foreach ( $keys as $name => $key ) {
+
+		$field = acf_get_field( $key );
+		if ( ! $field || 'repeater' !== $field['type'] ) {
+			continue;
+		}
+
+		$raw = get_post_meta( $page, $name, true );
+		if ( '' === $raw || is_numeric( $raw ) ) {
+			continue;
+		}
+
+		delete_post_meta( $page, $name );
+		delete_post_meta( $page, '_' . $name );
+		$repaired[] = $name;
+	}
+
+	return $repaired;
+}
+
+/**
  * Fill the fields. Never overwrites anything already set.
  *
  * @param bool $assign_template Also switch the page to the homepage template.
@@ -154,11 +230,29 @@ function vvg_run_home_seed( $assign_template = false ) {
 		return $log;
 	}
 
-	$filled  = 0;
-	$skipped = 0;
+	$keys        = vvg_home_field_keys();
 
-	foreach ( vvg_home_seed_data() as $key => $value ) {
-		$existing = get_field( $key, $page );
+	$repaired = vvg_home_repair_repeaters( $page, $keys );
+	if ( $repaired ) {
+		$log[] = sprintf(
+			'Cleared %s, which an earlier run had stored in a format ACF cannot read back. They are refilled below.',
+			implode( ', ', $repaired )
+		);
+	}
+	$filled      = 0;
+	$skipped     = 0;
+	$unresolved  = array();
+
+	foreach ( vvg_home_seed_data() as $name => $value ) {
+
+		// Always address the field by key — see vvg_home_field_keys().
+		$selector = isset( $keys[ $name ] ) ? $keys[ $name ] : 'field_vvg_' . $name;
+
+		if ( ! isset( $keys[ $name ] ) ) {
+			$unresolved[] = $name;
+		}
+
+		$existing = get_field( $selector, $page );
 
 		$is_empty = ( null === $existing || '' === $existing || array() === $existing || false === $existing );
 		if ( ! $is_empty ) {
@@ -166,11 +260,18 @@ function vvg_run_home_seed( $assign_template = false ) {
 			continue;
 		}
 
-		update_field( $key, $value, $page );
+		update_field( $selector, $value, $page );
 		$filled++;
 	}
 
 	$log[] = sprintf( '%d fields filled, %d left alone because they already had content.', $filled, $skipped );
+
+	if ( $unresolved ) {
+		$log[] = sprintf(
+			'Could not look up a field key for: %s. Check that includes/acf-home.php is uploaded and that ACF is active.',
+			implode( ', ', $unresolved )
+		);
+	}
 	$log[] = 'Images are not seeded — add the hero slides, the Why Choose Us image, the four service images, the project gallery and the About image from the media library.';
 
 	update_option( 'vvg_home_seeded_at', current_time( 'mysql' ), false );
