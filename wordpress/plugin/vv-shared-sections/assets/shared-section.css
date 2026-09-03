@@ -334,3 +334,36 @@
 	.vv-shared-section .vvss-faq-section,
 	.vv-shared-section .vvss-contact-section { padding: 50px 0; }
 }
+
+/* ---------- Intro: optional copy-left / image-right split ----------
+   Only engages when an Intro Image is set. Without one the block keeps its
+   original centred, full-width layout. */
+.vv-shared-section .vvss-intro-split { text-align: left; }
+.vv-shared-section .vvss-intro-split .vvss-intro-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 56px;
+	align-items: center;
+}
+.vv-shared-section .vvss-intro-split .vvss-section-head { text-align: left; margin: 0 0 24px; max-width: none; }
+.vv-shared-section .vvss-intro-split .vvss-intro-body { text-align: left; }
+.vv-shared-section .vvss-intro-split .vvss-cta-wrap { text-align: left; }
+.vv-shared-section .vvss-intro-media img {
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	border-radius: var(--vvss-radius);
+	display: block;
+}
+@media (min-width: 821px) {
+	.vv-shared-section .vvss-intro-split .vvss-intro-media { position: sticky; top: 150px; }
+}
+@media (max-width: 820px) {
+	.vv-shared-section .vvss-intro-split .vvss-intro-grid { grid-template-columns: 1fr; gap: 30px; }
+	.vv-shared-section .vvss-intro-split,
+	.vv-shared-section .vvss-intro-split .vvss-section-head,
+	.vv-shared-section .vvss-intro-split .vvss-intro-body,
+	.vv-shared-section .vvss-intro-split .vvss-cta-wrap { text-align: center; }
+	/* Copy first, image after — matching the rest of the site on mobile. */
+	.vv-shared-section .vvss-intro-split .vvss-intro-media { order: 2; }
+}

@@ -74,10 +74,12 @@ $intro_eyebrow    = $vvss_get( 'intro_eyebrow' );
 $intro_heading    = $vvss_get( 'intro_heading' );
 $intro_subheading = $vvss_get( 'intro_subheading' );
 $intro_body       = $vvss_get( 'intro_body' );
+$intro_image      = $vvss_get( 'intro_image' );
+$has_intro_split  = ( is_array( $intro_image ) && ! empty( $intro_image['url'] ) );
 $cta_label        = $vvss_get( 'cta_label' );
 $cta_url          = $vvss_get( 'cta_url' );
 $has_cta          = ( $cta_label && $cta_url );
-$has_intro        = ( $intro_eyebrow || $intro_heading || $intro_subheading || $intro_body || $has_cta );
+$has_intro        = ( $intro_eyebrow || $intro_heading || $intro_subheading || $intro_body || $has_cta || $has_intro_split );
 
 /* ---------------- FAQ content ---------------- */
 $faq_eyebrow    = $vvss_get( 'faq_eyebrow' );
@@ -195,25 +197,39 @@ $wrapper_class = 'vv-shared-section' . ( $bleed ? ' vv-shared-section--bleed' : 
 
 	<?php if ( $has_intro ) : ?>
 	<!-- Intro -->
-	<section class="vvss-intro-section">
+	<section class="vvss-intro-section<?php echo $has_intro_split ? ' vvss-intro-split' : ''; ?>">
 		<div class="vvss-wrap">
-			<?php if ( $intro_eyebrow || $intro_heading || $intro_subheading ) : ?>
-			<div class="vvss-section-head">
-				<?php if ( $intro_eyebrow ) : ?><span class="vvss-eyebrow"><?php echo esc_html( $intro_eyebrow ); ?></span><?php endif; ?>
-				<?php if ( $intro_heading ) : ?><h2><?php echo esc_html( $intro_heading ); ?></h2><?php endif; ?>
-				<?php if ( $intro_subheading ) : ?><p class="vvss-intro-sub"><?php echo esc_html( $intro_subheading ); ?></p><?php endif; ?>
-			</div>
-			<?php endif; ?>
+			<div class="vvss-intro-grid">
+				<div class="vvss-intro-col">
+					<?php if ( $intro_eyebrow || $intro_heading || $intro_subheading ) : ?>
+					<div class="vvss-section-head">
+						<?php if ( $intro_eyebrow ) : ?><span class="vvss-eyebrow"><?php echo esc_html( $intro_eyebrow ); ?></span><?php endif; ?>
+						<?php if ( $intro_heading ) : ?><h2><?php echo esc_html( $intro_heading ); ?></h2><?php endif; ?>
+						<?php if ( $intro_subheading ) : ?><p class="vvss-intro-sub"><?php echo esc_html( $intro_subheading ); ?></p><?php endif; ?>
+					</div>
+					<?php endif; ?>
 
-			<?php if ( $intro_body ) : ?>
-			<div class="vvss-intro-body"><?php echo wp_kses_post( $intro_body ); ?></div>
-			<?php endif; ?>
+					<?php if ( $intro_body ) : ?>
+					<div class="vvss-intro-body"><?php echo wp_kses_post( $intro_body ); ?></div>
+					<?php endif; ?>
 
-			<?php if ( $has_cta ) : ?>
-			<div class="vvss-cta-wrap">
-				<a class="vvss-btn" href="<?php echo esc_url( $cta_url ); ?>"><?php echo esc_html( $cta_label ); ?></a>
+					<?php if ( $has_cta ) : ?>
+					<div class="vvss-cta-wrap">
+						<a class="vvss-btn" href="<?php echo esc_url( $cta_url ); ?>"><?php echo esc_html( $cta_label ); ?></a>
+					</div>
+					<?php endif; ?>
+				</div>
+
+				<?php if ( $has_intro_split ) : ?>
+				<div class="vvss-intro-media">
+					<img src="<?php echo esc_url( $intro_image['url'] ); ?>"
+						alt="<?php echo esc_attr( isset( $intro_image['alt'] ) ? $intro_image['alt'] : '' ); ?>"
+						loading="lazy"
+						<?php if ( ! empty( $intro_image['width'] ) ) : ?>width="<?php echo esc_attr( $intro_image['width'] ); ?>"<?php endif; ?>
+						<?php if ( ! empty( $intro_image['height'] ) ) : ?>height="<?php echo esc_attr( $intro_image['height'] ); ?>"<?php endif; ?>>
+				</div>
+				<?php endif; ?>
 			</div>
-			<?php endif; ?>
 		</div>
 	</section>
 	<?php endif; ?>

@@ -524,3 +524,62 @@ body.vvg.home .slider_controls2 { position: absolute; bottom: 26px; left: 0; rig
 	body.vvg.home .banner-fixed-form .wpcf7-form-control-wrap { flex: 1 1 100%; }
 	body.vvg.home .banner-fixed-form { padding: 24px; }
 }
+
+/* ---------- Hero: eyebrow, action row and trust list ----------
+   These elements are emitted by the vvg_services_slider shortcode override in
+   functions.php — the theme's original hero markup had no place for them. */
+body.vvg.home .banner-content .vvg-eyebrow {
+	display: inline-block;
+	font-family: var(--vvg-head);
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 2.5px;
+	text-transform: uppercase;
+	color: var(--vvg-gold);
+	background: rgba(230,218,160,.16);
+	padding: 11px 26px;
+	border-radius: 60px;
+	margin: 0 0 20px;
+	line-height: 1;
+	text-shadow: none;
+}
+body.vvg.home .vvg-hero-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	margin-top: 26px;
+}
+body.vvg.home .vvg-hero-actions a.btn { margin-top: 0; }
+body.vvg.home a.btn.vvg-btn-hero-light {
+	background: var(--vvg-primary);
+	border-color: var(--vvg-primary);
+	color: var(--vvg-ink-deep);
+}
+body.vvg.home a.btn.vvg-btn-hero-light:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); }
+body.vvg.home .vvg-hero-trust {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px 34px;
+	margin: 34px 0 0;
+	padding: 26px 0 0;
+	border-top: 1px solid rgba(255,255,255,.16);
+	list-style: none;
+}
+body.vvg.home .vvg-hero-trust li {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--vvg-head);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 1.6px;
+	text-transform: uppercase;
+	color: var(--vvg-primary);
+	margin: 0;
+}
+body.vvg.home .vvg-hero-trust svg { width: 17px; height: 17px; fill: var(--vvg-gold); flex: none; }
+@media (max-width: 1080px) {
+	body.vvg.home .vvg-hero-actions { justify-content: center; }
+	body.vvg.home .vvg-hero-actions a.btn { width: 100%; }
+	body.vvg.home .vvg-hero-trust { justify-content: center; }
+}

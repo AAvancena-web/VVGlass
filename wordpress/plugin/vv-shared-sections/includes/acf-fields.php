@@ -192,6 +192,16 @@ function vvss_register_acf_fields() {
 					'media_upload' => 0,
 				),
 				array(
+					'key'           => 'field_vvss_intro_image',
+					'label'         => 'Intro Image',
+					'name'          => 'intro_image',
+					'type'          => 'image',
+					'instructions'  => 'Optional. Add one and the intro switches to copy on the left with the image on the right. Leave empty and the copy stays centred full width.',
+					'return_format' => 'array',
+					'preview_size'  => 'medium',
+					'library'       => 'all',
+				),
+				array(
 					'key'           => 'field_vvss_cta_label',
 					'label'         => 'CTA Button Label',
 					'name'          => 'cta_label',

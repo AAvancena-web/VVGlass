@@ -164,3 +164,145 @@ function vvg_enquiry_form() {
 	}
 	return do_shortcode( '[contact-form-7 id="' . VVG_ENQUIRY_FORM_ID . '" title="Get In Touch"]' );
 }
+
+/* ==========================================================================
+   5. Homepage hero
+   --------------------------------------------------------------------------
+   The theme's services_slider shortcode outputs only the heading and the
+   paragraph, so the eyebrow, the second button and the trust row from the
+   design have nowhere to render — no amount of CSS can add them.
+
+   Re-registering the same shortcode tag replaces the callback, and because
+   this block sits at the END of functions.php it registers last and wins. The
+   original function is left completely untouched, so turning the redesign off
+   restores it.
+   ========================================================================== */
+function vvg_services_slider() {
+
+	if ( ! function_exists( 'have_rows' ) || ! have_rows( 'custom_slider', 'option' ) ) {
+		return '';
+	}
+
+	$heading = function_exists( 'get_field' ) ? get_field( 'banner_heading' ) : '';
+	$content = function_exists( 'get_field' ) ? get_field( 'banner_content' ) : '';
+
+	// Eyebrow: an ACF field if one exists, otherwise a filterable default.
+	$eyebrow = function_exists( 'get_field' ) ? trim( (string) get_field( 'banner_eyebrow' ) ) : '';
+	if ( '' === $eyebrow ) {
+		$eyebrow = apply_filters( 'vvg_hero_eyebrow', 'Australian Window Solutions' );
+	}
+
+	/*
+	 * The primary button lives inside the banner_content WYSIWYG. Lift it out
+	 * so it can sit in a row beside the call button instead of on its own
+	 * line, then drop the empty paragraph it leaves behind.
+	 */
+	$cta = '';
+	if ( $content && preg_match( '#<a[^>]*class="[^"]*\bbtn\b[^"]*"[^>]*>.*?</a>#is', $content, $m ) ) {
+		$cta     = $m[0];
+		$content = str_replace( $m[0], '', $content );
+		$content = preg_replace( '#<p>(\s|&nbsp;)*</p>#i', '', $content );
+	}
+	if ( '' === $cta ) {
+		$cta = '<a class="btn" href="#contact">' . esc_html__( 'Book Your Consultation Here', 'siteorigin-corp' ) . '</a>';
+	}
+
+	$trust = apply_filters(
+		'vvg_hero_trust',
+		array(
+			'shield' => 'Licensed &amp; Insured',
+			'clock'  => '24/7 Emergency Response',
+			'star'   => '5 Star Rated Service',
+		)
+	);
+
+	$icons = array(
+		'shield' => '<path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10z"/>',
+		'clock'  => '<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 10.6V6h-2v7.4l5 3 1-1.7z"/>',
+		'star'   => '<path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/>',
+	);
+
+	$phone      = vvg_contact( 'phone' );
+	$phone_href = vvg_tel_href();
+
+	ob_start();
+	?>
+	<div class="single-featured-image-header">
+		<ul class="review-slider2">
+			<?php
+			while ( have_rows( 'custom_slider', 'option' ) ) :
+				the_row();
+				$banner_image = get_sub_field( 'banner_image' );
+				if ( empty( $banner_image['url'] ) ) {
+					continue;
+				}
+				?>
+				<li class="custom_slide_box">
+					<div class="banner-image">
+						<img src="<?php echo esc_url( $banner_image['url'] ); ?>" alt="<?php echo esc_attr( isset( $banner_image['alt'] ) ? $banner_image['alt'] : '' ); ?>">
+					</div>
+				</li>
+			<?php endwhile; ?>
+		</ul>
+
+		<div class="slider_controls2">
+			<button type="button" class="slick-prev">Previous</button>
+			<div class="slick-dots"></div>
+			<button type="button" class="slick-next">Next</button>
+		</div>
+
+		<div class="form-banner-and-content main-content">
+			<div class="banner-content">
+
+				<?php if ( $eyebrow ) : ?>
+					<span class="vvg-eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
+				<?php endif; ?>
+
+				<?php if ( $heading ) : ?>
+					<h1 class="slider_heading"><?php echo esc_html( $heading ); ?></h1>
+				<?php endif; ?>
+
+				<?php if ( trim( (string) $content ) ) : ?>
+					<div class="slider_paragraph"><?php echo wp_kses_post( $content ); ?></div>
+				<?php endif; ?>
+
+				<div class="vvg-hero-actions">
+					<?php echo wp_kses_post( $cta ); ?>
+					<a class="btn vvg-btn-hero-light" href="tel:<?php echo esc_attr( $phone_href ); ?>"><?php echo esc_html( sprintf( 'Call %s', $phone ) ); ?></a>
+				</div>
+
+				<?php if ( $trust ) : ?>
+					<ul class="vvg-hero-trust">
+						<?php foreach ( $trust as $key => $label ) : ?>
+							<li>
+								<svg viewBox="0 0 24 24" aria-hidden="true"><?php echo isset( $icons[ $key ] ) ? $icons[ $key ] : $icons['star']; // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- Fixed path data. ?></svg>
+								<?php echo wp_kses_post( $label ); ?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+
+			</div>
+
+			<?php if ( is_front_page() ) : ?>
+				<div class="banner-fixed-form get-in-touch-form">
+					<h4 class="font-30"><?php esc_html_e( 'Get In Touch With VV Glass', 'siteorigin-corp' ); ?></h4>
+					<?php echo vvg_enquiry_form(); // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- CF7 output. ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+
+// Only take over while the redesign is on; otherwise the theme's own version stands.
+add_action(
+	'init',
+	function () {
+		if ( vvg_redesign_active() ) {
+			add_shortcode( 'services_slider', 'vvg_services_slider' );
+		}
+	},
+	20
+);
