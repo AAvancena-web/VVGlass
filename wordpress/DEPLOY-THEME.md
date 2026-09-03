@@ -101,23 +101,46 @@ in two files.
 
 ---
 
-## Still to do: the homepage body
+## ⚠ One manual step: clear the Customizer's Additional CSS
 
-The header, footer, inner-page banners and shared sections are done. The
-homepage **body** is not, and it is a different kind of job: those sections are
-not in any template file, they are WPBakery content in the database
-(`.choose_class`, `.our-service`, `.project_row`, `.glass_service`).
+**Appearance → Customize → Additional CSS.** That block currently positions the
+homepage hero absolutely with percentage offsets:
 
-Most of it can be restyled with CSS against that existing markup. Two pieces
-cannot, because they need different markup:
+```css
+.home .banner-content { position:absolute; top:54.6%; ... }
+.banner-fixed-form    { position:absolute; top:55.9%; right:0; ... }
+```
 
-- the 2×2 project grid with the lightbox
-- the compact banner form on the hero
+It loads **after every enqueued stylesheet**, so it beats the redesign. Copy it
+somewhere safe, then clear it. The hero will not take the new layout until you
+do.
 
-Those need the page rebuilt in WPBakery, not just restyled.
+---
 
-To do that cleanly I need the child theme's **`style.css`** — I want to extend
-what is there rather than override it.
+## Homepage
+
+`vvg-home.css` loads on the front page only, so inner pages carry none of its
+weight. It restyles the WPBakery markup that is already in the database rather
+than rebuilding any pages — **no page content needs editing.**
+
+Four faults surfaced by rendering against your actual `style.css`, all fixed:
+
+- `.choose_class` and `.clear_row` lay their columns out with `float:left`, and
+  the float was never cleared. Each row collapsed to 192px and the next section
+  was pulled up beside it — `.fully_row` was rendering 640px wide instead of
+  1360.
+- With that fixed the columns still wrapped: 50% plus 40px of padding measures
+  720px each under content-box, so the pair totalled 1440 in a 1360 container.
+- Service card links rendered as default blue underlined text.
+- The testimonial card measured 1442px inside a 1360px container.
+
+Two things turned out easier than expected: your projects grid is **already**
+`1fr 1fr`, so it only needed larger 3:2 images and the lightbox rather than a
+WPBakery rebuild; and `.corp-container` at 87.5% was 1323px at 1512px wide,
+which did not line up with the header — both now use the same 1440/1880 spec.
+
+The lightbox binds to the existing WPBakery `<img>` elements, with prev/next,
+a counter, arrow keys, Escape and focus return.
 
 ---
 
