@@ -1,0 +1,563 @@
+/* ==========================================================================
+   VV Glass redesign — header, inner-page banner and footer
+   --------------------------------------------------------------------------
+   UNITS ARE px ON PURPOSE. The theme sets html{font-size:calc(...)} which
+   collapses the root below ~10px under 1200px, so rem values shrink silently
+   on tablet and mobile. The shared-sections stylesheet does the same thing for
+   the same reason.
+
+   New markup uses vvg- class names rather than the theme's .site-header /
+   .main-navigation, so the theme's own header CSS simply does not apply and
+   there is no specificity fight.
+   ========================================================================== */
+
+:root {
+	--vvg-primary: #ffffff;
+	--vvg-secondary: #5a5955;
+	--vvg-gold: #e6daa0;
+	--vvg-brand: #8e6e47;
+	--vvg-ink: #171310;
+	--vvg-ink-deep: #1b1709;
+	--vvg-line: #e8e3d9;
+	--vvg-cream: #faf8f4;
+	--vvg-sand: #f3eee4;
+	--vvg-head: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	--vvg-body: 'Muli', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--vvg-body-bold: 'Muli-Bold', 'Muli', sans-serif;
+	--vvg-header-h: 124px;
+	--vvg-radius: 6px;
+}
+
+.vvg-container {
+	width: 100%;
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 0 40px;
+	box-sizing: border-box;
+}
+@media (min-width: 1700px) {
+	.vvg-container { max-width: 1880px; padding: 0 60px; }
+}
+
+/* ---------- Buttons ---------- */
+.vvg-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	font-family: var(--vvg-head);
+	font-weight: 700;
+	font-size: 13px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: var(--vvg-primary);
+	background: var(--vvg-brand);
+	border: 2px solid var(--vvg-brand);
+	padding: 17px 34px;
+	border-radius: var(--vvg-radius);
+	text-decoration: none;
+	line-height: 1.2;
+	text-align: center;
+	transition: background .28s ease, color .28s ease, border-color .28s ease, transform .2s ease;
+}
+.vvg-btn:hover {
+	background: var(--vvg-gold);
+	border-color: var(--vvg-gold);
+	color: var(--vvg-ink-deep);
+	transform: translateY(-2px);
+}
+.vvg-btn-light { background: var(--vvg-primary); border-color: var(--vvg-primary); color: var(--vvg-ink-deep); }
+.vvg-btn-light:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); }
+.vvg-btn-block { width: 100%; }
+
+/* ---------- Top bar ---------- */
+.vvg-topbar {
+	background: var(--vvg-ink);
+	color: var(--vvg-primary);
+	font-family: var(--vvg-body);
+	font-size: 14px;
+}
+.vvg-topbar .vvg-container {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 30px;
+	min-height: 46px;
+	flex-wrap: wrap;
+}
+.vvg-topbar .vvg-tagline { margin-right: auto; color: var(--vvg-primary); }
+.vvg-topbar a { display: inline-flex; align-items: center; gap: 9px; color: var(--vvg-primary); text-decoration: none; }
+.vvg-topbar a:hover { color: var(--vvg-gold); }
+.vvg-topbar svg { width: 15px; height: 15px; fill: var(--vvg-gold); flex: none; }
+@media (max-width: 900px) { .vvg-topbar { display: none; } }
+
+/* Outlined envelope — a filled envelope path reads as a solid block this small. */
+.vvg-ico-mail { fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.vvg-topbar .vvg-ico-mail, .vvg-m-contact .vvg-ico-mail { stroke: var(--vvg-gold); }
+
+/* ---------- Header ---------- */
+.vvg-header {
+	position: sticky;
+	top: 0;
+	z-index: 120;
+	background: var(--vvg-brand);
+	border-bottom: 1px solid rgba(255,255,255,.18);
+	transition: box-shadow .3s ease;
+}
+.vvg-header.is-stuck { box-shadow: 0 8px 28px rgba(23,19,16,.26); }
+.vvg-header-inner {
+	display: flex;
+	align-items: center;
+	gap: 28px;
+	min-height: var(--vvg-header-h);
+}
+
+.vvg-brand { display: flex; align-items: center; flex: none; text-decoration: none; }
+.vvg-brand img,
+.vvg-brand .custom-logo {
+	height: 96px;
+	width: auto;
+	max-width: 210px;
+	object-fit: contain;
+	display: block;
+}
+.vvg-brand-fallback { font-family: var(--vvg-head); font-weight: 800; font-size: 24px; color: var(--vvg-primary); }
+
+/* Desktop nav — plain wp_nav_menu output, no custom walker */
+.vvg-nav { margin-left: auto; }
+.vvg-nav ul.menu { display: flex; align-items: center; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.vvg-nav ul.menu > li { position: relative; }
+.vvg-nav ul.menu > li > a {
+	display: block;
+	white-space: nowrap;
+	font-family: var(--vvg-head);
+	font-weight: 600;
+	font-size: 16px;
+	color: var(--vvg-primary);
+	text-decoration: none;
+	padding: 14px;
+	position: relative;
+}
+.vvg-nav ul.menu > li > a::after {
+	content: "";
+	position: absolute;
+	left: 14px; right: 14px; bottom: 6px;
+	height: 2px;
+	background: var(--vvg-gold);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform .28s ease;
+}
+.vvg-nav ul.menu > li:hover > a,
+.vvg-nav ul.menu > li.current-menu-item > a,
+.vvg-nav ul.menu > li.current-menu-ancestor > a,
+.vvg-nav ul.menu > li.current_page_item > a { color: var(--vvg-gold); }
+.vvg-nav ul.menu > li:hover > a::after,
+.vvg-nav ul.menu > li.current-menu-item > a::after,
+.vvg-nav ul.menu > li.current-menu-ancestor > a::after,
+.vvg-nav ul.menu > li.current_page_item > a::after { transform: scaleX(1); }
+
+.vvg-nav li.menu-item-has-children > a { padding-right: 24px; }
+.vvg-nav li.menu-item-has-children > a::before {
+	content: "";
+	position: absolute; right: 2px; top: 50%;
+	width: 6px; height: 6px;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	transform: translateY(-70%) rotate(45deg);
+	opacity: .5;
+}
+
+.vvg-nav ul.sub-menu {
+	position: absolute;
+	top: 100%; left: 0;
+	min-width: 310px;
+	list-style: none;
+	margin: 0;
+	padding: 10px 0;
+	background: var(--vvg-ink);
+	border-top: 2px solid var(--vvg-gold);
+	opacity: 0; visibility: hidden;
+	transform: translateY(12px);
+	transition: opacity .25s ease, transform .25s ease, visibility .25s;
+	box-shadow: 0 22px 44px rgba(0,0,0,.28);
+}
+.vvg-nav li:hover > ul.sub-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+/* Right-align the dropdowns near the end of the bar so they never run off screen */
+.vvg-nav ul.menu > li:nth-last-child(-n+3) > ul.sub-menu { left: auto; right: 0; }
+.vvg-nav ul.sub-menu a {
+	display: block;
+	padding: 11px 24px;
+	font-family: var(--vvg-head);
+	font-size: 16px;
+	color: rgba(255,255,255,.86);
+	text-decoration: none;
+}
+.vvg-nav ul.sub-menu a:hover { color: var(--vvg-gold); background: rgba(230,218,160,.07); }
+
+.vvg-header-cta {
+	flex: none;
+	background: var(--vvg-gold);
+	border-color: var(--vvg-gold);
+	color: var(--vvg-ink-deep);
+}
+.vvg-header-cta:hover { background: var(--vvg-primary); border-color: var(--vvg-primary); color: var(--vvg-ink-deep); }
+
+.vvg-header-tools { display: none; align-items: center; gap: 14px; margin-left: auto; }
+
+.vvg-phone-circle {
+	width: 48px; height: 48px;
+	display: inline-flex; align-items: center; justify-content: center;
+	border-radius: 50%;
+	background: var(--vvg-ink);
+	border: 2px solid rgba(230,218,160,.55);
+	flex: none;
+	transition: background .25s ease, border-color .25s ease, transform .2s ease;
+}
+.vvg-phone-circle svg { width: 19px; height: 19px; fill: var(--vvg-gold); transition: fill .25s ease; }
+.vvg-phone-circle:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); transform: translateY(-2px); }
+.vvg-phone-circle:hover svg { fill: var(--vvg-ink); }
+
+.vvg-burger {
+	width: 48px; height: 48px;
+	display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+	background: var(--vvg-gold);
+	border: 2px solid var(--vvg-gold);
+	border-radius: 50%;
+	flex: none;
+	cursor: pointer;
+	padding: 0;
+	transition: background .25s ease, border-color .25s ease;
+}
+.vvg-burger span { display: block; width: 19px; height: 2px; background: var(--vvg-ink); border-radius: 2px; transition: transform .3s ease, opacity .2s ease, background .25s ease; }
+.vvg-burger[aria-expanded="true"] { background: var(--vvg-ink); border-color: var(--vvg-ink); }
+.vvg-burger[aria-expanded="true"] span { background: var(--vvg-gold); }
+.vvg-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.vvg-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.vvg-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Reading progress along the header's bottom edge */
+.vvg-scroll-progress {
+	position: absolute;
+	left: 0; right: 0; bottom: -2px;
+	height: 4px;
+	background: rgba(255,255,255,.28);
+	overflow: hidden;
+}
+.vvg-scroll-progress span { display: block; height: 100%; width: 0; background: var(--vvg-ink); }
+
+@media (max-width: 1600px) {
+	.vvg-nav ul.menu > li > a { padding: 14px 9px; }
+	.vvg-nav li.menu-item-has-children > a { padding-right: 22px; }
+	.vvg-header-cta { font-size: 11.5px; padding: 14px 20px; }
+}
+@media (max-width: 1400px) {
+	.vvg-header-cta { display: none; }
+}
+@media (max-width: 1080px) {
+	:root { --vvg-header-h: 100px; }
+	.vvg-nav { display: none; }
+	.vvg-header-tools { display: flex; }
+	.vvg-brand img, .vvg-brand .custom-logo { height: 72px; max-width: 180px; }
+}
+@media (max-width: 640px) {
+	.vvg-container { padding: 0 22px; }
+	.vvg-header-inner { gap: 12px; }
+	.vvg-brand img, .vvg-brand .custom-logo { height: 66px; max-width: 160px; }
+	.vvg-header-tools { gap: 10px; }
+	.vvg-phone-circle, .vvg-burger { width: 44px; height: 44px; }
+}
+@media (max-width: 370px) {
+	.vvg-brand img, .vvg-brand .custom-logo { height: 58px; max-width: 130px; }
+}
+
+/* ---------- Mobile drawer ---------- */
+.vvg-mobile-nav {
+	position: fixed;
+	inset: var(--vvg-header-h) 0 0 auto;
+	width: min(400px, 88vw);
+	background: var(--vvg-ink);
+	padding: 24px 26px 120px;
+	overflow-y: auto;
+	transform: translateX(105%);
+	transition: transform .35s cubic-bezier(.4,0,.2,1);
+	z-index: 115;
+}
+.vvg-mobile-nav.open { transform: translateX(0); }
+.vvg-mobile-nav ul { list-style: none; margin: 0; padding: 0; }
+.vvg-mobile-nav > ul.menu > li { border-bottom: 1px solid rgba(255,255,255,.1); }
+.vvg-mobile-nav a {
+	color: rgba(255,255,255,.9);
+	font-family: var(--vvg-head);
+	font-weight: 600;
+	font-size: 16px;
+	text-decoration: none;
+}
+.vvg-mobile-nav > ul.menu > li > a,
+.vvg-mobile-nav .vvg-m-row > a { display: block; padding: 15px 0; flex: 1; }
+.vvg-m-row { display: flex; align-items: center; justify-content: space-between; }
+.vvg-m-toggle {
+	background: none; border: 0; cursor: pointer;
+	width: 42px; height: 42px;
+	color: var(--vvg-gold);
+	font-size: 24px; line-height: 1;
+	display: flex; align-items: center; justify-content: center;
+}
+.vvg-m-toggle span { transition: transform .3s ease; display: block; }
+.vvg-m-toggle[aria-expanded="true"] span { transform: rotate(45deg); }
+.vvg-mobile-nav ul.sub-menu {
+	display: none;
+	padding: 0 0 12px 14px;
+	border-left: 2px solid rgba(230,218,160,.35);
+	margin-bottom: 12px;
+}
+.vvg-mobile-nav ul.sub-menu.open { display: block; }
+.vvg-mobile-nav ul.sub-menu a { display: block; padding: 9px 0; font-weight: 500; font-size: 14px; color: rgba(255,255,255,.72); }
+.vvg-mobile-nav a:hover { color: var(--vvg-gold); }
+.vvg-m-contact { margin-top: 28px; display: grid; gap: 14px; }
+.vvg-m-contact a { display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 15px; color: rgba(255,255,255,.8); }
+.vvg-m-contact svg { width: 16px; height: 16px; fill: var(--vvg-gold); flex: none; }
+.vvg-mobile-nav .vvg-btn { margin-top: 26px; }
+
+.vvg-nav-overlay {
+	position: fixed; inset: 0;
+	background: rgba(23,19,16,.55);
+	opacity: 0; visibility: hidden;
+	transition: opacity .3s ease, visibility .3s;
+	z-index: 110;
+}
+.vvg-nav-overlay.show { opacity: 1; visibility: visible; }
+body.vvg-nav-open { overflow: hidden; }
+body.vvg-nav-open .vvg-call-now,
+body.vvg-nav-open #scroll-to-top { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* ==========================================================================
+   Inner-page banner
+   Replaces the ~50-line inline <style> block that used to sit in header.php.
+   ========================================================================== */
+.vvg-page-banner {
+	position: relative;
+	width: 100%;
+	background: #2b2b2b;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+.vvg-page-banner::before {
+	content: "";
+	position: absolute; inset: 0;
+	background: linear-gradient(100deg, rgba(23,19,16,.82) 0%, rgba(23,19,16,.62) 45%, rgba(23,19,16,.38) 100%);
+}
+.vvg-page-banner .vvg-container { position: relative; z-index: 1; }
+.vvg-page-banner-grid {
+	display: grid;
+	grid-template-columns: minmax(0,1fr) minmax(400px, 520px);
+	gap: 50px;
+	align-items: center;
+	padding: 90px 0;
+}
+.vvg-page-banner-text { color: var(--vvg-primary); text-shadow: 0 2px 18px rgba(23,19,16,.8); }
+.vvg-page-banner-text h1 {
+	color: var(--vvg-primary);
+	font-family: var(--vvg-head);
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0;
+	font-size: clamp(30px, 3.9vw, 56px);
+	line-height: 1.1;
+	margin: 0 0 22px;
+}
+.vvg-page-banner-sub { font-family: var(--vvg-body); font-size: 18px; line-height: 1.7; margin: 0 0 22px; }
+.vvg-page-banner-sub p:last-child { margin-bottom: 0; }
+.vvg-page-banner-crumbs { font-family: var(--vvg-body); font-size: 15px; color: rgba(255,255,255,.8); margin: 0 0 26px; }
+.vvg-page-banner-crumbs a { color: var(--vvg-gold); text-decoration: none; }
+.vvg-page-banner-crumbs a::after { content: "\203A"; color: rgba(255,255,255,.55); margin: 0 8px; }
+.vvg-page-banner-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+/* ---------- Enquiry form card ---------- */
+.vvg-form-card {
+	background: var(--vvg-primary);
+	border: 1px solid var(--vvg-line);
+	border-radius: var(--vvg-radius);
+	box-shadow: 0 26px 60px rgba(0,0,0,.4);
+	padding: 34px;
+	font-family: var(--vvg-body);
+}
+.vvg-form-card h2 {
+	font-family: var(--vvg-head);
+	color: var(--vvg-ink-deep);
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 0;
+	font-size: clamp(19px, 1.6vw, 26px);
+	margin: 0 0 6px;
+}
+.vvg-form-card .vvg-form-sub { text-align: center; color: var(--vvg-secondary); font-size: 14px; margin: 0 0 20px; }
+
+/* CF7 wraps every field in .wpcf7-form-control-wrap and separates them with
+   <br>. Flex the paragraph so Name+Email share a row, Phone+Suburb the next,
+   Message full width. */
+.vvg-form-compact .wpcf7-form > p { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; align-items: flex-start; }
+.vvg-form-compact .wpcf7-form br { display: none; }
+.vvg-form-compact .wpcf7-form-control-wrap { display: block; flex: 1 1 calc(50% - 6px); min-width: 0; margin: 0; }
+.vvg-form-compact .wpcf7-form-control-wrap[data-name="Message"] { flex: 1 1 100%; }
+.vvg-form-compact input:not([type=submit]):not([type=checkbox]):not([type=radio]),
+.vvg-form-compact textarea,
+.vvg-form-compact select {
+	width: 100%;
+	background: var(--vvg-primary);
+	border: 1px solid #d8d2c6;
+	border-radius: 4px;
+	padding: 12px 14px;
+	font-family: var(--vvg-body);
+	font-size: 15px;
+	color: var(--vvg-ink-deep);
+	line-height: 1.4;
+	box-sizing: border-box;
+}
+.vvg-form-compact textarea { min-height: 92px; height: 92px; resize: vertical; }
+.vvg-form-compact input::placeholder,
+.vvg-form-compact textarea::placeholder { color: #6e6960; }
+.vvg-form-compact input:focus, .vvg-form-compact textarea:focus {
+	outline: 0;
+	border-color: var(--vvg-brand);
+	box-shadow: 0 0 0 3px rgba(142,110,71,.12);
+}
+.vvg-form-compact input[type=submit],
+.vvg-form-compact .wpcf7-submit {
+	flex: 1 1 100%;
+	width: 100%;
+	background: var(--vvg-brand);
+	color: var(--vvg-primary);
+	font-family: var(--vvg-head);
+	font-weight: 700;
+	font-size: 13px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	border: 2px solid var(--vvg-brand);
+	border-radius: var(--vvg-radius);
+	padding: 15px 28px;
+	cursor: pointer;
+	transition: background .28s ease, color .28s ease, border-color .28s ease;
+}
+.vvg-form-compact input[type=submit]:hover,
+.vvg-form-compact .wpcf7-submit:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); color: var(--vvg-ink-deep); }
+.vvg-form-compact .wpcf7-spinner { margin: 6px auto 0; }
+
+@media (max-width: 1080px) {
+	.vvg-page-banner-grid { grid-template-columns: 1fr; gap: 34px; padding: 60px 0; }
+	.vvg-page-banner-text { text-align: center; }
+	.vvg-page-banner-actions { justify-content: center; }
+}
+@media (max-width: 600px) {
+	.vvg-form-compact .wpcf7-form-control-wrap { flex: 1 1 100%; }
+	.vvg-page-banner-actions { display: grid; grid-template-columns: 1fr; }
+	.vvg-page-banner-actions .vvg-btn { width: 100%; }
+}
+
+/* ==========================================================================
+   Footer
+   Markup is unchanged and widget-driven, so these target the theme's own
+   classes. Doubled-up selectors (.vvg-footer.site-footer) beat the Customizer's
+   inline CSS, which also targets .site-footer.
+   ========================================================================== */
+.vvg-footer.site-footer {
+	background: var(--vvg-brand);
+	color: rgba(255,255,255,.86);
+	font-family: var(--vvg-body);
+	font-size: 15px;
+	margin-top: 0;
+}
+.vvg-footer .widgets {
+	display: grid;
+	grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+	gap: 40px;
+	padding: 70px 0 46px;
+}
+.vvg-footer .widget { color: rgba(255,255,255,.86); }
+.vvg-footer .widget-title,
+.vvg-footer h2.widget-title {
+	color: var(--vvg-gold);
+	font-family: var(--vvg-head);
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	margin: 0 0 24px;
+}
+.vvg-footer .widget p { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,.8); }
+.vvg-footer .widget ul { list-style: none; margin: 0; padding: 0; }
+.vvg-footer .widget li { margin-bottom: 11px; }
+.vvg-footer a { color: rgba(255,255,255,.86); text-decoration: none; }
+.vvg-footer a:hover { color: var(--vvg-gold); }
+.vvg-footer .footer-logo img,
+.vvg-footer .widget img { max-width: 100%; height: auto; }
+
+.vvg-footer .bottom-bar {
+	background: var(--vvg-brand);
+	border-top: 1px solid rgba(255,255,255,.18);
+	padding: 22px 0;
+	font-size: 14px;
+	color: rgba(255,255,255,.78);
+}
+.vvg-footer .bottom-bar .corp-container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+@media (max-width: 1080px) { .vvg-footer .widgets { grid-template-columns: 1fr 1fr; gap: 36px; } }
+@media (max-width: 900px) {
+	.vvg-footer.site-footer { text-align: center; }
+	.vvg-footer .footer-logo img { margin-left: auto; margin-right: auto; }
+	.vvg-footer .bottom-bar .corp-container { justify-content: center; text-align: center; }
+}
+@media (max-width: 600px) { .vvg-footer .widgets { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   Floating call button, mobile only
+   ========================================================================== */
+.vvg-call-now {
+	position: fixed;
+	left: 50%;
+	bottom: 20px;
+	transform: translateX(-50%);
+	z-index: 130;
+	display: none;
+	align-items: center;
+	gap: 11px;
+	background: var(--vvg-brand);
+	color: var(--vvg-primary);
+	font-family: var(--vvg-head);
+	font-weight: 700;
+	font-size: 13px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 15px 28px;
+	border-radius: 60px;
+	border: 2px solid var(--vvg-gold);
+	box-shadow: 0 12px 30px rgba(23,19,16,.35);
+	white-space: nowrap;
+}
+.vvg-call-now svg { width: 17px; height: 17px; fill: var(--vvg-primary); flex: none; }
+.vvg-call-now:active { background: var(--vvg-gold); color: var(--vvg-ink-deep); }
+.vvg-call-now:active svg { fill: var(--vvg-ink-deep); }
+@media (max-width: 900px) { .vvg-call-now { display: inline-flex; } }
+
+@media (prefers-reduced-motion: reduce) {
+	.vvg-header, .vvg-mobile-nav, .vvg-nav-overlay, .vvg-btn,
+	.vvg-nav ul.sub-menu, .vvg-burger span { transition-duration: .01ms !important; }
+}
+
+/* ==========================================================================
+   Container alignment
+   The theme's .corp-container is 87.5% wide, which at 1512px is 1323px — 
+   narrower than the header's 1440px cap, so the two edges did not line up.
+   Matching them to the same 1440/1880 spec fixes that everywhere at once.
+   ========================================================================== */
+body.vvg .corp-container {
+	max-width: 1440px;
+	width: 100%;
+	padding: 0 40px;
+	box-sizing: border-box;
+}
+@media (min-width: 1700px) { body.vvg .corp-container { max-width: 1880px; padding: 0 60px; } }
+@media (max-width: 640px)  { body.vvg .corp-container { padding: 0 22px; } }
