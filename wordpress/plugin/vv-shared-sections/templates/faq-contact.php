@@ -76,6 +76,36 @@ $intro_subheading = $vvss_get( 'intro_subheading' );
 $intro_body       = $vvss_get( 'intro_body' );
 $intro_image      = $vvss_get( 'intro_image' );
 $has_intro_split  = ( is_array( $intro_image ) && ! empty( $intro_image['url'] ) );
+
+/*
+ * Everything from the first sub-heading onward goes behind a Read More, as in
+ * the approved design — the intro opens with the three scene-setting
+ * paragraphs and the detail is there for anyone who wants it.
+ */
+$intro_more = '';
+if ( $intro_body && preg_match( '/<h[23][\s>]/i', $intro_body, $vvss_m, PREG_OFFSET_CAPTURE ) ) {
+	$vvss_cut   = (int) $vvss_m[0][1];
+	$intro_more = substr( $intro_body, $vvss_cut );
+	$intro_body = substr( $intro_body, 0, $vvss_cut );
+}
+$intro_more_id = 'vvss-intro-more-' . (int) $post_id;
+
+/*
+ * The enquiry form sits in the right-hand column of the contact block, as in
+ * the approved design. An explicit shortcode wins; otherwise the theme's helper
+ * is used when it is available, so the plugin works either way. With no form at
+ * all the map keeps its old place beside the cards.
+ */
+$vvss_form_shortcode = $vvss_get( 'contact_form_shortcode' );
+$contact_form_html   = '';
+if ( $vvss_form_shortcode ) {
+	$contact_form_html = do_shortcode( $vvss_form_shortcode );
+} elseif ( function_exists( 'vvg_enquiry_form' ) ) {
+	$contact_form_html = vvg_enquiry_form();
+}
+$has_contact_form  = ( '' !== trim( (string) $contact_form_html ) );
+$contact_form_head = $vvss_get( 'contact_form_heading' );
+$contact_form_sub  = $vvss_get( 'contact_form_sub' );
 $cta_label        = $vvss_get( 'cta_label' );
 $cta_url          = $vvss_get( 'cta_url' );
 $has_cta          = ( $cta_label && $cta_url );
@@ -209,8 +239,20 @@ $wrapper_class = 'vv-shared-section' . ( $bleed ? ' vv-shared-section--bleed' : 
 					</div>
 					<?php endif; ?>
 
-					<?php if ( $intro_body ) : ?>
-					<div class="vvss-intro-body"><?php echo wp_kses_post( $intro_body ); ?></div>
+					<?php if ( $intro_body || $intro_more ) : ?>
+					<div class="vvss-intro-body">
+						<?php echo wp_kses_post( $intro_body ); ?>
+
+						<?php if ( $intro_more ) : ?>
+						<div class="vvss-more-panel" id="<?php echo esc_attr( $intro_more_id ); ?>" hidden>
+							<?php echo wp_kses_post( $intro_more ); ?>
+						</div>
+						<button type="button" class="vvss-read-more" aria-expanded="false" aria-controls="<?php echo esc_attr( $intro_more_id ); ?>">
+							<span><?php esc_html_e( 'Read More', 'vv-shared-sections' ); ?></span>
+							<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16 4 8l1.4-1.4L12 13.2l6.6-6.6L20 8z"/></svg>
+						</button>
+						<?php endif; ?>
+					</div>
 					<?php endif; ?>
 
 					<?php if ( $has_cta ) : ?>
@@ -267,7 +309,8 @@ $wrapper_class = 'vv-shared-section' . ( $bleed ? ' vv-shared-section--bleed' : 
 			</div>
 			<?php endif; ?>
 
-			<div class="vvss-contact-grid">
+			<div class="vvss-contact-grid<?php echo $has_contact_form ? ' vvss-contact-grid--form' : ''; ?>">
+				<?php if ( $has_contact_form ) : ?><div class="vvss-contact-main"><?php endif; ?>
 				<div class="vvss-contact-cards">
 
 					<?php if ( $phone ) : ?>
@@ -319,6 +362,15 @@ $wrapper_class = 'vv-shared-section' . ( $bleed ? ' vv-shared-section--bleed' : 
 						loading="lazy"
 						referrerpolicy="no-referrer-when-downgrade"
 						allowfullscreen></iframe>
+				</div>
+				<?php endif; ?>
+				<?php if ( $has_contact_form ) : ?></div><?php endif; ?>
+
+				<?php if ( $has_contact_form ) : ?>
+				<div class="vvss-form-card">
+					<?php if ( $contact_form_head ) : ?><h3><?php echo esc_html( $contact_form_head ); ?></h3><?php endif; ?>
+					<?php if ( $contact_form_sub ) : ?><p class="vvss-form-sub"><?php echo esc_html( $contact_form_sub ); ?></p><?php endif; ?>
+					<?php echo $contact_form_html; // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- Shortcode output. ?>
 				</div>
 				<?php endif; ?>
 			</div>

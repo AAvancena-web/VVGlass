@@ -162,13 +162,54 @@
 	font-size: 17px;
 	text-align: center;
 }
+/*
+ * With no intro image there is no second column to hold the measure in, so the
+ * copy would run the full width of the page. Hold it to a readable line length
+ * instead; the split layout below drops this, because the grid already does it.
+ */
+.vv-shared-section .vvss-intro-section:not(.vvss-intro-split) .vvss-intro-body,
+.vv-shared-section .vvss-intro-section:not(.vvss-intro-split) .vvss-intro-sub {
+	max-width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+}
 .vv-shared-section .vvss-intro-body p { margin: 0 0 16px; }
 .vv-shared-section .vvss-intro-body h3 {
-	margin: 30px 0 10px;
+	margin: 38px 0 10px;
 	font-size: 21px;
 	color: var(--vvss-ink);
 	letter-spacing: -0.2px;
+	padding-left: 18px;
+	border-left: 3px solid var(--vvss-gold);
+	text-align: left;
 }
+/* ---------- Read More ---------- */
+.vv-shared-section .vvss-more-panel[hidden] { display: none; }
+.vv-shared-section .vvss-read-more {
+	display: inline-flex;
+	align-items: center;
+	gap: 9px;
+	margin-top: 14px;
+	background: none;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+	font-family: inherit;
+	font-weight: 700;
+	font-size: 13px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: var(--vvss-brand);
+}
+.vv-shared-section .vvss-read-more:hover { color: var(--vvss-ink); }
+.vv-shared-section .vvss-read-more svg {
+	width: 15px;
+	height: 15px;
+	fill: currentColor;
+	transition: transform .3s ease;
+}
+.vv-shared-section .vvss-read-more[aria-expanded="true"] svg { transform: rotate(180deg); }
+
 .vv-shared-section .vvss-cta-wrap { text-align: center; margin-top: 34px; }
 .vv-shared-section .vvss-btn {
 	display: inline-block;
@@ -187,48 +228,54 @@
 /* ---------- FAQ (two columns, split evenly) ---------- */
 .vv-shared-section .vvss-faq {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 14px 24px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 20px 26px;
 	align-items: start;
 }
 .vv-shared-section .vvss-faq-col {
 	display: grid;
-	gap: 14px;
+	gap: 20px;
 	align-content: start;
 }
 .vv-shared-section .vvss-qa {
 	background: var(--vvss-bg);
 	border: 1px solid var(--vvss-line);
 	border-radius: var(--vvss-radius);
-	padding: 4px 20px;
-	box-shadow: var(--vvss-shadow);
-	transition: border-color 0.2s ease;
+	overflow: hidden;
+	transition: border-color .3s ease, box-shadow .3s ease;
 }
-.vv-shared-section .vvss-qa[open] { border-color: var(--vvss-brand); }
+.vv-shared-section .vvss-qa[open] {
+	border-color: var(--vvss-gold);
+	box-shadow: var(--vvss-shadow);
+}
 .vv-shared-section .vvss-qa summary {
 	list-style: none;
 	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-	padding: 16px 0;
-	font-weight: 700;
+	position: relative;
+	padding: 22px 58px 22px 24px;
+	font-weight: 600;
 	font-size: 17px;
+	line-height: 1.45;
 	color: var(--vvss-ink);
+	transition: color .25s ease;
 }
 .vv-shared-section .vvss-qa summary::-webkit-details-marker { display: none; }
+.vv-shared-section .vvss-qa summary:hover { color: var(--vvss-brand); }
 .vv-shared-section .vvss-qa summary .vvss-icon {
-	flex: none;
-	width: 26px;
-	height: 26px;
+	position: absolute;
+	right: 20px;
+	top: 19px;
+	width: 28px;
+	height: 28px;
 	border-radius: 50%;
-	background: var(--vvss-brand-light);
+	background: var(--vvss-bg-alt);
 	color: var(--vvss-brand);
 	display: grid;
 	place-items: center;
-	font-weight: 800;
-	transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 1;
+	transition: transform .3s ease, background .3s ease, color .3s ease;
 }
 .vv-shared-section .vvss-qa[open] summary .vvss-icon {
 	transform: rotate(45deg);
@@ -236,7 +283,7 @@
 	color: #fff;
 }
 .vv-shared-section .vvss-answer {
-	padding: 14px 0 18px;
+	padding: 20px 24px 24px;
 	color: var(--vvss-ink-soft);
 	border-top: 1px solid var(--vvss-line);
 }
@@ -318,6 +365,100 @@
 	flex: 1;
 }
 
+/* ---------- Enquiry form ---------- */
+/*
+ * With a form present the left column stacks the cards above the map and the
+ * form takes the right, matching the design. Without one the grid keeps its
+ * old shape — cards beside the map — so nothing breaks for a section that has
+ * no form configured.
+ */
+.vv-shared-section .vvss-contact-grid--form { align-items: start; }
+.vv-shared-section .vvss-contact-main {
+	display: grid;
+	gap: 24px;
+	align-content: start;
+	min-width: 0;
+}
+.vv-shared-section .vvss-contact-grid--form .vvss-map-panel { min-height: 300px; }
+.vv-shared-section .vvss-contact-grid--form .vvss-map-panel iframe { min-height: 300px; }
+
+.vv-shared-section .vvss-form-card {
+	background: var(--vvss-bg-alt);
+	border: 1px solid #e0d8c8;
+	border-radius: var(--vvss-radius);
+	padding: 34px;
+	box-shadow: var(--vvss-shadow);
+	min-width: 0;
+}
+.vv-shared-section .vvss-form-card h3 {
+	margin: 0 0 8px;
+	text-align: center;
+	font-size: 24px;
+	color: var(--vvss-ink);
+}
+.vv-shared-section .vvss-form-sub {
+	margin: 0 0 24px;
+	text-align: center;
+	color: var(--vvss-ink-soft);
+	font-size: 15px;
+}
+/* Contact Form 7 wraps every field in its own paragraph. */
+.vv-shared-section .vvss-form-card p { margin: 0 0 13px; }
+.vv-shared-section .vvss-form-card input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
+.vv-shared-section .vvss-form-card textarea,
+.vv-shared-section .vvss-form-card select {
+	width: 100%;
+	font-family: inherit;
+	font-size: 15px;
+	padding: 14px 16px;
+	border-radius: 4px;
+	background: var(--vvss-bg);
+	border: 1px solid #d8d2c6;
+	color: var(--vvss-ink);
+	transition: border-color .25s ease, box-shadow .25s ease;
+}
+.vv-shared-section .vvss-form-card input::placeholder,
+.vv-shared-section .vvss-form-card textarea::placeholder { color: #6e6960; }
+.vv-shared-section .vvss-form-card input:not([type="submit"]):focus,
+.vv-shared-section .vvss-form-card textarea:focus,
+.vv-shared-section .vvss-form-card select:focus {
+	outline: 0;
+	border-color: var(--vvss-brand);
+	box-shadow: 0 0 0 3px rgba(142, 110, 71, .12);
+}
+.vv-shared-section .vvss-form-card textarea { min-height: 112px; resize: vertical; }
+.vv-shared-section .vvss-form-card input[type="submit"],
+.vv-shared-section .vvss-form-card button[type="submit"] {
+	width: 100%;
+	margin-top: 8px;
+	background: var(--vvss-brand);
+	color: #fff;
+	border: 0;
+	border-radius: 4px;
+	padding: 17px 28px;
+	font-family: inherit;
+	font-weight: 700;
+	font-size: 15px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: background .25s ease, color .25s ease;
+}
+.vv-shared-section .vvss-form-card input[type="submit"]:hover,
+.vv-shared-section .vvss-form-card button[type="submit"]:hover {
+	background: var(--vvss-gold);
+	color: var(--vvss-ink);
+}
+/* CF7's spinner and validation messages. */
+.vv-shared-section .vvss-form-card .wpcf7-spinner { margin: 0 auto; display: block; }
+.vv-shared-section .vvss-form-card .wpcf7-not-valid-tip { font-size: 13px; }
+.vv-shared-section .vvss-form-card .wpcf7-response-output {
+	margin: 16px 0 0;
+	padding: 12px 14px;
+	font-size: 14px;
+	border-radius: 4px;
+}
+
 /* ---------- Responsive ---------- */
 @media (min-width: 1700px) {
 	.vv-shared-section { --vvss-maxw: 1840px; }
@@ -330,6 +471,7 @@
 	.vv-shared-section .vvss-qa-answer { text-align: center; }
 	.vv-shared-section .vvss-faq { grid-template-columns: 1fr; }
 	.vv-shared-section .vvss-contact-grid { grid-template-columns: 1fr; }
+	.vv-shared-section .vvss-form-card { padding: 26px 22px; }
 	.vv-shared-section .vvss-content-section,
 	.vv-shared-section .vvss-faq-section,
 	.vv-shared-section .vvss-contact-section { padding: 50px 0; }
@@ -351,6 +493,9 @@
 .vv-shared-section .vvss-intro-media img {
 	width: 100%;
 	aspect-ratio: 4 / 5;
+	/* Without a cap the portrait ratio makes a 1000px-tall frame on a wide
+	   screen, which dwarfs the copy beside it. */
+	max-height: 620px;
 	object-fit: cover;
 	border-radius: var(--vvss-radius);
 	display: block;

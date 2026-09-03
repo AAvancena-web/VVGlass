@@ -64,6 +64,11 @@ copy is off and the plugin is not on yet.
 - [ ] Set its **Order** to `10` (Page Attributes box), leave its **Page Group
       empty**. Update.
 - [ ] **Purge LiteSpeed Cache**, load the site: section back, same place.
+- [ ] On the **Contact** tab there is now a **Form Shortcode** field. Paste your
+      Contact Form 7 shortcode there so the enquiry form appears beside the
+      contact cards, as in the design. Leave it blank and the theme's form is
+      used when Part B is installed; with no form at all the map stays beside
+      the cards instead.
 
 **If it does not come back:** the output hook moved to
 `siteorigin_corp_footer_before`, which only fires when that page's footer is

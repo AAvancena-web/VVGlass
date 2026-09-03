@@ -307,6 +307,27 @@ function vvss_register_acf_fields() {
 					'default_value' => "Reach out for a free quote or fast emergency response. We're here to help across Sydney & Wollongong.",
 				),
 				array(
+					'key'           => 'field_vvss_contact_form_heading',
+					'label'         => 'Form Heading',
+					'name'          => 'contact_form_heading',
+					'type'          => 'text',
+					'default_value' => 'Get In Touch with VV Glass',
+				),
+				array(
+					'key'           => 'field_vvss_contact_form_sub',
+					'label'         => 'Form Subheading',
+					'name'          => 'contact_form_sub',
+					'type'          => 'text',
+					'default_value' => "Tell us about your project and we'll come back with clear, practical advice.",
+				),
+				array(
+					'key'          => 'field_vvss_contact_form_shortcode',
+					'label'        => 'Form Shortcode',
+					'name'         => 'contact_form_shortcode',
+					'type'         => 'text',
+					'instructions' => 'The Contact Form 7 shortcode for the enquiry form, e.g. <code>[contact-form-7 id="123"]</code>. Leave blank and the theme\'s enquiry form is used if it is available. With no form at all, the map moves back beside the contact cards.',
+				),
+				array(
 					'key'           => 'field_vvss_phone',
 					'label'         => 'Phone',
 					'name'          => 'phone',
