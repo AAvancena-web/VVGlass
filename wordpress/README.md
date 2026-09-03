@@ -4,6 +4,9 @@ Adds per-page-group targeting to the existing shared sections module, so the
 five content variations from the Word document can land on their own groups of
 pages while the FAQ and contact details stay in one place.
 
+Packaged as a **plugin**, so Deactivate is the rollback and no theme files are
+replaced. See `DEPLOY.md` for the step-by-step.
+
 Nothing here has been applied to the live site. Review, then deploy yourself.
 
 ---
@@ -12,7 +15,7 @@ Nothing here has been applied to the live site. Review, then deploy yourself.
 
 | File | Change |
 |---|---|
-| `init.php` | New `page_group` taxonomy, a resolver that returns every section applying to a page, `page-attributes` support for ordering, and a hook move. |
+| `vv-shared-sections.php` | Was the theme's `init.php`. Now a plugin: plugin header, `plugin_dir_*` paths, term seeding on activation. Plus the new `page_group` taxonomy, a resolver that returns every section applying to a page, `page-attributes` support for ordering, and a hook move. |
 | `includes/acf-fields.php` | New **Content** tab (open copy + question list), a per-page override field group, and an `faq_open_first` toggle. All existing field keys unchanged. |
 | `templates/faq-contact.php` | Renders the Content block above the existing three. |
 | `assets/shared-section.css` | Content block styles; full-bleed is now opt-in. |
@@ -54,19 +57,21 @@ brand new section now starts empty instead of pre-filled.
 
 ## Deploying
 
-1. **Back up** the site and database. Work on staging.
-2. Confirm **ACF PRO** is active. The repeaters need it.
-3. Replace these four files in `wp-content/themes/siteorigin-corp-child/`:
-   - `init.php`
-   - `includes/acf-fields.php`
-   - `templates/faq-contact.php`
-   - `assets/shared-section.css`
-4. Load any admin page once. The `page_group` taxonomy registers and seeds five
-   terms (Hub, Installation, Repair, Replacement, Fencing).
-5. Check the existing shared section still renders, then purge LiteSpeed Cache.
+Full instructions with the failure modes are in **`DEPLOY.md`**. In outline:
 
-`functions.php` needs no change — it already does `require_once
-get_stylesheet_directory() . '/init.php';`.
+1. Back up. Confirm ACF PRO is active.
+2. Upload `wordpress/plugin/vv-shared-sections/` to `wp-content/plugins/`,
+   without activating.
+3. In the child theme, rename `init.php` to `init.php.bak` and put
+   `wordpress/theme-shim/init.php` in its place. This matters: `functions.php`
+   still has `require_once get_stylesheet_directory() . '/init.php';`, and
+   `require_once` on a missing file is fatal, while leaving the original in
+   place would declare every function twice — also fatal.
+4. Activate the plugin, check the existing section is intact, purge LiteSpeed.
+
+Rollback is Deactivate, then swap the two `init.php` files back. Deactivating
+never deletes content: sections, field values and page tags all stay in the
+database and return on reactivation.
 
 ---
 

@@ -1,24 +1,24 @@
-# Deployment guide — VV Shared Sections v1.1
+# Deployment guide — VV Shared Sections v1.1 (plugin)
 
-Follow in order. Steps 1–3 take about ten minutes; step 4 is the content work.
+Runs as a plugin, so **Deactivate is the rollback**. No theme files are
+replaced, and deactivating never deletes content.
 
-**All four files are overwrites. Nothing new is created.** Your theme already
-has all of them.
+Steps 1–4 take about ten minutes. Step 5 is the content work.
 
 ---
 
 ## Before you start
 
-- [ ] Do this on **staging**, not production.
-- [ ] Back up files **and** the database.
+- [ ] Do this on **staging** first if you have one.
+- [ ] Back up files **and** the database anyway.
 - [ ] Confirm **ACF PRO** is active (Plugins → Installed). The repeaters need
-      PRO; the free version will show the fields but not the repeaters.
-- [ ] Open the live site and note what the shared section currently looks like,
-      so you have something to compare against.
+      PRO; the free version shows the other fields but not the repeaters.
+- [ ] Open the live site and note what the shared section looks like now, so
+      you have something to compare against.
 
 ---
 
-## Where the files go
+## The one thing that can break the site
 
 Your `functions.php` ends with:
 
@@ -26,82 +26,91 @@ Your `functions.php` ends with:
 require_once get_stylesheet_directory() . '/init.php';
 ```
 
-`get_stylesheet_directory()` is the **child theme root**, so `init.php` sits at
-the top level of the theme — not inside a `vv-shared-sections/` folder, despite
-what the comment block at the top of that file says. The other three are in
-subfolders relative to it.
+Two traps, both fatal, both avoided by following the order below:
 
-| From this repo | Goes to |
-|---|---|
-| `wordpress/vv-shared-sections/init.php` | `wp-content/themes/siteorigin-corp-child/init.php` |
-| `wordpress/vv-shared-sections/includes/acf-fields.php` | `wp-content/themes/siteorigin-corp-child/includes/acf-fields.php` |
-| `wordpress/vv-shared-sections/templates/faq-contact.php` | `wp-content/themes/siteorigin-corp-child/templates/faq-contact.php` |
-| `wordpress/vv-shared-sections/assets/shared-section.css` | `wp-content/themes/siteorigin-corp-child/assets/shared-section.css` |
+1. **Delete the theme's `init.php` without editing `functions.php`** →
+   `require_once` on a missing file is a fatal error. White screen.
+2. **Activate the plugin while the theme's original `init.php` still loads** →
+   every function gets declared twice. Fatal error.
 
-⚠️ Do **not** copy the `vv-shared-sections` folder itself into the theme. Copy
-the four files to the paths above. Dropping the folder in would leave
-`functions.php` loading the old `init.php` at the root, and nothing would change.
+Step 3 solves both by overwriting the theme's `init.php` with a file that does
+nothing. The `require_once` still succeeds, and only the plugin declares
+anything.
 
 ---
 
 ## Step 1 — Get the files
 
-Branch `claude/wordpress-site-redesign-j7zd4i`, folder `wordpress/vv-shared-sections/`.
+Branch `claude/wordpress-site-redesign-j7zd4i`:
 
-Either clone it:
+```
+wordpress/plugin/vv-shared-sections/     ← the plugin
+wordpress/theme-shim/init.php            ← the no-op replacement
+```
 
 ```bash
 git clone -b claude/wordpress-site-redesign-j7zd4i \
   https://github.com/AAvancena-web/VVGlass.git
-cd VVGlass/wordpress/vv-shared-sections
 ```
-
-or download each of the four from GitHub's web UI (Raw → Save As).
 
 ---
 
-## Step 2 — Rename the current files, don't delete them
+## Step 2 — Upload the plugin (do not activate yet)
 
-Over FTP/SFTP or your host's file manager, in the child theme:
+Copy the whole folder so you end up with:
 
 ```
-init.php                     ->  init.php.bak
-includes/acf-fields.php      ->  includes/acf-fields.php.bak
-templates/faq-contact.php    ->  templates/faq-contact.php.bak
-assets/shared-section.css    ->  assets/shared-section.css.bak
+wp-content/plugins/vv-shared-sections/
+├── vv-shared-sections.php
+├── includes/acf-fields.php
+├── templates/faq-contact.php
+└── assets/shared-section.css
 ```
 
-Renaming rather than deleting means rollback is renaming them back.
+Or zip the `vv-shared-sections` folder and use **Plugins → Add New → Upload
+Plugin**. Either way, **do not activate yet.**
 
-⚠️ `.bak` is important. If you leave a copy named `init-old.php` in the theme
-it does no harm, but anything ending `.php` that WordPress or a scanner picks
-up is best avoided. `.bak` is not executed.
+It should now appear in the Plugins list as *VV Shared Sections*, inactive.
 
 ---
 
-## Step 3 — Upload the four new files
+## Step 3 — Neutralise the theme copy
 
-Upload to the paths in the table above. Then, in this order:
+In `wp-content/themes/siteorigin-corp-child/`:
 
-1. **Load any wp-admin page once.** This registers the taxonomy and creates the
-   five Page Group terms.
-2. Check the sidebar: **Shared Sections** should now show a **Page Groups**
-   submenu with Hub, Installation, Repair, Replacement and Fencing.
-3. Open **Shared Sections** → your existing section. You should see a new
-   **Content** tab, and all your existing Intro / FAQ / Contact values still in
-   place. If any field is blank that wasn't before, stop and roll back.
-4. Set that section's **Order** to `10` (Page Attributes box). Leave its Page
-   Group **empty** so it stays site-wide. Update.
-5. **Purge LiteSpeed Cache** (toolbar → LiteSpeed Cache → Purge All).
-6. Load the front end. The section should look the same as before, and sit in
-   the same place.
+1. Rename `init.php` → `init.php.bak`
+2. Upload `wordpress/theme-shim/init.php` in its place
 
-### If the section disappears
+Leave `includes/`, `templates/` and `assets/` in the theme alone — with the
+shim in place nothing loads them, and they are your fallback.
 
-Almost certainly the hook change. That block now renders on
-`siteorigin_corp_footer_before`, which only fires when the page's footer is
-enabled in SiteOrigin page settings. Add this to `functions.php` to go back to
-the old hook:
+Reload the front end. **The shared section will have disappeared.** That is
+correct and expected — the theme code is off and the plugin is not on yet.
+
+> Renaming rather than deleting is deliberate: to roll all of this back you
+> rename `init.php.bak` over the shim and deactivate the plugin.
+
+---
+
+## Step 4 — Activate
+
+**Plugins → VV Shared Sections → Activate.** Then check, in order:
+
+1. **Shared Sections** appears in the admin sidebar, with a **Page Groups**
+   submenu containing Hub, Installation, Repair, Replacement, Fencing.
+2. Open your existing section. There is a new **Content** tab, and every
+   existing Intro / FAQ / Contact value is still there. *If any field is blank
+   that was not before, stop and roll back.*
+3. Set its **Order** to `10` (Page Attributes box). Leave its **Page Group
+   empty** so it stays site-wide. Update.
+4. **Purge LiteSpeed Cache** (toolbar → LiteSpeed Cache → Purge All).
+5. Load the front end. The section is back, looking as it did, in the same place.
+
+### If the section does not come back
+
+Most likely the hook change. It now renders on
+`siteorigin_corp_footer_before`, which only fires when that page's footer is
+enabled in SiteOrigin page settings. Add to `functions.php`:
 
 ```php
 add_filter( 'vvss_output_hook', function () { return 'get_footer'; } );
@@ -109,38 +118,34 @@ add_filter( 'vvss_output_hook', function () { return 'get_footer'; } );
 
 ### If you get a white screen
 
-Rename the four `.bak` files back. That is a complete rollback — no database
-changes have happened at this point.
+Deactivate the plugin. If you cannot reach wp-admin, rename the plugin folder
+to `vv-shared-sections-off` over FTP — WordPress deactivates a plugin whose
+folder has vanished.
 
 ---
 
-## Step 4 — Set up the content
+## Step 5 — Set up the content
 
-Only after step 3 is verified.
+Only once step 4 is verified.
 
-### 4a. Create the five variation sections
+### 5a. Create the five variation sections
 
 For each variation in the Word document:
 
 1. **Shared Sections → Add New**
-2. Title it clearly: `Variation 1 — Hub`, `Variation 2 — Installation`, etc.
-3. Fill in **only the Content tab**:
-   - Eyebrow, Heading
-   - Opening Copy — the paragraphs before the questions
-   - Questions Heading — e.g. "Questions We Get Asked Often"
-   - Questions — one row per Q&A
-   - Closing Copy — the final paragraph
-   - CTA label and URL
-4. Leave the **Intro, FAQ and Contact tabs empty.** Empty blocks render nothing,
-   which is what keeps the phone number in one place.
-5. In the sidebar, tick its **Page Group**.
+2. Title it clearly: `Variation 1 — Hub`, `Variation 2 — Installation`, …
+3. Fill in **only the Content tab**: eyebrow, heading, opening copy, the
+   questions, closing copy, CTA label and URL.
+4. Leave **Intro, FAQ and Contact empty.** Empty blocks render nothing — that
+   is what keeps the phone number in exactly one place.
+5. Tick its **Page Group** in the sidebar.
 6. Set **Order** to `0` so it renders above the site-wide block.
 7. Publish.
 
-### 4b. Tag the pages
+### 5b. Tag the pages
 
-**Pages → All Pages.** Tick every page in a group, **Bulk Actions → Edit →
-Apply**, set the Page Group, **Update**.
+**Pages → All Pages.** Tick every page in a group → **Bulk Actions → Edit →
+Apply** → set the Page Group → **Update**.
 
 | Group | Pages |
 |---|---|
@@ -150,32 +155,43 @@ Apply**, set the Page Group, **Update**.
 | Replacement | Home, Residential, Commercial, Industrial, Window, Shopfront |
 | Fencing | Glass Pool Fencing |
 
-A page you forget to tag just gets the site-wide block. Safe failure.
+A page you forget to tag simply gets the site-wide block. Safe failure.
 
-### 4c. Check
+### 5c. Check
 
-Load one page from each group. You should see the right variation, then the
-intro, FAQ and contact block below it. Purge the cache first, or you will be
-looking at a cached copy and think it failed.
-
----
-
-## Step 5 — The theme fixes (separate day)
-
-`THEME-FIXES.md` covers four issues in `header.php` and `functions.php`. Deploy
-those on their own, after the above is settled, so that if something breaks you
-know which change caused it.
+Load one page from each group. Purge the cache first, or you will be looking at
+a cached copy and conclude it failed.
 
 ---
 
-## Rolling back after step 4
+## What deactivating actually does
 
-If you need to undo once content exists:
+| | Effect |
+|---|---|
+| Front end | Sections stop rendering immediately. |
+| Admin | Shared Sections and Page Groups menus disappear. |
+| Your content | **Untouched.** Sections stay as posts, field values stay in postmeta, page tags stay in the taxonomy tables. |
+| Reactivating | Everything returns exactly as it was. |
 
-1. Rename the four `.bak` files back over the new ones.
-2. The five variation sections stay in the database but stop rendering, because
-   the old code only ever shows one section.
-3. The `page_group` terms stay too. Harmless. Delete them under Shared Sections
-   → Page Groups if you want them gone.
+There is no uninstall routine that deletes data, deliberately. If you ever want
+the data gone it has to be removed by hand.
 
-Nothing in this change deletes or rewrites existing content.
+---
+
+## Full rollback
+
+1. Deactivate the plugin.
+2. In the child theme, rename `init.php` (the shim) → `init-shim.php.bak`, then
+   rename `init.php.bak` → `init.php`.
+3. Purge the cache.
+
+You are back to exactly the current live behaviour. The five variation sections
+and page tags stay in the database, dormant, ready if you try again.
+
+---
+
+## Step 6 — The theme fixes (separate day)
+
+`THEME-FIXES.md` covers four issues in `header.php` and `functions.php`. Those
+are genuine theme edits with no deactivate switch, so do them on their own,
+after this is settled.

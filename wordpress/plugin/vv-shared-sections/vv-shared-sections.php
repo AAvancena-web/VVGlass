@@ -1,11 +1,15 @@
 <?php
 /**
- * VV Shared Sections — theme include (no plugin required).
- *
- * Place the "vv-shared-sections" folder inside your active (child) theme, then
- * add this line to your theme's functions.php:
- *
- *     require_once get_theme_file_path( 'vv-shared-sections/init.php' );
+ * Plugin Name:       VV Shared Sections
+ * Plugin URI:        https://vvglass.com.au/
+ * Description:       Reusable content, FAQ and contact blocks that render above the footer. Sections with no Page Group show on every page; sections with one show only on pages in that group. Deactivate to switch the whole thing off without losing any content.
+ * Version:           1.1.0
+ * Requires at least: 5.8
+ * Requires PHP:      7.4
+ * Author:            Digital Movement
+ * Author URI:        https://www.digitalmovement.com.au/
+ * License:           GPL-2.0-or-later
+ * Text Domain:       vv-shared-sections
  *
  * @package VV_Shared_Sections
  */
@@ -14,32 +18,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // No direct access.
 }
 
-if ( ! defined( 'VVSS_VERSION' ) ) {
-	define( 'VVSS_VERSION', '1.1.0' );
-}
-
-/**
- * Convert an absolute path inside the active/parent theme to its public URL.
- * Keeps the include location-independent (theme root or a subfolder).
+/*
+ * Guard against the older theme-based copy still being loaded.
+ *
+ * Plugins load before the theme's functions.php, so if the child theme still
+ * has the original init.php AND still requires it, that file would try to
+ * redeclare every function below and take the site down with a fatal error.
+ * Replace the theme's init.php with the shim supplied alongside this plugin.
  */
-function vvss_path_to_uri( $path ) {
-	$path           = wp_normalize_path( $path );
-	$stylesheet_dir = wp_normalize_path( get_stylesheet_directory() );
-	$template_dir   = wp_normalize_path( get_template_directory() );
-
-	if ( 0 === strpos( $path, $stylesheet_dir ) ) {
-		return str_replace( $stylesheet_dir, get_stylesheet_directory_uri(), $path );
-	}
-	if ( 0 === strpos( $path, $template_dir ) ) {
-		return str_replace( $template_dir, get_template_directory_uri(), $path );
-	}
-
-	$content_dir = wp_normalize_path( WP_CONTENT_DIR );
-	if ( 0 === strpos( $path, $content_dir ) ) {
-		return content_url( str_replace( $content_dir, '', $path ) );
-	}
-	return $path;
+if ( defined( 'VVSS_VERSION' ) ) {
+	return;
 }
+
+define( 'VVSS_VERSION', '1.1.0' );
+define( 'VVSS_FILE', __FILE__ );
+define( 'VVSS_DIR', plugin_dir_path( __FILE__ ) );
+define( 'VVSS_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * 1. Register the "Shared Sections" custom post type (this is the admin menu).
@@ -112,13 +106,22 @@ function vvss_register_taxonomy() {
 add_action( 'init', 'vvss_register_taxonomy', 9 );
 
 /**
- * 1c. Seed the five starting groups once, so the boxes are not empty on day one.
- * Editors can rename, delete or add to these freely afterwards.
+ * 1c. Seed the five starting groups on activation, so the boxes are not empty
+ * on day one. Editors can rename, delete or add to these freely afterwards.
+ *
+ * Runs once ever — the option guard means deactivating and reactivating will
+ * not recreate terms you deliberately deleted.
  */
 function vvss_seed_page_groups() {
 	if ( get_option( 'vvss_groups_seeded' ) ) {
 		return;
 	}
+
+	// Activation fires before init, so make sure the taxonomy exists first.
+	if ( ! taxonomy_exists( 'page_group' ) ) {
+		vvss_register_taxonomy();
+	}
+
 	foreach ( array( 'Hub', 'Installation', 'Repair', 'Replacement', 'Fencing' ) as $name ) {
 		if ( ! term_exists( $name, 'page_group' ) ) {
 			wp_insert_term( $name, 'page_group' );
@@ -126,22 +129,22 @@ function vvss_seed_page_groups() {
 	}
 	update_option( 'vvss_groups_seeded', 1, false );
 }
-add_action( 'init', 'vvss_seed_page_groups', 11 );
+register_activation_hook( __FILE__, 'vvss_seed_page_groups' );
 
 /**
  * 2. Register the ACF field groups in code.
  */
-require_once __DIR__ . '/includes/acf-fields.php';
+require_once VVSS_DIR . 'includes/acf-fields.php';
 
 /**
- * 3. Front-end styles (loaded from the theme folder).
+ * 3. Front-end styles.
  */
 function vvss_enqueue_assets() {
-	$path = __DIR__ . '/assets/shared-section.css';
+	$path = VVSS_DIR . 'assets/shared-section.css';
 	if ( ! file_exists( $path ) ) {
 		return;
 	}
-	wp_enqueue_style( 'vvss-shared-section', vvss_path_to_uri( $path ), array(), filemtime( $path ) );
+	wp_enqueue_style( 'vvss-shared-section', VVSS_URL . 'assets/shared-section.css', array(), filemtime( $path ) );
 }
 add_action( 'wp_enqueue_scripts', 'vvss_enqueue_assets' );
 
@@ -278,7 +281,7 @@ function vvss_render_section( $post_id, $bleed = false ) {
 		return '';
 	}
 	ob_start();
-	include __DIR__ . '/templates/faq-contact.php';
+	include VVSS_DIR . 'templates/faq-contact.php';
 	return ob_get_clean();
 }
 
@@ -324,18 +327,22 @@ function vvss_shortcode( $atts ) {
 add_shortcode( 'shared_section', 'vvss_shortcode' );
 
 /**
- * 4b. Auto-output the resolved sections just above the footer.
+ * Which action the automatic output is attached to.
  *
- * Hooked to siteorigin_corp_footer_before, which fires AFTER the theme closes
- * #content and .corp-container, so the block is already full width and needs no
- * negative-margin trickery. (The old get_footer hook fired while still inside
- * .corp-container, which is why the stylesheet used a 100vw hack — that hack
- * overflows by the scrollbar width on Windows.)
+ * siteorigin_corp_footer_before fires AFTER the theme closes #content and
+ * .corp-container, so the block is already full width and needs no negative
+ * margins. Note it sits inside the theme's page-level footer toggle, so a page
+ * with its footer disabled will not show the block. To fall back to rendering
+ * inside the container instead:
  *
- * Note: siteorigin_corp_footer_before only fires when the page's footer is
- * enabled in the SiteOrigin page settings. Change the hook with:
  *   add_filter( 'vvss_output_hook', fn() => 'get_footer' );
- * and the block will fall back to rendering inside the container.
+ */
+function vvss_output_hook() {
+	return (string) apply_filters( 'vvss_output_hook', 'siteorigin_corp_footer_before' );
+}
+
+/**
+ * 4b. Auto-output the resolved sections just above the footer.
  */
 function vvss_render_above_footer() {
 	static $done = false;
@@ -359,16 +366,12 @@ function vvss_render_above_footer() {
 		echo vvss_render_section( $id, $bleed ); // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- Escaped in template.
 	}
 }
-
-/**
- * Which action the automatic output is attached to.
- */
-function vvss_output_hook() {
-	return (string) apply_filters( 'vvss_output_hook', 'siteorigin_corp_footer_before' );
-}
-add_action( 'wp', function () {
-	add_action( vvss_output_hook(), 'vvss_render_above_footer' );
-} );
+add_action(
+	'wp',
+	function () {
+		add_action( vvss_output_hook(), 'vvss_render_above_footer' );
+	}
+);
 
 /**
  * 5. Admin list columns: the shortcode, plus which pages a section lands on.
@@ -410,3 +413,15 @@ function vvss_acf_notice() {
 	}
 }
 add_action( 'admin_notices', 'vvss_acf_notice' );
+
+/**
+ * 7. "Settings"-style row link pointing at the sections list.
+ */
+function vvss_action_links( $links ) {
+	array_unshift(
+		$links,
+		'<a href="' . esc_url( admin_url( 'edit.php?post_type=shared_section' ) ) . '">' . esc_html__( 'Sections', 'vv-shared-sections' ) . '</a>'
+	);
+	return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'vvss_action_links' );
