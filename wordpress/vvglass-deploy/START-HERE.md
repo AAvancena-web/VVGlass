@@ -79,10 +79,22 @@ FTP — WordPress deactivates a plugin whose folder vanishes — then put
 
 ### A4. Content (can wait)
 
-For each variation in the Word document: **Shared Sections → Add New**, title
-it `Variation 1 — Hub` etc, fill **only the Content tab**, tick its **Page
-Group**, set **Order** to `0`, publish. Leave Intro/FAQ/Contact empty — that is
-what keeps the phone number in one place.
+Two kinds of section, and the difference is only whether a Page Group is
+ticked:
+
+| Section | Page Group | Where it shows |
+|---|---|---|
+| Your existing one — Intro, FAQ, Contact | **empty** | **every page** |
+| Variation 1–5 — Content tab only | **one group** | only pages in that group |
+
+So the intro, FAQ and contact block appear site-wide from a single section, and
+the Word-document copy follows the page groups. Nothing is duplicated: the
+phone number lives in exactly one place.
+
+For each variation: **Shared Sections → Add New**, title it `Variation 1 — Hub`
+etc, fill **only the Content tab**, tick its **Page Group**, set **Order** to
+`0` so it renders above the site-wide block, publish. Leave Intro/FAQ/Contact
+empty on these.
 
 Then **Pages → All Pages**, tick the pages in a group, **Bulk Actions → Edit**,
 set the Page Group, Update.
@@ -145,7 +157,7 @@ It loads **after every enqueued stylesheet**, so it beats the redesign.
 **Copy it into a text file first**, then clear it and Publish. The hero will
 not take the new layout until you do.
 
-### B6. Purge and check
+### B7. Purge and check
 
 **Purge LiteSpeed Cache**, then walk through:
 
@@ -164,7 +176,7 @@ not take the new layout until you do.
 - [ ] **Submit the enquiry form once** and confirm it still redirects to
       `/thank-you/`.
 
-### B7. Check Google Analytics ⚠
+### B8. Check Google Analytics ⚠
 
 Your old `header.php` loaded `gtag.js` **twice**, each with its own
 `gtag('config','G-T2S7QD9EQ3')` — two page_view events per visit. The new

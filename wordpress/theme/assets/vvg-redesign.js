@@ -88,7 +88,7 @@
 	/* ---- Project lightbox ----
 	   The project images are WPBakery output, so the trigger is bound to the
 	   existing <img> elements rather than requiring new markup in the page. */
-	var shots = document.querySelectorAll('.project_row .grid-image img');
+	var shots = document.querySelectorAll('.vvg-project img, .project_row .grid-image img');
 	if (shots.length) {
 		var lb = document.createElement('div');
 		lb.className = 'vvg-lightbox';
@@ -154,5 +154,27 @@
 			if (e.key === 'ArrowLeft') { step(-1); }
 			if (e.key === 'ArrowRight') { step(1); }
 		});
+	}
+
+	/* ---- Homepage hero slider ---- */
+	var slides = document.querySelectorAll('.vvg-hero-slide');
+	if (slides.length > 1) {
+		var dots = document.querySelectorAll('.vvg-hero-dots button');
+		var at = 0, timer;
+
+		var show = function (i) {
+			at = (i + slides.length) % slides.length;
+			Array.prototype.forEach.call(slides, function (s, n) { s.classList.toggle('is-active', n === at); });
+			Array.prototype.forEach.call(dots, function (d, n) { d.classList.toggle('is-active', n === at); });
+		};
+		var start = function () {
+			clearInterval(timer);
+			timer = setInterval(function () { show(at + 1); }, 6000);
+		};
+
+		Array.prototype.forEach.call(dots, function (dot, n) {
+			dot.addEventListener('click', function () { show(n); start(); });
+		});
+		start();
 	}
 })();

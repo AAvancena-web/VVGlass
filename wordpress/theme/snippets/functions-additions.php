@@ -306,3 +306,42 @@ add_action(
 	},
 	20
 );
+
+/* ==========================================================================
+   6. Homepage template support
+   ========================================================================== */
+require_once get_stylesheet_directory() . '/includes/acf-home.php';
+
+/**
+ * Inline SVG icons used by the homepage template.
+ */
+function vvg_icon( $name ) {
+	$paths = array(
+		'shield'    => '<path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5zm-1 14-4-4 1.4-1.4L11 13.2l4.6-4.6L17 10z"/>',
+		'clock'     => '<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 10.6V6h-2v7.4l5 3 1-1.7z"/>',
+		'star'      => '<path d="m12 2 2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.1 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/>',
+		'bolt'      => '<path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12z"/>',
+		'grid'      => '<path d="M3 3h18v18H3zm2 2v6h6V5zm8 0v6h6V5zM5 13v6h6v-6zm8 0v6h6v-6z"/>',
+		'clipboard' => '<path d="M19 3h-4.2a3 3 0 0 0-5.6 0H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1-1 1 1 1 0 0 1 1-1zm-1 15-4-4 1.4-1.4L11 15.2l5.6-5.6L18 11z"/>',
+		'person'    => '<path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 4.5V21h16v-2.5C20 16 16 14 12 14z"/>',
+		'chat'      => '<path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 9h10v2H7zm0-4h10v2H7zm0 8h7v2H7z"/>',
+		'arrow'     => '<path d="M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4z"/>',
+	);
+	$path = isset( $paths[ $name ] ) ? $paths[ $name ] : $paths['star'];
+	return '<svg viewBox="0 0 24 24" aria-hidden="true">' . $path . '</svg>';
+}
+
+/**
+ * Render one of the ACF button pairs, or nothing when either half is blank.
+ */
+function vvg_cta( $name, $classes = 'vvg-btn' ) {
+	if ( ! function_exists( 'get_field' ) ) {
+		return '';
+	}
+	$label = trim( (string) get_field( "{$name}_label" ) );
+	$url   = trim( (string) get_field( "{$name}_url" ) );
+	if ( '' === $label || '' === $url ) {
+		return '';
+	}
+	return '<a class="' . esc_attr( $classes ) . '" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
+}
