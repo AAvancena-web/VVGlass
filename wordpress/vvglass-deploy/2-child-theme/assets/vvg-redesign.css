@@ -329,9 +329,31 @@ html { scroll-behavior: smooth; }
 }
 
 /* ---------- Mobile drawer ---------- */
+.vvg-m-close {
+	position: absolute;
+	top: 14px;
+	right: 18px;
+	width: 40px;
+	height: 40px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255,255,255,.08);
+	border: 1px solid rgba(255,255,255,.18);
+	border-radius: 50%;
+	color: var(--vvg-gold);
+	cursor: pointer;
+	padding: 0;
+	z-index: 2;
+}
+.vvg-m-close:hover { background: var(--vvg-gold); color: var(--vvg-ink); }
+.vvg-m-close svg { width: 18px; height: 18px; }
+
 .vvg-mobile-nav {
 	position: fixed;
-	inset: var(--vvg-header-h) 0 0 auto;
+	/* +16px for the header row's own padding, which --vvg-header-h does not
+	   include — without it the header overlapped the top of the drawer. */
+	inset: calc(var(--vvg-header-h) + 16px) 0 0 auto;
 	width: min(400px, 88vw);
 	background: var(--vvg-ink);
 	padding: 24px 26px 120px;
@@ -342,6 +364,7 @@ html { scroll-behavior: smooth; }
 }
 .vvg-mobile-nav.open { transform: translateX(0); }
 .vvg-mobile-nav ul { list-style: none; margin: 0; padding: 0; }
+.vvg-mobile-nav > ul.menu { padding-top: 44px; }
 .vvg-mobile-nav > ul.menu > li { border-bottom: 1px solid rgba(255,255,255,.1); }
 .vvg-mobile-nav a {
 	color: rgba(255,255,255,.9);
@@ -385,6 +408,17 @@ html { scroll-behavior: smooth; }
 }
 .vvg-nav-overlay.show { opacity: 1; visibility: visible; }
 body.vvg-nav-open { overflow: hidden; }
+/* Pin the header while the drawer is open, so its burger — the X — is reachable
+   wherever the page is scrolled to, even if sticky is not holding. The overlay
+   covers the page behind, so taking the header out of flow is not visible. */
+body.vvg-nav-open #page .vvg-header,
+body.vvg-nav-open .vvg-header {
+	position: fixed !important;
+	top: 0 !important;
+	left: 0;
+	right: 0;
+	z-index: 125;
+}
 body.vvg-nav-open .vvg-call-now,
 body.vvg-nav-open #scroll-to-top { opacity: 0; visibility: hidden; pointer-events: none; }
 

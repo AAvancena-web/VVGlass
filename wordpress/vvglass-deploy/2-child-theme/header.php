@@ -146,6 +146,16 @@ do_action( 'siteorigin_corp_body_top' );
 	<div class="vvg-nav-overlay" id="vvgNavOverlay"></div>
 	<nav class="vvg-mobile-nav" id="vvgMobileNav" aria-label="<?php esc_attr_e( 'Mobile', 'siteorigin-corp' ); ?>">
 		<?php
+		/*
+		 * The drawer carries its own close button rather than relying on the
+		 * burger in the header. Scrolled down, the header can sit off-screen —
+		 * and then there is nothing to close the drawer with.
+		 */
+		?>
+		<button type="button" class="vvg-m-close" id="vvgNavClose" aria-label="<?php esc_attr_e( 'Close menu', 'siteorigin-corp' ); ?>">
+			<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+		</button>
+		<?php
 		wp_nav_menu(
 			array(
 				'theme_location' => 'menu-1',

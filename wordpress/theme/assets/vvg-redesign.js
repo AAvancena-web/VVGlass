@@ -111,6 +111,11 @@
 			overlay.addEventListener('click', function () { setNav(false); });
 		}
 
+		var navClose = document.getElementById('vvgNavClose');
+		if (navClose) {
+			navClose.addEventListener('click', function () { setNav(false); });
+		}
+
 		document.addEventListener('keydown', function (e) {
 			if (e.key === 'Escape') { setNav(false); }
 		});
