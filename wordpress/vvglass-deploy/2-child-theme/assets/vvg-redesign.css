@@ -128,6 +128,7 @@ a.vvg-btn-light.vvg-btn-light:hover { background: var(--vvg-gold); border-color:
 	align-items: center;
 	gap: 28px;
 	min-height: var(--vvg-header-h);
+	padding: 14px 0;
 }
 
 .vvg-brand { display: flex; align-items: center; flex: none; text-decoration: none; }
@@ -137,10 +138,14 @@ a.vvg-btn-light.vvg-btn-light:hover { background: var(--vvg-gold); border-color:
 	width: auto;
 	max-width: 210px;
 	object-fit: contain;
-	/* Without this the artwork is centred inside the 210px box whenever the
-	   logo is narrower than that, so it sits inset from the topbar above it. */
 	object-position: left center;
 	display: block;
+	/* The logo file carries its own transparent margin, which object-position
+	   cannot reach — it only moves the artwork inside a letterboxed box. Pull
+	   it back so the lockup lines up with the topbar text above it. Tune this
+	   one number if the logo is ever re-exported; setting it to 0 is the right
+	   value once the file itself is cropped. */
+	margin-left: var(--vvg-logo-nudge, -24px);
 }
 .vvg-brand-fallback { font-family: var(--vvg-head); font-weight: 800; font-size: 24px; color: var(--vvg-primary); }
 
@@ -218,14 +223,14 @@ a.vvg-btn-light.vvg-btn-light:hover { background: var(--vvg-gold); border-color:
 
 /* Compound selectors, because the theme colours links from its own accent and
    a bare .vvg-header-cta loses to it. */
-.vvg-header a.vvg-header-cta,
+.vvg-header a.vvg-header-cta.vvg-header-cta,
 .vvg-header .vvg-header-cta {
 	flex: none;
 	background: var(--vvg-gold);
 	border-color: var(--vvg-gold);
 	color: var(--vvg-ink-deep);
 }
-.vvg-header a.vvg-header-cta:hover,
+.vvg-header a.vvg-header-cta.vvg-header-cta:hover,
 .vvg-header .vvg-header-cta:hover {
 	background: var(--vvg-primary);
 	border-color: var(--vvg-primary);
