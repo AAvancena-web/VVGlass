@@ -532,9 +532,13 @@
 	height: 52%;
 	border: 2px solid var(--vvss-gold);
 	border-radius: var(--vvss-radius);
-	z-index: -1;
+	/* Not z-index:-1 — that drops it behind any opaque ancestor background and
+	   it disappears. Lift the image instead. */
+	z-index: 0;
 }
 .vv-shared-section .vvss-intro-media img {
+	position: relative;
+	z-index: 1;
 	width: 100%;
 	aspect-ratio: 4 / 5;
 	/* Without a cap the portrait ratio makes a 1000px-tall frame on a wide

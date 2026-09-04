@@ -102,7 +102,29 @@ body.page-template-template-home #content { padding: 0; }
 
 /* ---------- Split rows ---------- */
 .vvg-split { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 64px; align-items: center; }
-.vvg-split-media img { width: 100%; border-radius: var(--vvg-radius); display: block; object-fit: cover; }
+/* Offset outline behind the image's top-left corner, from the design.
+   Stacked with the image on z-index 1 rather than the frame on -1: a negative
+   index drops it behind any opaque ancestor background and it disappears. */
+.vvg-split-media { position: relative; }
+.vvg-split-media::before {
+	content: "";
+	position: absolute;
+	left: -22px;
+	top: -22px;
+	width: 52%;
+	height: 52%;
+	border: 2px solid var(--vvg-gold);
+	border-radius: var(--vvg-radius);
+	z-index: 0;
+}
+.vvg-split-media img {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	border-radius: var(--vvg-radius);
+	display: block;
+	object-fit: cover;
+}
 
 .vvg-features { display: grid; gap: 22px; margin: 32px 0 36px; }
 .vvg-feature { display: flex; gap: 18px; }
@@ -187,7 +209,10 @@ body.page-template-template-home #content { padding: 0; }
 }
 .vvg-band-ico svg { width: 25px; height: 25px; fill: var(--vvg-primary); }
 .vvg-band-item h3 { font-size: 20px; font-weight: 700; margin: 0 0 12px; }
-.vvg-band-item p { font-size: 15px; line-height: 1.7; margin: 0; }
+/* Set the colour, never inherit it: an inherited value loses to any rule that
+   matches the element directly, so the theme's own paragraph colour wins. */
+.vvg-band .vvg-band-item p,
+.vvg-band-item p { font-size: 15px; line-height: 1.7; margin: 0; color: rgba(255,255,255,.9); }
 
 /* ---------- Review ---------- */
 .vvg-review {
@@ -285,6 +310,7 @@ body.page-template-template-home #content { padding: 0; }
 	.vvg-split { grid-template-columns: 1fr; gap: 30px; }
 	/* Copy before image, as agreed */
 	.vvg-split-media-first { order: 2; }
+	.vvg-split-media::before { display: none; }
 	.vvg-split-copy, .vvg-section-head, .vvg-card-body, .vvg-hero-content { text-align: center; }
 	.vvg-feature { flex-direction: column; align-items: center; gap: 14px; }
 	.vvg-card-link { justify-content: center; }
