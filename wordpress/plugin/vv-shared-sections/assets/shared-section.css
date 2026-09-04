@@ -7,6 +7,7 @@
 .vv-shared-section {
 	--vvss-gold: #e5d99f;
 	--vvss-brand: #8a7328;
+	--vvss-btn-bg: #8e6e47;
 	--vvss-brand-light: #f6f1dc;
 	--vvss-ink: #2a271d;
 	--vvss-ink-soft: #615b49;
@@ -211,19 +212,32 @@
 .vv-shared-section .vvss-read-more[aria-expanded="true"] svg { transform: rotate(180deg); }
 
 .vv-shared-section .vvss-cta-wrap { text-align: center; margin-top: 34px; }
-.vv-shared-section .vvss-btn {
-	display: inline-block;
-	background: var(--vvss-gold);
-	color: var(--vvss-ink);
+/* Doubled class: the theme colours links from its own accent and a single class
+   loses to it, which left the button reading red. */
+.vv-shared-section .vvss-btn,
+.vv-shared-section a.vvss-btn.vvss-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--vvss-btn-bg);
+	color: #ffffff;
 	font-weight: 700;
-	font-size: 16px;
+	font-size: 14px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
 	text-decoration: none;
-	padding: 14px 30px;
-	border-radius: 999px;
-	box-shadow: var(--vvss-shadow);
-	transition: background 0.2s ease, transform 0.2s ease;
+	border: 2px solid var(--vvss-btn-bg);
+	padding: 17px 34px;
+	border-radius: var(--vvss-radius);
+	transition: background .28s ease, color .28s ease, border-color .28s ease, transform .2s ease;
 }
-.vv-shared-section .vvss-btn:hover { background: #d8ca86; transform: translateY(-1px); color: var(--vvss-ink); }
+.vv-shared-section .vvss-btn:hover,
+.vv-shared-section a.vvss-btn.vvss-btn:hover {
+	background: var(--vvss-gold);
+	border-color: var(--vvss-gold);
+	color: var(--vvss-ink);
+	transform: translateY(-2px);
+}
 
 /* ---------- FAQ (two columns, split evenly) ---------- */
 .vv-shared-section .vvss-faq {
@@ -507,6 +521,19 @@
 .vv-shared-section .vvss-intro-split .vvss-section-head { text-align: left; margin: 0 0 24px; max-width: none; }
 .vv-shared-section .vvss-intro-split .vvss-intro-body { text-align: left; }
 .vv-shared-section .vvss-intro-split .vvss-cta-wrap { text-align: left; }
+/* Offset outline behind the image, top-left, from the design. */
+.vv-shared-section .vvss-intro-media { position: relative; }
+.vv-shared-section .vvss-intro-media::before {
+	content: "";
+	position: absolute;
+	left: -22px;
+	top: -22px;
+	width: 52%;
+	height: 52%;
+	border: 2px solid var(--vvss-gold);
+	border-radius: var(--vvss-radius);
+	z-index: -1;
+}
 .vv-shared-section .vvss-intro-media img {
 	width: 100%;
 	aspect-ratio: 4 / 5;
@@ -524,6 +551,7 @@
 	/* minmax(0,1fr), not 1fr: a bare 1fr floors at the content's min-content
 	   width, which lets the column push past a narrow screen. */
 	.vv-shared-section .vvss-intro-split .vvss-intro-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+	.vv-shared-section .vvss-intro-media::before { display: none; }
 	.vv-shared-section .vvss-intro-split,
 	.vv-shared-section .vvss-intro-split .vvss-section-head,
 	.vv-shared-section .vvss-intro-split .vvss-intro-body,

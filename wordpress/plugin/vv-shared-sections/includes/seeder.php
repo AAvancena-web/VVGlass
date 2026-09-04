@@ -138,6 +138,91 @@ function vvss_repair_repeaters( $post_id ) {
 }
 
 /**
+ * Is there already a site-wide section — one with no Page Group?
+ *
+ * @return int Its ID, or 0.
+ */
+function vvss_sitewide_section_id() {
+
+	$found = get_posts(
+		array(
+			'post_type'      => 'shared_section',
+			'post_status'    => array( 'publish', 'draft', 'pending' ),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+
+	foreach ( $found as $id ) {
+		$groups = wp_get_object_terms( $id, 'page_group', array( 'fields' => 'ids' ) );
+		if ( is_wp_error( $groups ) || empty( $groups ) ) {
+			return (int) $id;
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * Create the site-wide section: the intro, FAQ and contact block that appears
+ * above the footer on every page.
+ *
+ * Skipped entirely when a site-wide section already exists, whatever it is
+ * called, so an install that already has one is never given a second.
+ *
+ * @return array Log lines.
+ */
+function vvss_seed_global_section() {
+
+	$log = array();
+
+	$existing = vvss_sitewide_section_id();
+	if ( $existing ) {
+		$log[] = sprintf(
+			'"%s" is already the site-wide section (no Page Group), so it was left alone.',
+			get_the_title( $existing )
+		);
+		return $log;
+	}
+
+	$data = require __DIR__ . '/seed-global.php';
+
+	$post_id = wp_insert_post(
+		array(
+			'post_type'   => 'shared_section',
+			'post_status' => 'publish',
+			'post_title'  => $data['title'],
+			'menu_order'  => 0,
+		),
+		true
+	);
+
+	if ( is_wp_error( $post_id ) ) {
+		$log[] = sprintf( 'Could not create "%s": %s', $data['title'], $post_id->get_error_message() );
+		return $log;
+	}
+
+	// No page_group terms: an empty Page Group is what makes it site-wide.
+
+	if ( function_exists( 'update_field' ) ) {
+		vvss_seed_field( 'show_above_footer', 1, $post_id );
+		foreach ( $data['fields'] as $name => $value ) {
+			vvss_seed_field( $name, $value, $post_id );
+		}
+		vvss_seed_field( 'faqs', $data['faqs'], $post_id );
+	}
+
+	$log[] = sprintf(
+		'Created "%s" — the site-wide intro, %d FAQs and the contact block. Add your Contact Form 7 shortcode on its Contact tab.',
+		$data['title'],
+		count( $data['faqs'] )
+	);
+
+	return $log;
+}
+
+/**
  * Create the five page groups and the five Content sections.
  *
  * @return array Lines describing what happened.
@@ -158,6 +243,9 @@ function vvss_run_seed() {
 			$log[] = sprintf( 'Created Page Group "%s".', $name );
 		}
 	}
+
+	// The site-wide block first, so it exists before anything sits above it.
+	$log = array_merge( $log, vvss_seed_global_section() );
 
 	foreach ( $data as $row ) {
 

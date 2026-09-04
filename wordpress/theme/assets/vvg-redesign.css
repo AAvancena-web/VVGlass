@@ -66,6 +66,12 @@
 	color: var(--vvg-ink-deep);
 	transform: translateY(-2px);
 }
+/* Same story as the header CTA: the theme colours links from its own accent,
+   and a single class loses to it. */
+a.vvg-btn.vvg-btn { color: var(--vvg-primary); background: var(--vvg-brand); border-color: var(--vvg-brand); }
+a.vvg-btn.vvg-btn:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); color: var(--vvg-ink-deep); }
+a.vvg-btn-light.vvg-btn-light { background: var(--vvg-primary); border-color: var(--vvg-primary); color: var(--vvg-ink-deep); }
+a.vvg-btn-light.vvg-btn-light:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); }
 .vvg-btn-light { background: var(--vvg-primary); border-color: var(--vvg-primary); color: var(--vvg-ink-deep); }
 .vvg-btn-light:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); }
 .vvg-btn-block { width: 100%; }
@@ -99,6 +105,15 @@
 .vvg-m-contact .vvg-ico-mail { fill: none; stroke: var(--vvg-gold); }
 
 /* ---------- Header ---------- */
+/* The theme wraps everything in #page.site, and a scroll container anywhere up
+   the tree silently kills position:sticky. overflow-x:clip contains horizontal
+   overflow WITHOUT creating one, so the header still sticks. */
+#page.site,
+#content.site-content {
+	overflow-x: clip;
+	overflow-y: visible;
+}
+#page .vvg-header,
 .vvg-header {
 	position: sticky;
 	top: 0;
@@ -492,11 +507,17 @@ body.vvg-nav-open #scroll-to-top { opacity: 0; visibility: hidden; pointer-event
 	font-size: 15px;
 	margin-top: 0;
 }
-.vvg-footer .widgets {
+/* The theme's own footer rules are id-qualified (#colophon .widgets .widget),
+   which outranks three classes however late this file loads. Every footer rule
+   that has to win is therefore doubled: an id-qualified selector for the real
+   markup, and a plain one in case the footer id is ever changed. */
+.vvg-footer .widgets,
+#colophon.vvg-footer .widgets {
 	display: grid;
 	grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
 	gap: 40px;
 	padding: 70px 0 46px;
+	float: none;
 }
 /* The theme lays the footer out with percentage-width floated widgets. Once
    .widgets is a grid, a width of 25% is 25% OF ONE TRACK — which is why the
@@ -504,15 +525,20 @@ body.vvg-nav-open #scroll-to-top { opacity: 0; visibility: hidden; pointer-event
    their track, and drop the float clearfix, which would otherwise become two
    empty grid items. */
 .vvg-footer .widgets > .widget,
-.vvg-footer .widgets > div {
+.vvg-footer .widgets > div,
+#colophon.vvg-footer .widgets > .widget,
+#colophon.vvg-footer .widgets > div {
 	width: auto;
 	max-width: none;
+	min-width: 0;
 	float: none;
 	margin: 0;
 	padding: 0;
 }
 .vvg-footer .widgets::before,
-.vvg-footer .widgets::after { content: none; display: none; }
+.vvg-footer .widgets::after,
+#colophon.vvg-footer .widgets::before,
+#colophon.vvg-footer .widgets::after { content: none; display: none; }
 .vvg-footer .widget { color: rgba(255,255,255,.86); }
 .vvg-footer .widget-title,
 .vvg-footer h2.widget-title {
@@ -541,13 +567,19 @@ body.vvg-nav-open #scroll-to-top { opacity: 0; visibility: hidden; pointer-event
 }
 .vvg-footer .bottom-bar .corp-container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
-@media (max-width: 1080px) { .vvg-footer .widgets { grid-template-columns: 1fr 1fr; gap: 36px; } }
+@media (max-width: 1080px) {
+	.vvg-footer .widgets,
+	#colophon.vvg-footer .widgets { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
 @media (max-width: 900px) {
 	.vvg-footer.site-footer { text-align: center; }
 	.vvg-footer .footer-logo img { margin-left: auto; margin-right: auto; }
 	.vvg-footer .bottom-bar .corp-container { justify-content: center; text-align: center; }
 }
-@media (max-width: 600px) { .vvg-footer .widgets { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+	.vvg-footer .widgets,
+	#colophon.vvg-footer .widgets { grid-template-columns: 1fr; }
+}
 
 /* ==========================================================================
    Floating call button, mobile only
