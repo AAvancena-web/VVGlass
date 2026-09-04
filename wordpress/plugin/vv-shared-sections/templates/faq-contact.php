@@ -299,7 +299,7 @@ $wrapper_class = 'vv-shared-section' . ( $bleed ? ' vv-shared-section--bleed' : 
 
 	<?php if ( $has_contact ) : ?>
 	<!-- Contact -->
-	<section class="vvss-contact-section">
+	<section class="vvss-contact-section" id="contact">
 		<div class="vvss-wrap">
 			<?php if ( $contact_eyebrow || $contact_heading || $contact_subheading ) : ?>
 			<div class="vvss-section-head">

@@ -108,6 +108,11 @@ a.vvg-btn-light.vvg-btn-light:hover { background: var(--vvg-gold); border-color:
 /* The theme wraps everything in #page.site, and a scroll container anywhere up
    the tree silently kills position:sticky. overflow-x:clip contains horizontal
    overflow WITHOUT creating one, so the header still sticks. */
+/* Smooth, and clear of the sticky header, for every in-page CTA target. */
+html { scroll-behavior: smooth; }
+#contact,
+#vvg-banner-form { scroll-margin-top: calc(var(--vvg-header-h) + 44px); }
+
 #page.site,
 #content.site-content {
 	overflow-x: clip;

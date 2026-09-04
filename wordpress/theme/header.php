@@ -186,7 +186,7 @@ do_action( 'siteorigin_corp_body_top' );
 							<div class="vvg-page-banner-crumbs"><?php custom_breadcrumbs(); ?></div>
 						<?php endif; ?>
 						<div class="vvg-page-banner-actions">
-							<a class="vvg-btn" href="#vvg-banner-form"><?php esc_html_e( 'Book Your Consultation Here', 'siteorigin-corp' ); ?></a>
+							<a class="vvg-btn" href="#contact"><?php esc_html_e( 'Book Your Consultation Here', 'siteorigin-corp' ); ?></a>
 							<a class="vvg-btn vvg-btn-light" href="tel:<?php echo esc_attr( $vvg_phone_href ); ?>"><?php echo esc_html( sprintf( 'Call %s', $vvg_phone ) ); ?></a>
 						</div>
 					</div>

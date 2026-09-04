@@ -56,7 +56,14 @@
 /* ---------- Section shells ---------- */
 .vv-shared-section .vvss-content-section { padding: 66px 0; }
 .vv-shared-section .vvss-faq-section { padding: 66px 0; }
-.vv-shared-section .vvss-contact-section { padding: 66px 0; background: var(--vvss-bg-alt); }
+.vv-shared-section .vvss-contact-section {
+	padding: 66px 0;
+	background: var(--vvss-bg-alt);
+	/* Every CTA lands here, and the header is sticky — without this the heading
+	   ends up underneath it. The theme defines --vvg-header-h; the fallback
+	   covers the plugin running on its own. */
+	scroll-margin-top: calc(var(--vvg-header-h, 124px) + 44px);
+}
 
 /* Alternate the ground when the content block sits above the intro. */
 .vv-shared-section .vvss-content-section + .vvss-intro-section,
