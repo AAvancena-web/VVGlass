@@ -247,6 +247,13 @@
 	transform: translateY(-2px);
 }
 
+/* Long label on a laptop, short on a phone. */
+.vv-shared-section .vvss-cta-short { display: none; }
+@media (max-width: 640px) {
+	.vv-shared-section .vvss-cta-long { display: none; }
+	.vv-shared-section .vvss-cta-short { display: inline; }
+}
+
 /* ---------- FAQ (two columns, split evenly) ---------- */
 .vv-shared-section .vvss-faq {
 	display: grid;

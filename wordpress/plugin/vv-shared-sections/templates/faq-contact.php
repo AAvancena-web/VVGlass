@@ -90,6 +90,19 @@ if ( $intro_body && preg_match( '/<h[23][\s>]/i', $intro_body, $vvss_m, PREG_OFF
 }
 $intro_more_id = 'vvss-intro-more-' . (int) $post_id;
 
+/**
+ * A button label that shortens on a phone. Both versions are rendered and CSS
+ * shows one, so the button still reads correctly to a screen reader.
+ */
+$vvss_cta_label = function ( $long ) {
+	$short = apply_filters( 'vvss_cta_short_label', 'Book Now', $long );
+	if ( $short === $long ) {
+		return esc_html( $long );
+	}
+	return '<span class="vvss-cta-long">' . esc_html( $long ) . '</span>'
+		. '<span class="vvss-cta-short">' . esc_html( $short ) . '</span>';
+};
+
 /*
  * The enquiry form sits in the right-hand column of the contact block, as in
  * the approved design. An explicit shortcode wins; otherwise the theme's helper
@@ -218,7 +231,7 @@ $wrapper_class = 'vv-shared-section' . ( $bleed ? ' vv-shared-section--bleed' : 
 
 			<?php if ( $has_content_cta ) : ?>
 			<div class="vvss-cta-wrap">
-				<a class="vvss-btn" href="<?php echo esc_url( $content_cta_url ); ?>"><?php echo esc_html( $content_cta_label ); ?></a>
+				<a class="vvss-btn" href="<?php echo esc_url( $content_cta_url ); ?>"><?php echo $vvss_cta_label( $content_cta_label ); // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- Escaped in closure. ?></a>
 			</div>
 			<?php endif; ?>
 		</div>
@@ -257,7 +270,7 @@ $wrapper_class = 'vv-shared-section' . ( $bleed ? ' vv-shared-section--bleed' : 
 
 					<?php if ( $has_cta ) : ?>
 					<div class="vvss-cta-wrap">
-						<a class="vvss-btn" href="<?php echo esc_url( $cta_url ); ?>"><?php echo esc_html( $cta_label ); ?></a>
+						<a class="vvss-btn" href="<?php echo esc_url( $cta_url ); ?>"><?php echo $vvss_cta_label( $cta_label ); // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- Escaped in closure. ?></a>
 					</div>
 					<?php endif; ?>
 				</div>

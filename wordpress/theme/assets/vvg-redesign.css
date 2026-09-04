@@ -76,6 +76,14 @@ a.vvg-btn-light.vvg-btn-light:hover { background: var(--vvg-gold); border-color:
 .vvg-btn-light:hover { background: var(--vvg-gold); border-color: var(--vvg-gold); }
 .vvg-btn-block { width: 100%; }
 
+/* Long label on a laptop, short on a phone. Both are in the markup; only one
+   is ever rendered, so the button reads correctly either way. */
+.vvg-cta-short { display: none; }
+@media (max-width: 640px) {
+	.vvg-cta-long { display: none; }
+	.vvg-cta-short { display: inline; }
+}
+
 /* ---------- Top bar ---------- */
 .vvg-topbar {
 	background: var(--vvg-ink);
