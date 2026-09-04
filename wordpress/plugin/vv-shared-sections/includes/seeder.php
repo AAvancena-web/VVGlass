@@ -142,26 +142,46 @@ function vvss_repair_repeaters( $post_id ) {
  *
  * @return int Its ID, or 0.
  */
-function vvss_sitewide_section_id() {
+function vvss_sitewide_section_ids() {
 
 	$found = get_posts(
 		array(
 			'post_type'      => 'shared_section',
-			'post_status'    => array( 'publish', 'draft', 'pending' ),
+			'post_status'    => 'any',
 			'posts_per_page' => -1,
 			'fields'         => 'ids',
 			'no_found_rows'  => true,
 		)
 	);
 
+	$ids = array();
+
 	foreach ( $found as $id ) {
 		$groups = wp_get_object_terms( $id, 'page_group', array( 'fields' => 'ids' ) );
 		if ( is_wp_error( $groups ) || empty( $groups ) ) {
-			return (int) $id;
+			$ids[] = (int) $id;
 		}
 	}
 
-	return 0;
+	return $ids;
+}
+
+function vvss_sitewide_section_id() {
+
+	$ids = vvss_sitewide_section_ids();
+	if ( $ids ) {
+		return $ids[0];
+	}
+
+	/*
+	 * Belt and braces. The check above is the real one, but if a site-wide
+	 * section has somehow been tagged with a Page Group it would not be found,
+	 * and seeding again would make a second copy of the same block. Match the
+	 * title too, so a section this seeder created is never duplicated.
+	 */
+	$data = require __DIR__ . '/seed-global.php';
+
+	return vvss_section_exists( $data['title'] );
 }
 
 /**
@@ -180,7 +200,7 @@ function vvss_seed_global_section() {
 	$existing = vvss_sitewide_section_id();
 	if ( $existing ) {
 		$log[] = sprintf(
-			'"%s" is already the site-wide section (no Page Group), so it was left alone.',
+			'"%s" already covers this, so no new site-wide section was created.',
 			get_the_title( $existing )
 		);
 		return $log;
@@ -377,3 +397,50 @@ function vvss_setup_page() {
 	</div>
 	<?php
 }
+
+/**
+ * Warn when more than one site-wide section is switched on.
+ *
+ * Two of them means the intro, FAQ and contact block renders twice on every
+ * page. Nothing here changes anything on its own — deciding which one to keep
+ * is the editor's call — but silently outputting the block twice is worse than
+ * saying so.
+ */
+function vvss_duplicate_sitewide_notice() {
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || ! in_array( $screen->id, array( 'edit-shared_section', 'shared_section', 'shared_section_page_vvss-setup', 'dashboard' ), true ) ) {
+		return;
+	}
+
+	$enabled = array();
+	foreach ( vvss_sitewide_section_ids() as $id ) {
+		if ( 'publish' === get_post_status( $id ) && vvss_section_enabled( $id ) ) {
+			$enabled[] = $id;
+		}
+	}
+
+	if ( count( $enabled ) < 2 ) {
+		return;
+	}
+
+	$links = array();
+	foreach ( $enabled as $id ) {
+		$links[] = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( get_edit_post_link( $id ) ),
+			esc_html( get_the_title( $id ) )
+		);
+	}
+
+	printf(
+		'<div class="notice notice-warning"><p><strong>VV Shared Sections:</strong> %d sections have no Page Group, so all of them render above the footer on every page — the intro, FAQ and contact block is appearing more than once. Keep one and either switch the others off with <em>Show this section</em> or delete them: %s</p></div>',
+		count( $enabled ),
+		wp_kses_post( implode( ' &middot; ', $links ) )
+	);
+}
+add_action( 'admin_notices', 'vvss_duplicate_sitewide_notice' );

@@ -143,9 +143,18 @@ function vvss_tab_has_content( $post_id, $tab ) {
 			continue;
 		}
 
-		$value = get_field( $field_key, $post_id );
+		/*
+		 * Raw meta, not get_field(): ACF hands back a field's default_value when
+		 * nothing is stored, so a Contact tab that has never been touched still
+		 * reports the phone number and email it defaults to, and every tab looks
+		 * full. Only a real stored value should keep a tab visible.
+		 *
+		 * A repeater keeps its row count here, so '0' means no rows, and a
+		 * true/false field stores '0' for off. Both are empty for our purposes.
+		 */
+		$raw = get_post_meta( $post_id, $field['name'], true );
 
-		if ( null !== $value && '' !== $value && false !== $value && array() !== $value ) {
+		if ( '' !== $raw && null !== $raw && '0' !== $raw && 0 !== $raw && array() !== $raw ) {
 			$cache[ $key ] = true;
 			break;
 		}
