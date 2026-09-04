@@ -426,7 +426,13 @@
 	border-color: var(--vvss-brand);
 	box-shadow: 0 0 0 3px rgba(142, 110, 71, .12);
 }
-.vv-shared-section .vvss-form-card textarea { min-height: 112px; resize: vertical; }
+/* CF7 defaults to rows="10", which makes a very tall box. Fix the height in
+   CSS so the card looks right whatever the shortcode says. */
+.vv-shared-section .vvss-form-card textarea {
+	height: 130px;
+	min-height: 112px;
+	resize: vertical;
+}
 .vv-shared-section .vvss-form-card input[type="submit"],
 .vv-shared-section .vvss-form-card button[type="submit"] {
 	width: 100%;
@@ -448,6 +454,15 @@
 .vv-shared-section .vvss-form-card button[type="submit"]:hover {
 	background: var(--vvss-gold);
 	color: var(--vvss-ink);
+}
+/* CF7 wraps each control in an inline span; make it block so the input's
+   width:100% resolves against the row rather than the inline box. */
+.vv-shared-section .vvss-form-card .wpcf7-form-control-wrap { display: block; }
+.vv-shared-section .vvss-form-note {
+	margin: 12px 0 0;
+	text-align: center;
+	font-size: 13px;
+	color: var(--vvss-ink-soft);
 }
 /* CF7's spinner and validation messages. */
 .vv-shared-section .vvss-form-card .wpcf7-spinner { margin: 0 auto; display: block; }
@@ -487,6 +502,8 @@
 	gap: 56px;
 	align-items: center;
 }
+.vv-shared-section .vvss-intro-col,
+.vv-shared-section .vvss-intro-media { min-width: 0; }
 .vv-shared-section .vvss-intro-split .vvss-section-head { text-align: left; margin: 0 0 24px; max-width: none; }
 .vv-shared-section .vvss-intro-split .vvss-intro-body { text-align: left; }
 .vv-shared-section .vvss-intro-split .vvss-cta-wrap { text-align: left; }
@@ -504,7 +521,9 @@
 	.vv-shared-section .vvss-intro-split .vvss-intro-media { position: sticky; top: 150px; }
 }
 @media (max-width: 820px) {
-	.vv-shared-section .vvss-intro-split .vvss-intro-grid { grid-template-columns: 1fr; gap: 30px; }
+	/* minmax(0,1fr), not 1fr: a bare 1fr floors at the content's min-content
+	   width, which lets the column push past a narrow screen. */
+	.vv-shared-section .vvss-intro-split .vvss-intro-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
 	.vv-shared-section .vvss-intro-split,
 	.vv-shared-section .vvss-intro-split .vvss-section-head,
 	.vv-shared-section .vvss-intro-split .vvss-intro-body,

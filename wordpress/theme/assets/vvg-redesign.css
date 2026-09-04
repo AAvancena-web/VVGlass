@@ -93,7 +93,10 @@
 
 /* Outlined envelope — a filled envelope path reads as a solid block this small. */
 .vvg-ico-mail { fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-.vvg-topbar .vvg-ico-mail, .vvg-m-contact .vvg-ico-mail { stroke: var(--vvg-gold); }
+/* fill must be re-stated here: `.vvg-topbar svg` above is more specific than
+   `.vvg-ico-mail`, so its gold fill turns the envelope into a solid block. */
+.vvg-topbar .vvg-ico-mail,
+.vvg-m-contact .vvg-ico-mail { fill: none; stroke: var(--vvg-gold); }
 
 /* ---------- Header ---------- */
 .vvg-header {
@@ -119,6 +122,9 @@
 	width: auto;
 	max-width: 210px;
 	object-fit: contain;
+	/* Without this the artwork is centred inside the 210px box whenever the
+	   logo is narrower than that, so it sits inset from the topbar above it. */
+	object-position: left center;
 	display: block;
 }
 .vvg-brand-fallback { font-family: var(--vvg-head); font-weight: 800; font-size: 24px; color: var(--vvg-primary); }
@@ -195,13 +201,22 @@
 }
 .vvg-nav ul.sub-menu a:hover { color: var(--vvg-gold); background: rgba(230,218,160,.07); }
 
-.vvg-header-cta {
+/* Compound selectors, because the theme colours links from its own accent and
+   a bare .vvg-header-cta loses to it. */
+.vvg-header a.vvg-header-cta,
+.vvg-header .vvg-header-cta {
 	flex: none;
 	background: var(--vvg-gold);
 	border-color: var(--vvg-gold);
 	color: var(--vvg-ink-deep);
 }
-.vvg-header-cta:hover { background: var(--vvg-primary); border-color: var(--vvg-primary); color: var(--vvg-ink-deep); }
+.vvg-header a.vvg-header-cta:hover,
+.vvg-header .vvg-header-cta:hover {
+	background: var(--vvg-primary);
+	border-color: var(--vvg-primary);
+	color: var(--vvg-ink-deep);
+}
+.vvg-header a.vvg-btn { color: var(--vvg-primary); }
 
 .vvg-header-tools { display: none; align-items: center; gap: 14px; margin-left: auto; }
 
@@ -239,12 +254,20 @@
 /* Reading progress along the header's bottom edge */
 .vvg-scroll-progress {
 	position: absolute;
-	left: 0; right: 0; bottom: -2px;
-	height: 4px;
-	background: rgba(255,255,255,.28);
+	/* Fully inside the header: at bottom:-2px half the bar hangs below it and
+	   whatever follows can clip it. */
+	left: 0; right: 0; bottom: 0;
+	height: 5px;
+	background: rgba(23,19,16,.22);
 	overflow: hidden;
+	z-index: 1;
 }
-.vvg-scroll-progress span { display: block; height: 100%; width: 0; background: var(--vvg-ink); }
+.vvg-scroll-progress span {
+	display: block;
+	height: 100%;
+	width: 0;
+	background: var(--vvg-ink);
+}
 
 @media (max-width: 1600px) {
 	.vvg-nav ul.menu > li > a { padding: 14px 9px; }
@@ -475,6 +498,21 @@ body.vvg-nav-open #scroll-to-top { opacity: 0; visibility: hidden; pointer-event
 	gap: 40px;
 	padding: 70px 0 46px;
 }
+/* The theme lays the footer out with percentage-width floated widgets. Once
+   .widgets is a grid, a width of 25% is 25% OF ONE TRACK — which is why the
+   headings and links wrap after a word or two. Reset the children to fill
+   their track, and drop the float clearfix, which would otherwise become two
+   empty grid items. */
+.vvg-footer .widgets > .widget,
+.vvg-footer .widgets > div {
+	width: auto;
+	max-width: none;
+	float: none;
+	margin: 0;
+	padding: 0;
+}
+.vvg-footer .widgets::before,
+.vvg-footer .widgets::after { content: none; display: none; }
 .vvg-footer .widget { color: rgba(255,255,255,.86); }
 .vvg-footer .widget-title,
 .vvg-footer h2.widget-title {
