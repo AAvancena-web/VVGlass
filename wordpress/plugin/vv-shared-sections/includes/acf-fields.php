@@ -154,8 +154,14 @@ The tabs follow that choice: a site-wide section shows <strong>Intro, FAQ and Co
 					'key'          => 'field_vvss_content_cta_url',
 					'label'        => 'CTA Button URL',
 					'name'         => 'content_cta_url',
-					'type'         => 'url',
-					'instructions' => 'Leave blank to hide the button.',
+					/*
+					 * text, not url: ACF's url field demands a scheme and host,
+					 * so it rejects an in-page anchor — and #contact is exactly
+					 * what every CTA on the site uses.
+					 */
+					'type'         => 'text',
+					'default_value' => '#contact',
+					'instructions' => 'Use <code>#contact</code> to scroll to the contact form at the bottom of the page, or a path like <code>/contact/</code>, or a full URL. Leave blank to hide the button.',
 				),
 
 				/* ---------------- Intro ---------------- */
@@ -214,8 +220,10 @@ The tabs follow that choice: a site-wide section shows <strong>Intro, FAQ and Co
 					'key'          => 'field_vvss_cta_url',
 					'label'        => 'CTA Button URL',
 					'name'         => 'cta_url',
-					'type'         => 'url',
-					'instructions' => 'Where the button links, e.g. /contact/ or https://vvglass.com.au/contact/. Leave blank to hide the button.',
+					// text, not url — see content_cta_url above.
+					'type'         => 'text',
+					'default_value' => '#contact',
+					'instructions' => 'Use <code>#contact</code> to scroll to the contact form at the bottom of the page, or a path like <code>/contact/</code>, or a full URL. Leave blank to hide the button.',
 				),
 
 				/* ---------------- FAQ ---------------- */
