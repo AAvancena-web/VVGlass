@@ -3,7 +3,7 @@
  * Plugin Name:       VV Shared Sections
  * Plugin URI:        https://vvglass.com.au/
  * Description:       Reusable content, FAQ and contact blocks that render above the footer. Sections with no Page Group show on every page; sections with one show only on pages in that group. Deactivate to switch the whole thing off without losing any content.
- * Version:           1.4.0
+ * Version:           1.4.1
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Digital Movement
@@ -30,7 +30,7 @@ if ( defined( 'VVSS_VERSION' ) ) {
 	return;
 }
 
-define( 'VVSS_VERSION', '1.4.0' );
+define( 'VVSS_VERSION', '1.4.1' );
 define( 'VVSS_FILE', __FILE__ );
 define( 'VVSS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VVSS_URL', plugin_dir_url( __FILE__ ) );
@@ -135,6 +135,7 @@ register_activation_hook( __FILE__, 'vvss_seed_page_groups' );
  * 2. Register the ACF field groups in code.
  */
 require_once VVSS_DIR . 'includes/acf-fields.php';
+require_once VVSS_DIR . 'includes/tab-scope.php';
 
 if ( is_admin() ) {
 	require_once VVSS_DIR . 'includes/seeder.php';

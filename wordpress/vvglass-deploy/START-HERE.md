@@ -92,6 +92,12 @@ ticked:
 | Your existing one — Intro, FAQ, Contact | **empty** | **every page** |
 | Variation 1–5 — Content tab only | **one group** | only that group's pages |
 
+The tabs follow that choice, so there is nothing to remember: a site-wide
+section shows **Intro, FAQ and Contact**, a section with a Page Group shows
+**Content**. Change the Page Group and Update, and the tabs change with it. A
+tab that already holds copy is never hidden, and hidden fields keep their
+values in the database.
+
 Sections with a Page Group always render **above** the site-wide ones, so the
 varying content sits on top of the global intro, FAQ and contact block. That is
 structural — there is no Order to set and no way to get it the wrong way round.
