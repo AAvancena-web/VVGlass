@@ -313,10 +313,15 @@ html { scroll-behavior: smooth; }
 }
 @media (max-width: 640px) {
 	.vvg-container { padding: 0 22px; }
-	.vvg-header-inner { gap: 12px; }
-	.vvg-brand img, .vvg-brand .custom-logo { height: 66px; max-width: 160px; }
+	.vvg-header-inner { gap: 12px; padding: 8px 0; }
+	:root { --vvg-header-h: 84px; }
+	.vvg-brand img, .vvg-brand .custom-logo { height: 56px; max-width: 150px; }
 	.vvg-header-tools { gap: 10px; }
 	.vvg-phone-circle, .vvg-burger { width: 44px; height: 44px; }
+}
+@media (max-width: 400px) {
+	:root { --vvg-header-h: 76px; }
+	.vvg-brand img, .vvg-brand .custom-logo { height: 50px; max-width: 132px; }
 }
 @media (max-width: 370px) {
 	.vvg-brand img, .vvg-brand .custom-logo { height: 58px; max-width: 130px; }
@@ -623,6 +628,17 @@ body.vvg-nav-open #scroll-to-top { opacity: 0; visibility: hidden; pointer-event
 .vvg-call-now:active { background: var(--vvg-gold); color: var(--vvg-ink-deep); }
 .vvg-call-now:active svg { fill: var(--vvg-ink-deep); }
 @media (max-width: 900px) { .vvg-call-now { display: inline-flex; } }
+
+/* The reCAPTCHA badge sits bottom-right and covers the theme's scroll-to-top
+   button on a phone. Lift the button clear of it. body# rather than plain #
+   so this outranks the theme's own rule wherever it loads. */
+@media (max-width: 900px) {
+	body #scroll-to-top {
+		bottom: 92px;
+		right: 16px;
+		z-index: 129;
+	}
+}
 
 @media (prefers-reduced-motion: reduce) {
 	.vvg-header, .vvg-mobile-nav, .vvg-nav-overlay, .vvg-btn,
