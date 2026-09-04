@@ -140,7 +140,9 @@ html { scroll-behavior: smooth; }
 }
 
 .vvg-brand { display: flex; align-items: center; flex: none; text-decoration: none; }
+#masthead .vvg-brand img,
 .vvg-brand img,
+.vvg-brand .vvg-logo,
 .vvg-brand .custom-logo {
 	height: 96px;
 	width: auto;
@@ -148,12 +150,9 @@ html { scroll-behavior: smooth; }
 	object-fit: contain;
 	object-position: left center;
 	display: block;
-	/* The logo file carries its own transparent margin, which object-position
-	   cannot reach — it only moves the artwork inside a letterboxed box. Pull
-	   it back so the lockup lines up with the topbar text above it. Tune this
-	   one number if the logo is ever re-exported; setting it to 0 is the right
-	   value once the file itself is cropped. */
-	margin-left: var(--vvg-logo-nudge, -24px);
+	/* Nudge if the logo file's own transparent margin leaves it looking inset
+	   from the topbar text above. 0 until there is a measured reason. */
+	margin-left: var(--vvg-logo-nudge, 0px);
 }
 .vvg-brand-fallback { font-family: var(--vvg-head); font-weight: 800; font-size: 24px; color: var(--vvg-primary); }
 
@@ -309,22 +308,24 @@ html { scroll-behavior: smooth; }
 	:root { --vvg-header-h: 100px; }
 	.vvg-nav { display: none; }
 	.vvg-header-tools { display: flex; }
-	.vvg-brand img, .vvg-brand .custom-logo { height: 72px; max-width: 180px; }
+	#masthead .vvg-brand img, .vvg-brand img, .vvg-brand .vvg-logo, .vvg-brand .custom-logo { height: 72px; max-width: 180px; }
 }
 @media (max-width: 640px) {
 	.vvg-container { padding: 0 22px; }
 	.vvg-header-inner { gap: 12px; padding: 8px 0; }
 	:root { --vvg-header-h: 84px; }
-	.vvg-brand img, .vvg-brand .custom-logo { height: 56px; max-width: 150px; }
+	#masthead .vvg-brand img, .vvg-brand img, .vvg-brand .vvg-logo, .vvg-brand .custom-logo { height: 56px; max-width: 150px; }
 	.vvg-header-tools { gap: 10px; }
 	.vvg-phone-circle, .vvg-burger { width: 44px; height: 44px; }
 }
 @media (max-width: 400px) {
 	:root { --vvg-header-h: 76px; }
-	.vvg-brand img, .vvg-brand .custom-logo { height: 50px; max-width: 132px; }
+	#masthead .vvg-brand img, .vvg-brand img, .vvg-brand .vvg-logo, .vvg-brand .custom-logo { height: 50px; max-width: 132px; }
 }
 @media (max-width: 370px) {
-	.vvg-brand img, .vvg-brand .custom-logo { height: 58px; max-width: 130px; }
+	/* Was 58px, larger than the 50px above it and later in the file, so the
+	   logo grew back on the narrowest screens. */
+	#masthead .vvg-brand img, .vvg-brand img, .vvg-brand .vvg-logo, .vvg-brand .custom-logo { height: 46px; max-width: 124px; }
 }
 
 /* ---------- Mobile drawer ---------- */

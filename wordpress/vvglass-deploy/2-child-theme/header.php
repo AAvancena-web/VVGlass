@@ -89,8 +89,24 @@ do_action( 'siteorigin_corp_body_top' );
 
 				<a class="vvg-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?> home">
 					<?php
-					if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
-						the_custom_logo();
+					/*
+					 * the_custom_logo() wraps the image in its own <a>, and an <a>
+					 * cannot nest inside an <a> — the parser closes this one first
+					 * and the image ends up a SIBLING of .vvg-brand, so none of the
+					 * .vvg-brand img rules ever match. Output the image directly.
+					 */
+					$vvg_logo_id = get_theme_mod( 'custom_logo' );
+
+					if ( $vvg_logo_id ) {
+						echo wp_get_attachment_image(
+							$vvg_logo_id,
+							'full',
+							false,
+							array(
+								'class' => 'vvg-logo',
+								'alt'   => get_bloginfo( 'name' ),
+							)
+						);
 					} else {
 						echo '<span class="vvg-brand-fallback">' . esc_html( get_bloginfo( 'name' ) ) . '</span>';
 					}
