@@ -127,7 +127,7 @@ do_action( 'siteorigin_corp_body_top' );
 					?>
 				</nav>
 
-				<a class="vvg-btn vvg-header-cta" href="#contact"><?php echo function_exists( 'vvg_cta_label' ) ? vvg_cta_label( __( 'Book Your Consultation Here', 'siteorigin-corp' ) ) : esc_html__( 'Book Your Consultation Here', 'siteorigin-corp' ); // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- Escaped in helper. ?></a>
+				<a class="vvg-btn vvg-header-cta" href="#contact"><?php esc_html_e( 'Book Your Consultation Here', 'siteorigin-corp' ); ?></a>
 
 				<div class="vvg-header-tools">
 					<a class="vvg-phone-circle" href="tel:<?php echo esc_attr( $vvg_phone_href ); ?>" aria-label="<?php echo esc_attr( sprintf( 'Call VV Glass on %s', $vvg_phone ) ); ?>">
@@ -160,7 +160,7 @@ do_action( 'siteorigin_corp_body_top' );
 			<a href="tel:<?php echo esc_attr( $vvg_phone_href ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.9 15.9 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1z"/></svg><?php echo esc_html( $vvg_phone ); ?></a>
 			<a href="mailto:<?php echo esc_attr( $vvg_email ); ?>"><svg class="vvg-ico-mail" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.6 7.4 8.4 5.9 8.4-5.9"/></svg><?php echo esc_html( $vvg_email ); ?></a>
 		</div>
-		<a class="vvg-btn vvg-btn-block" href="#contact"><?php echo function_exists( 'vvg_cta_label' ) ? vvg_cta_label( __( 'Book Your Consultation Here', 'siteorigin-corp' ) ) : esc_html__( 'Book Your Consultation Here', 'siteorigin-corp' ); // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- Escaped in helper. ?></a>
+		<a class="vvg-btn vvg-btn-block" href="#contact"><?php esc_html_e( 'Book Your Consultation Here', 'siteorigin-corp' ); ?></a>
 	</nav>
 
 	<?php
@@ -202,7 +202,7 @@ do_action( 'siteorigin_corp_body_top' );
 							<div class="vvg-page-banner-crumbs"><?php custom_breadcrumbs(); ?></div>
 						<?php endif; ?>
 						<div class="vvg-page-banner-actions">
-							<a class="vvg-btn" href="#contact"><?php echo function_exists( 'vvg_cta_label' ) ? vvg_cta_label( __( 'Book Your Consultation Here', 'siteorigin-corp' ) ) : esc_html__( 'Book Your Consultation Here', 'siteorigin-corp' ); // phpcs:ignore WordPress.Security.EscapingOutput.OutputNotEscaped -- Escaped in helper. ?></a>
+							<a class="vvg-btn" href="#contact"><?php esc_html_e( 'Book Your Consultation Here', 'siteorigin-corp' ); ?></a>
 							<a class="vvg-btn vvg-btn-light" href="tel:<?php echo esc_attr( $vvg_phone_href ); ?>"><?php echo esc_html( sprintf( 'Call %s', $vvg_phone ) ); ?></a>
 						</div>
 					</div>

@@ -347,35 +347,5 @@ function vvg_cta( $name, $classes = 'vvg-btn' ) {
 	if ( '' === $label || '' === $url ) {
 		return '';
 	}
-	return '<a class="' . esc_attr( $classes ) . '" href="' . esc_url( $url ) . '">' . vvg_cta_label( $label ) . '</a>';
-}
-
-/**
- * A button label that shortens on a phone.
- *
- * Both versions are in the markup and CSS shows one or the other, rather than
- * swapping text through ::after — so the button still reads correctly to a
- * screen reader and the wording is real content, not decoration.
- *
- * Change the short wording site-wide with:
- *
- *     add_filter( 'vvg_cta_short_label', function () { return 'Get a Quote'; } );
- *
- * @param string $long  The full label.
- * @param string $short Optional override for the phone version.
- * @return string Escaped markup.
- */
-function vvg_cta_label( $long, $short = '' ) {
-
-	if ( '' === $short ) {
-		$short = apply_filters( 'vvg_cta_short_label', 'Book Now', $long );
-	}
-
-	// Nothing to swap when the label is already short.
-	if ( $short === $long ) {
-		return esc_html( $long );
-	}
-
-	return '<span class="vvg-cta-long">' . esc_html( $long ) . '</span>'
-		. '<span class="vvg-cta-short">' . esc_html( $short ) . '</span>';
+	return '<a class="' . esc_attr( $classes ) . '" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
 }

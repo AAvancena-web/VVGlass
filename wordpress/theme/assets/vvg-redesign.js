@@ -13,6 +13,52 @@
 	var overlay  = document.getElementById('vvgNavOverlay');
 	var progress = document.getElementById('vvgScrollProgress');
 
+	/* ---- Shorter CTA wording on a phone ----
+	   The long label is a 350px button, which is most of a phone screen. Swap it
+	   at runtime rather than in the markup, so nothing but this file has to
+	   change. Add entries to swap other wording; keys are matched lowercased.
+
+	   Note this runs after first paint, so on a phone the long label is briefly
+	   visible before it shortens. */
+	var CTA_SHORT = {
+		'book your consultation here': 'Book Now'
+	};
+	var CTA_BREAKPOINT = 640;
+
+	var swapCtaText = function () {
+		var narrow = window.innerWidth <= CTA_BREAKPOINT;
+		var links  = document.querySelectorAll('.vvg-btn, .vvss-btn');
+
+		for (var i = 0; i < links.length; i++) {
+			var link = links[i];
+
+			/* Text-only buttons only: replacing textContent would destroy an icon. */
+			if (link.children.length) { continue; }
+
+			var full = link.getAttribute('data-vvg-cta-full');
+
+			if (full === null) {
+				var text  = link.textContent.trim();
+				var short = CTA_SHORT[text.toLowerCase()];
+				if (!short) { continue; }
+				full = text;
+				link.setAttribute('data-vvg-cta-full', full);
+				link.setAttribute('data-vvg-cta-short', short);
+			}
+
+			var wanted = narrow ? link.getAttribute('data-vvg-cta-short') : full;
+			if (link.textContent.trim() !== wanted) { link.textContent = wanted; }
+		}
+	};
+
+	swapCtaText();
+
+	var ctaTimer = null;
+	window.addEventListener('resize', function () {
+		clearTimeout(ctaTimer);
+		ctaTimer = setTimeout(swapCtaText, 150);
+	});
+
 	/* ---- Keep the sticky header sticky ----
 	   position:sticky is cancelled by ANY ancestor that is a scroll container,
 	   and a theme or page builder can put overflow:hidden on a wrapper we cannot
