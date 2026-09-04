@@ -99,9 +99,11 @@ $vvg_phone_href = function_exists( 'vvg_tel_href' ) ? vvg_tel_href() : '+6141299
 <?php } ?>
 
 <!-- Floating call button, mobile only -->
-<a class="vvg-call-now" href="tel:<?php echo esc_attr( $vvg_phone_href ); ?>">
+<a class="vvg-call-now" href="tel:<?php echo esc_attr( $vvg_phone_href ); ?>"
+	aria-label="<?php echo esc_attr( sprintf( 'Call %s', $vvg_phone ) ); ?>">
 	<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.9 15.9 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1z"/></svg>
-	<?php echo esc_html( sprintf( 'Call Now %s', $vvg_phone ) ); ?>
+	<?php // Icon and number only — "Call Now" is what the phone icon already says. ?>
+	<?php echo esc_html( $vvg_phone ); ?>
 </a>
 
 <?php wp_footer(); ?>
