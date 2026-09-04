@@ -13,6 +13,21 @@
 	var overlay  = document.getElementById('vvgNavOverlay');
 	var progress = document.getElementById('vvgScrollProgress');
 
+	/* ---- Keep the sticky header sticky ----
+	   position:sticky is cancelled by ANY ancestor that is a scroll container,
+	   and a theme or page builder can put overflow:hidden on a wrapper we cannot
+	   predict or reach from a stylesheet. Walk the header's own ancestors and
+	   relax only that one case: hidden becomes clip, which looks identical and
+	   clips just the same, but does not create a scroll container. auto and
+	   scroll are left alone, because those are deliberate. */
+	if (header) {
+		for (var node = header.parentElement; node && node !== document.documentElement; node = node.parentElement) {
+			var cs = getComputedStyle(node);
+			if (cs.overflowX === 'hidden') { node.style.overflowX = 'clip'; }
+			if (cs.overflowY === 'hidden') { node.style.overflowY = 'visible'; }
+		}
+	}
+
 	/* ---- Sticky state + reading progress ---- */
 	if (header || progress) {
 		var onScroll = function () {
