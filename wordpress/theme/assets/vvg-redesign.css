@@ -423,7 +423,6 @@ body.vvg-nav-open #scroll-to-top { opacity: 0; visibility: hidden; pointer-event
 .vvg-page-banner-sub p:last-child { margin-bottom: 0; }
 .vvg-page-banner-crumbs { font-family: var(--vvg-body); font-size: 15px; color: rgba(255,255,255,.8); margin: 0 0 26px; }
 .vvg-page-banner-crumbs a { color: var(--vvg-gold); text-decoration: none; }
-.vvg-page-banner-crumbs a::after { content: "\203A"; color: rgba(255,255,255,.55); margin: 0 8px; }
 .vvg-page-banner-actions { display: flex; flex-wrap: wrap; gap: 14px; }
 
 /* ---------- Enquiry form card ---------- */
